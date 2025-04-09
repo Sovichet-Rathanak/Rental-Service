@@ -48,13 +48,16 @@
         margin: 0;
         padding: 0;
         font-weight: bolder;
+        font-size: 28px;
         color: white;
     }
 
     hgroup > h2{
         margin: 0;
         padding: 0;
+        line-height: 1;
         font-weight: 400;
+        font-size: 22px;
         color: white;
     }
 
@@ -78,7 +81,7 @@
 
     .hBtn-label, .rBtn-label{
         font-weight:500;
-        font-size: 22px;
+        font-size: 18px;
         color: white;
     }
 
