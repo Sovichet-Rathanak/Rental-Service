@@ -29,7 +29,7 @@ export default {
   background-blend-mode:overlay;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100% 100%;
+  background-size: cover;
   overflow: hidden;
 }
 
