@@ -69,6 +69,7 @@ export default {
     justify-content: center;
 }
 
+/*opacity for btn 0 only visible when hover*/
 .swiper-button-prev, .swiper-button-next {
     opacity: 0; 
     z-index: 10;
@@ -90,6 +91,7 @@ export default {
     justify-content: center;
 }
 
+/*get original image height and width*/
 img {
     max-width: 100%;
     height: auto;
