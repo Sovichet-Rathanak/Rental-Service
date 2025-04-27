@@ -66,6 +66,7 @@
         height: 110px;
         background-color: white;
         border-radius: 70px;
+        box-shadow: 5px 5px 15px rgb(25, 25, 25);
     }
 
     .roomsBtn-container, .priceBtn-container{
