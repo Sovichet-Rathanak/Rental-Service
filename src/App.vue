@@ -4,7 +4,7 @@
       <combined-header></combined-header>
     </header>
     <main>
-
+      <banner-animate></banner-animate>
     </main>
     <footer>
 
@@ -14,10 +14,12 @@
 
 <script>
 import CombinedHeader from './components/headerComponents/CombinedHeader.vue';
+import BannerAnimate from './components/bannerComponents/Banner-Animate.vue';
 
 export default{
   components:{
     CombinedHeader,
+    BannerAnimate
   }
 }
 </script>
