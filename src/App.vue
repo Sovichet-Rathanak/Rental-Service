@@ -14,10 +14,12 @@
 
 <script>
 import CombinedHeader from './components/headerComponents/CombinedHeader.vue';
+import LoginPage from './components/headerComponents/LoginPage.vue';
 
 export default{
   components:{
     CombinedHeader,
+    LoginPage
   }
 }
 </script>

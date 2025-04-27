@@ -1,21 +1,33 @@
 <template>
   <div class="container">
-    <header-nav></header-nav>
+    <header-nav @open-login-modal="showLoginModal = true"></header-nav>
     <div class="filternav-container">
       <filter-nav></filter-nav>
     </div>
+
+    <!-- Login Modal (outside main content flow) -->
+    <LoginPage 
+      :show-modal="showLoginModal" 
+      @close="showLoginModal = false" 
+    />
   </div>
 </template>
 
 <script>
 import HeaderNav from './HeaderNav.vue';
 import FilterNav from './FilterNav.vue';
-
+import LoginPage from './LoginPage.vue';  
 export default {
   components: {
     HeaderNav,
-    FilterNav
-  }
+    FilterNav, 
+    LoginPage
+  },
+  data() {
+    return {
+      showLoginModal: false
+    }
+  },
 }
 </script> 
 

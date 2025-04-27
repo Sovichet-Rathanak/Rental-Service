@@ -20,12 +20,28 @@
                 <span class="rBtn-label">Room</span>
             </button>
         </div>
-        <button class="sigin-btn">
+        <button @click="openLoginModal" class="sigin-btn">
             <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
             <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
         </button>
     </div>
 </template>
+
+<script>
+import { Icon } from '@iconify/vue';
+
+export default {
+  components: {
+    Icon
+  },
+  methods: {
+    openLoginModal() {
+      console.log('Login modal triggered');
+      this.$emit('open-login-modal');
+    }
+  }
+}
+</script>
 
 <style scoped>
     .nav-container{
@@ -34,6 +50,8 @@
         justify-content: space-between;
         align-items: center;
         padding: 25px 75px 0px 75px;
+        position: relative;
+        z-index: 100;
     }
 
     .logo{
