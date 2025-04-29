@@ -16,6 +16,10 @@
       <div v-if="!showResetPassword && !showSignUp">
         <h1>Welcome To Romdoul Rental</h1>
         
+        <div v-if="userInitials" class="user-avatar">
+          {{ userInitials }}
+        </div>
+        
         <form class="login-form" @submit.prevent="handleLogin">
           <div class="input-group">
             <label>Email</label>
@@ -95,6 +99,26 @@
         
         <form class="login-form" @submit.prevent="handleSignUp">
           <div class="input-group">
+            <label>First Name</label>
+            <input type="text" v-model="firstName" placeholder="Enter your first name" required>
+          </div>
+          
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" v-model="lastName" placeholder="Enter your last name" required>
+          </div>
+          
+          <div class="input-group">
+            <label>Date of Birth</label>
+            <input type="date" v-model="dateOfBirth" required>
+          </div>
+          
+          <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel" v-model="phoneNumber" placeholder="Enter your phone number" required>
+          </div>
+          
+          <div class="input-group">
             <label>Email</label>
             <input type="email" v-model="signUpEmail" placeholder="Enter your email" required>
           </div>
@@ -111,6 +135,20 @@
             <label>Confirm Password</label>
             <input type="password" v-model="confirmPassword" placeholder="Confirm password" required>
             <p class="error-message" v-if="passwordMatchError">{{ passwordMatchError }}</p>
+          </div>
+          
+          <div class="terms-agreement">
+            <label class="terms-checkbox">
+              <input type="checkbox" v-model="agreeToTerms" required>
+              I agree to the Romdoul Rental <a href="#" @click.prevent="showTerms">Terms of Service</a>
+              &
+              <a href="#" @click.prevent="showPrivacy">Privacy Policy</a>
+            </label>
+            <p class="terms-text">
+              By creating an account, you agree to our rental terms, including our vehicle usage policies, 
+              insurance requirements, and payment terms. You consent to receiving important account 
+              notifications via email or SMS.
+            </p>
           </div>
           
           <button type="submit" class="login-button">Sign Up</button>
@@ -164,6 +202,7 @@ export default {
       password: "",
       emailError: "",
       passwordError: "",
+      userInitials: localStorage.getItem('userInitials') || "",
       
       // Reset password screen data
       showResetPassword: false,
@@ -173,10 +212,15 @@ export default {
       
       // Sign up screen data
       showSignUp: false,
+      firstName: "",
+      lastName: "",
+      dateOfBirth: "",
+      phoneNumber: "",
       signUpEmail: "",
       signUpPassword: "",
       confirmPassword: "",
-      passwordMatchError: ""
+      passwordMatchError: "",
+      agreeToTerms: false,
     };
   },
   computed: {
@@ -226,10 +270,15 @@ export default {
       this.resetEmail = "";
       this.newPassword = "";
       this.resetEmailError = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.dateOfBirth = "";
+      this.phoneNumber = "";
       this.signUpEmail = "";
       this.signUpPassword = "";
       this.confirmPassword = "";
       this.passwordMatchError = "";
+      this.agreeToTerms = false;
     },
     async handleLogin() {
       this.emailError = "";
@@ -255,11 +304,6 @@ export default {
         // Close modal
         this.closeModal();
         
-        // If using actual authentication:
-        // await authService.login(this.email, this.password);
-        // this.closeModal();
-        // this.$router.push('/dashboard'); // Or wherever you want to redirect
-        
       } catch (error) {
         console.error("Login error:", error);
         this.passwordError = "Invalid email or password";
@@ -275,13 +319,54 @@ export default {
       alert("Password reset instructions sent to your email");
       this.showResetPassword = false;
     },
+    showTerms() {
+      alert(`Terms of Service:
+      
+1. Romdoul Rental Agreement: You agree to abide by all terms of the rental agreement, including vehicle usage restrictions and return policies.
+2. Payment: All rentals require a valid payment method. You authorize us to charge for rental fees, damages, and other applicable charges.
+3. Vehicle Care: You agree to return the vehicle in the same condition as received, normal wear and tear excepted.
+4. Prohibited Uses: Commercial use, off-road driving, and illegal activities are strictly prohibited.
+5. Insurance: You must maintain adequate insurance coverage as specified in the rental agreement.`);
+    },
+    showPrivacy() {
+      alert(`Privacy Policy:
+      
+1. Information Collection: We collect personal information including name, contact details, payment information, and driving history to provide our services.
+2. Data Usage: Your information is used for rental processing, account management, and service improvements.
+3. Data Sharing: We may share information with insurance providers, law enforcement, and service partners as required.
+4. Security: We implement industry-standard measures to protect your personal information.
+5. Your Rights: You may access, correct, or request deletion of your personal information as permitted by law.`);
+    },
+    getUserInitials() {
+      if (this.firstName && this.lastName) {
+        return `${this.firstName.charAt(0)}${this.lastName.charAt(0)}`.toUpperCase();
+      }
+      return "";
+    },
     handleSignUp() {
       if (this.signUpPassword !== this.confirmPassword) {
         this.passwordMatchError = "Passwords don't match";
         return;
       }
       
-      console.log("Signing up with:", this.signUpEmail);
+      if (!this.agreeToTerms) {
+        alert("Please agree to the terms and conditions");
+        return;
+      }
+      
+      console.log("Signing up with:", {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.signUpEmail,
+        dob: this.dateOfBirth,
+        phone: this.phoneNumber
+      });
+      
+      // Store user initials in localStorage for display in login
+      const initials = this.getUserInitials();
+      localStorage.setItem('userInitials', initials);
+      this.userInitials = initials;
+      
       alert("Account created successfully!");
       this.closeModal();
     },
@@ -360,6 +445,20 @@ h1 {
   text-align: center;
 }
 
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background-color: #130092;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 auto 1rem auto;
+}
+
 .login-form {
   margin-bottom: 1.5rem;
 }
@@ -377,7 +476,10 @@ label {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"],
+input[type="date"],
+input[type="tel"] {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #ddd;
@@ -388,13 +490,18 @@ input[type="password"] {
 }
 
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="tel"]:focus {
   border-color: #130092;
   outline: none;
 }
 
 input[type="email"]::placeholder,
-input[type="password"]::placeholder {
+input[type="password"]::placeholder,
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder {
   color: #aaa;
 }
 
@@ -555,6 +662,42 @@ input[type="password"]::placeholder {
 
 .password-strength.strong {
   color: #38a169;
+}
+
+/* Terms and Conditions Styles */
+.terms-agreement {
+  margin: 1rem 0;
+  font-size: 0.6rem;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.terms-checkbox input {
+  margin-right: 0.5rem;
+}
+
+.terms-text {
+  color: #666;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+  margin-left: 0.5;
+}
+
+.terms-agreement a {
+  color: #130092;
+  text-decoration: underline;
+  padding-inline-start: 0.5rem;
+  font-size: 0.8rem;
+
+}
+
+.terms-agreement a:hover {
+  color: #000249;
 }
 
 /* Animations */
