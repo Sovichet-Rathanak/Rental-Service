@@ -3,7 +3,7 @@
         <div class="image-container">
             <img src="../assets/images/property_images/property1.jpeg" alt="property image">
             <button class="fave-btn">
-                <Icon icon="si:heart-duotone" width="40" height="40"  style="color: #fff" />
+                <Icon icon="si:heart-duotone" width="32" height="32"  style="color: #fff" />
             </button>
         </div>
         <div class="info">
