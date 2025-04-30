@@ -43,6 +43,7 @@ export default {
   background-position: center;
   background-size: cover;
   overflow: hidden;
+  z-index: -1;
 }
 
 .filternav-container{

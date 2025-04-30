@@ -64,7 +64,7 @@ export default {
 <style scoped>
 .bannerContainer {
     width: 1300px;  
-    margin-top: 50px;
+    margin: 70px 0px;
     display: flex;
     justify-content: center;
 }

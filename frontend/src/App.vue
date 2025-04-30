@@ -1,14 +1,14 @@
 <template>
   <div>
     <header>
-      <!-- <combined-header></combined-header> -->
+      <combined-header></combined-header>
       <!-- <account-page1></account-page1> -->
       <!-- <account-page2></account-page2> -->
-       <header-nav2></header-nav2>
+       <!-- <header-nav2></header-nav2> -->
     </header>
     <main>
-    <banner-animate></banner-animate>
       <div class="homescreen-container">
+        <banner-animate></banner-animate>
         <div class="property-container">
           <property-card></property-card>
           <property-card></property-card>
@@ -70,13 +70,15 @@ export default {
 }
 
 .homescreen-container {
-  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1;
+  margin-top: -45px;
+  background-color: white;
+  border-radius: 55px 55px 0px 0px;
 }
 
 .property-container {
@@ -86,12 +88,10 @@ export default {
   grid-template-columns: repeat(5, 300px);
   background-color: white;
   gap: 50px;
-  padding: 70px 200px 30px 200px;
+  padding: 0px 200px 30px 200px;
   border-radius: 50px 50px 0px 0px;
   width: 100%;
   box-sizing: border-box;
-  margin-top: -45px;
-  z-index: 2;
 }
 
 .midlength-btn {
