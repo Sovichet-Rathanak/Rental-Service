@@ -1,0 +1,88 @@
+<template>
+    <div class="nav-container">
+        <div class="logo">
+            <div class="image-container">
+                <img src="/src/assets/logo.png" alt="roumdoul_logo">
+            </div>
+            <hgroup class="">
+                <h1>Romdoul</h1>
+                <h2>Rental Service</h2>
+            </hgroup>
+        </div>
+
+        <div class="text">
+            <h2>Applying for Landlord</h2>
+            <Icon icon="tabler:world" width="40" height="40"/>
+            <button class="sigin-btn">
+                <Icon icon="material-symbols:menu-rounded" width="24" height="24" />
+                <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
+            </button>
+        </div>
+    </div>
+    <hr />
+</template>
+
+<style scoped>
+    .nav-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px 75px 0px 75px;
+        margin-bottom: 20px;
+    }
+
+    .logo{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    hgroup > h1{
+        margin: 0;
+        padding: 0;
+        font-weight: bolder;
+        font-size: 28px;
+        color: black;
+    }
+
+    hgroup > h2{
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        font-weight: 400;
+        font-size: 22px;
+        color: black;
+    }
+
+    .text{
+        display: flex;
+        gap: 35px;
+        align-items: center;
+    }
+
+    .text > h2{
+        font-size: 22px;
+    }
+
+    .sigin-btn{
+        display: flex;
+        gap: 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        box-sizing: border-box;
+        border: 1.5px solid gray;
+        padding: 12px 15px;
+        border-radius: 50px;
+        cursor: pointer;
+    }
+
+    hr{
+        width: 100%;
+        height: 5%;
+    }
+</style>
