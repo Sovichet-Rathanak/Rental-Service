@@ -1,11 +1,13 @@
 <template>
   <div>
     <header>
-      <combined-header></combined-header>
+      <!-- <combined-header></combined-header> -->
       <!-- <account-page1></account-page1> -->
       <!-- <account-page2></account-page2> -->
+       <header-nav2></header-nav2>
     </header>
     <main>
+    <banner-animate></banner-animate>
       <div class="homescreen-container">
         <div class="property-container">
           <property-card></property-card>
@@ -25,7 +27,7 @@
         </div>
         <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
         <button class="midlength-btn">Show More</button>
-      </div>      <banner-animate></banner-animate>
+      </div>
     </main>
     <footer>
       <footer-component></footer-component>
@@ -41,6 +43,7 @@ import AccountPage1 from './views/AccountPage1.vue';
 import AccountPage2 from './views/AccountPage2.vue';
 import PropertyCard from './components/PropertyCard.vue';
 import LoginPage from './components/headerComponents/LoginPage.vue';
+import HeaderNav2 from './components/headerComponents/HeaderNav2.vue';
 
 export default {
   components: {
@@ -50,7 +53,8 @@ export default {
     BannerAnimate,
     PropertyCard,
     FooterComponent,
-    LoginPage
+    LoginPage,
+    HeaderNav2
   }
 }
 </script>
@@ -90,7 +94,7 @@ export default {
   z-index: 2;
 }
 
-.midlength-btn{
+.midlength-btn {
   background-color: black;
   font-weight: bold;
   color: white;
@@ -102,5 +106,4 @@ export default {
   cursor: pointer;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
 }
-
 </style>
