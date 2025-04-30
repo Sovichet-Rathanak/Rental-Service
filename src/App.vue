@@ -1,8 +1,8 @@
 <template>
   <div>
     <header>
-      <!-- <combined-header></combined-header> -->
-      <account-page1></account-page1>
+      <combined-header></combined-header>
+      <!-- <account-page1></account-page1> -->
       <!-- <account-page2></account-page2> -->
     </header>
     <main>
@@ -49,7 +49,7 @@ export default {
     AccountPage1,
     BannerAnimate,
     PropertyCard,
-    FooterComponent
+    FooterComponent,
     LoginPage
   }
 }
