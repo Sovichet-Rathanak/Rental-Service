@@ -69,9 +69,9 @@ export default {
   display: grid;
   align-items: center;
   justify-content: center;
-  grid-template-columns: repeat(6, 300px);
+  grid-template-columns: repeat(5, 300px);
   background-color: white;
-  gap: 25px;
+  gap: 50px;
   padding: 70px 200px 30px 200px;
   border-radius: 50px 50px 0px 0px;
   width: 100%;
