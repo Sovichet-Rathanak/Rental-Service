@@ -40,6 +40,7 @@ import BannerAnimate from './components/bannerComponents/Banner-Animate.vue';
 import AccountPage1 from './views/AccountPage1.vue';
 import AccountPage2 from './views/AccountPage2.vue';
 import PropertyCard from './components/PropertyCard.vue';
+import LoginPage from './components/headerComponents/LoginPage.vue';
 
 export default {
   components: {
@@ -49,6 +50,7 @@ export default {
     BannerAnimate,
     PropertyCard,
     FooterComponent
+    LoginPage
   }
 }
 </script>
