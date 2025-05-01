@@ -1,38 +1,34 @@
 <template>
   <!-- Modal Overlay -->
-  <div 
-    class="modal-overlay" 
-    v-if="showModal"
-    @click.self="closeModal"
-  >
+  <div class="modal-overlay" v-if="showModal" @click.self="closeModal">
     <!-- Modal Content -->
     <div class="modal-content">
       <!-- Close Button -->
       <button class="modal-close" @click="closeModal">
-        <iconify-icon icon="mdi:close" width="1.5rem" height="1.5rem"/>
+        <iconify-icon icon="mdi:close" width="1.5rem" height="1.5rem" />
       </button>
 
       <!-- Login Screen -->
       <div v-if="!showResetPassword && !showSignUp">
         <h1>Welcome To Romdoul Rental</h1>
-        
+
         <div v-if="userInitials" class="user-avatar">
           {{ userInitials }}
         </div>
-        
+
         <form class="login-form" @submit.prevent="handleLogin">
           <div class="input-group">
             <label>Email</label>
             <input type="email" v-model="email" placeholder="Enter your email" required>
             <p class="error-message" v-if="emailError">{{ emailError }}</p>
           </div>
-          
+
           <div class="input-group">
             <label>Password</label>
             <input type="password" v-model="password" placeholder="Enter your password" required>
             <p class="error-message" v-if="passwordError">{{ passwordError }}</p>
           </div>
-          
+
           <div class="remember-forgot">
             <label class="remember-me">
               <input type="checkbox" v-model="rememberMe">
@@ -42,28 +38,28 @@
               Forgot password?
             </span>
           </div>
-          
+
           <button type="submit" class="login-button">Sign In</button>
         </form>
-        
+
         <div class="divider">
           <div class="divider-line"></div>
           <span>or continue with</span>
           <div class="divider-line"></div>
         </div>
-        
+
         <div class="social-login">
           <button type="button" class="social-button google" @click="signInWithGoogle">
-            <iconify-icon icon="devicon:google" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="devicon:google" width="1.5rem" height="1.5rem" />
           </button>
           <button type="button" class="social-button facebook" @click="signInWithFacebook">
-            <iconify-icon icon="logos:facebook" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="logos:facebook" width="1.5rem" height="1.5rem" />
           </button>
           <button type="button" class="social-button apple" @click="signInWithApple">
-            <iconify-icon icon="ic:outline-apple" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="ic:outline-apple" width="1.5rem" height="1.5rem" />
           </button>
         </div>
-        
+
         <p class="auth-switch">
           Don't have an account? <span @click="showSignUp = true">Sign Up</span>
         </p>
@@ -72,22 +68,22 @@
       <!-- Reset Password Screen -->
       <div v-if="showResetPassword">
         <h1>Reset Password</h1>
-        
+
         <form class="login-form" @submit.prevent="handleResetPassword">
           <div class="input-group">
             <label>Email</label>
             <input type="email" v-model="resetEmail" placeholder="Enter your email" required>
             <p class="error-message" v-if="resetEmailError">{{ resetEmailError }}</p>
           </div>
-          
+
           <div class="input-group">
             <label>New Password</label>
             <input type="password" v-model="newPassword" placeholder="Create new password" required>
           </div>
-          
+
           <button type="submit" class="login-button">Reset Password</button>
         </form>
-        
+
         <p class="auth-switch" @click="showResetPassword = false">
           <span>Back to Sign In</span>
         </p>
@@ -96,33 +92,33 @@
       <!-- Sign Up Screen -->
       <div v-if="showSignUp">
         <h1>Create Account</h1>
-        
+
         <form class="login-form" @submit.prevent="handleSignUp">
           <div class="input-group">
             <label>First Name</label>
             <input type="text" v-model="firstName" placeholder="Enter your first name" required>
           </div>
-          
+
           <div class="input-group">
             <label>Last Name</label>
             <input type="text" v-model="lastName" placeholder="Enter your last name" required>
           </div>
-          
+
           <div class="input-group">
             <label>Date of Birth</label>
             <input type="date" v-model="dateOfBirth" required>
           </div>
-          
+
           <div class="input-group">
             <label>Phone Number</label>
             <input type="tel" v-model="phoneNumber" placeholder="Enter your phone number" required>
           </div>
-          
+
           <div class="input-group">
             <label>Email</label>
             <input type="email" v-model="signUpEmail" placeholder="Enter your email" required>
           </div>
-          
+
           <div class="input-group">
             <label>Password</label>
             <input type="password" v-model="signUpPassword" placeholder="Create password" required>
@@ -130,13 +126,13 @@
               Password strength: {{ passwordStrength }}
             </div>
           </div>
-          
+
           <div class="input-group">
             <label>Confirm Password</label>
             <input type="password" v-model="confirmPassword" placeholder="Confirm password" required>
             <p class="error-message" v-if="passwordMatchError">{{ passwordMatchError }}</p>
           </div>
-          
+
           <div class="terms-agreement">
             <label class="terms-checkbox">
               <input type="checkbox" v-model="agreeToTerms" required>
@@ -145,33 +141,33 @@
               <a href="#" @click.prevent="showPrivacy">Privacy Policy</a>
             </label>
             <p class="terms-text">
-              By creating an account, you agree to our rental terms, including our vehicle usage policies, 
-              insurance requirements, and payment terms. You consent to receiving important account 
+              By creating an account, you agree to our rental terms, including our vehicle usage policies,
+              insurance requirements, and payment terms. You consent to receiving important account
               notifications via email or SMS.
             </p>
           </div>
-          
+
           <button type="submit" class="login-button">Sign Up</button>
         </form>
-        
+
         <div class="divider">
           <div class="divider-line"></div>
           <span>or sign up with</span>
           <div class="divider-line"></div>
         </div>
-        
+
         <div class="social-login">
           <button type="button" class="social-button google" @click="signInWithGoogle">
-            <iconify-icon icon="devicon:google" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="devicon:google" width="1.5rem" height="1.5rem" />
           </button>
           <button type="button" class="social-button facebook" @click="signInWithFacebook">
-            <iconify-icon icon="logos:facebook" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="logos:facebook" width="1.5rem" height="1.5rem" />
           </button>
           <button type="button" class="social-button apple" @click="signInWithApple">
-            <iconify-icon icon="ic:outline-apple" width="1.5rem" height="1.5rem"/>
+            <iconify-icon icon="ic:outline-apple" width="1.5rem" height="1.5rem" />
           </button>
         </div>
-        
+
         <p class="auth-switch" @click="showSignUp = false">
           Already have an account? <span>Sign in</span>
         </p>
@@ -196,20 +192,20 @@ export default {
   data() {
     return {
       rememberMe: false,
-      
+
       // Login screen data
       email: "",
       password: "",
       emailError: "",
       passwordError: "",
       userInitials: localStorage.getItem('userInitials') || "",
-      
+
       // Reset password screen data
       showResetPassword: false,
       resetEmail: "",
       newPassword: "",
       resetEmailError: "",
-      
+
       // Sign up screen data
       showSignUp: false,
       firstName: "",
@@ -283,27 +279,27 @@ export default {
     async handleLogin() {
       this.emailError = "";
       this.passwordError = "";
-      
+
       if (!this.validateEmail(this.email)) {
         this.emailError = "Please enter a valid email";
         return;
       }
-      
+
       if (this.password.length < 6) {
         this.passwordError = "Password must be at least 6 characters";
         return;
       }
-      
+
       try {
         // Simulate API call
         console.log("Logging in with:", this.email);
-        
+
         // Show success message
         alert("Sign In Successfully");
-        
+
         // Close modal
         this.closeModal();
-        
+
       } catch (error) {
         console.error("Login error:", error);
         this.passwordError = "Invalid email or password";
@@ -314,7 +310,7 @@ export default {
         this.resetEmailError = "Please enter a valid email";
         return;
       }
-      
+
       console.log("Resetting password for:", this.resetEmail);
       alert("Password reset instructions sent to your email");
       this.showResetPassword = false;
@@ -348,12 +344,12 @@ export default {
         this.passwordMatchError = "Passwords don't match";
         return;
       }
-      
+
       if (!this.agreeToTerms) {
         alert("Please agree to the terms and conditions");
         return;
       }
-      
+
       console.log("Signing up with:", {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -361,12 +357,12 @@ export default {
         dob: this.dateOfBirth,
         phone: this.phoneNumber
       });
-      
+
       // Store user initials in localStorage for display in login
       const initials = this.getUserInitials();
       localStorage.setItem('userInitials', initials);
       this.userInitials = initials;
-      
+
       alert("Account created successfully!");
       this.closeModal();
     },
@@ -702,16 +698,22 @@ input[type="tel"]::placeholder {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     transform: translateY(20px);
     opacity: 0;
   }
-  to { 
+
+  to {
     transform: translateY(0);
     opacity: 1;
   }

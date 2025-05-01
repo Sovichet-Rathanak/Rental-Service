@@ -1,5 +1,5 @@
 <template>
-    <div class="property-card">
+    <div class="property-card" @click="goToDetailPage">
         <div class="image-container">
             <img src="../assets/images/property_images/property1.jpeg" alt="property image">
             <button class="fave-btn">
@@ -22,6 +22,16 @@
     </div>
 </template>
 
+
+<script>
+  export default{
+    methods: {
+      goToDetailPage(){
+        this.$router.push({name: 'Accommodation'})
+      }
+    }
+  }
+</script>
 
 <style scoped>
 .property-card{

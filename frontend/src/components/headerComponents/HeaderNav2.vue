@@ -1,6 +1,6 @@
 <template>
     <div class="nav-container">
-        <div class="logo">
+        <div class="logo" @click="goToHomePage">
             <div class="image-container">
                 <img src="/src/assets/logo.png" alt="roumdoul_logo">
             </div>
@@ -11,7 +11,9 @@
         </div>
 
         <div class="text">
-            <button class="applyLandlord">Applying for Landlord <Icon icon="tabler:world" width="40" height="40" /></button>
+            <button class="applyLandlord">Applying for Landlord
+                <Icon icon="tabler:world" width="40" height="40" />
+            </button>
             <button class="sigin-btn">
                 <Icon icon="material-symbols:menu-rounded" width="24" height="24" />
                 <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
@@ -21,13 +23,23 @@
     <hr />
 </template>
 
+<script>
+export default {
+    methods: {
+        goToHomePage() {
+            this.$router.push({ name: 'Home' })
+        }
+    }
+}
+</script>
+
 <style scoped>
 .nav-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 75px 0px 75px;
+    padding: 25px 200px 0px 200px;
     margin-bottom: 20px;
 }
 
@@ -37,6 +49,7 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    cursor: pointer;
 }
 
 hgroup>h1 {
