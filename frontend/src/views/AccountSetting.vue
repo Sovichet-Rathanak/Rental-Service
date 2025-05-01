@@ -5,18 +5,17 @@
 
     <body>
         <div class="headerText">
-            <h1>Account</h1>
-
+            <h1 style="margin: 0;">Account</h1>
             <div class="profileInfo">
                 <h2>Lin Van, </h2>
                 <h3>linavan2509@gmail.com</h3>
-                <router-link class="go-to" :to="{name: 'Show User'}">Go to profile</router-link>
+                <router-link class="go-to" :to="{ name: 'Show User' }">Go to profile</router-link>
             </div>
         </div>
 
         <!-- All the buttons -->
         <div class="buttons">
-            <div class="rentingList">
+            <div class=" rentingList" @click="goToPage('Rent List')">
                 <Icon icon="material-symbols:dashboard-outline-rounded" width="36" height="36" />
                 <h2>Renting List</h2>
                 <span>Keep track of lanlord approvals, and rental activities.</span>
@@ -54,7 +53,7 @@
         </div>
     </body>
     <footer>
-        <FooterComponent></FooterComponent>        
+        <FooterComponent></FooterComponent>
     </footer>
 </template>
 
@@ -65,7 +64,12 @@ import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
 export default {
     components: {
         HeaderNav2,
-        FooterComponent
+        FooterComponent,
+    },
+    methods: {
+        goToPage(routeName) {
+            this.$router.push({ name: routeName })
+        }
     }
 }
 </script>
@@ -90,11 +94,13 @@ export default {
 .profileInfo>h2 {
     font-size: 20px;
     font-weight: bold;
+    margin: 0;
 }
 
 .profileInfo>h3 {
     font-size: 20px;
     font-weight: 400;
+    margin: 0;
 }
 
 .profileInfo>span {
@@ -120,12 +126,12 @@ export default {
 .invoice {
     width: 450px;
     height: 215px;
-    background-color: #DFEFFF;
+    background-color: white;
     align-items: center;
     padding: 37px 20px 10px 35px;
     border-radius: 20px;
     margin: 19px 17px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 10px 5px rgba(0, 0, 0.1, 0.25);
     border: 1px solid white;
     cursor: pointer;
 }
