@@ -35,7 +35,7 @@
 
 <style scoped>
 .property-card{
-  height: 410px;
+  height: 25.625em;
   border-radius: 24px;
   box-sizing: border-box;
   background-color: white;
@@ -44,8 +44,8 @@
 }
 
 .image-container {
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  height: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,7 +91,7 @@
 }
 
 .info-location{
-  width: 200px;
+  width: 70%;
   font-weight: 700;
   color: #565656;
 }
