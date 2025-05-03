@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
+import AccountPage4 from '@/views/AccountPage4.vue'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/accommodation',
     name: 'Accommodation',
     component: DetailPage,
+  },
+  {
+    path:'/acc',
+    name: 'Accommodation4',
+    component: AccountPage4
   }
 ]
 
