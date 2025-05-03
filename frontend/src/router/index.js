@@ -6,6 +6,8 @@ import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
 import RentingList from '@/views/RentingList.vue'
+import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
+import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 
 const routes = [
   {
@@ -37,6 +39,16 @@ const routes = [
     path: '/rent-list',
     name: 'Rent List',
     component: RentingList,
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: PaymentPage
+  },
+  {
+    path: '/payment/manage-payment',
+    name: 'Manage Payment',
+    component: ManagePayment
   }
 ]
 
