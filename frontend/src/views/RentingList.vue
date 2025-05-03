@@ -1,9 +1,8 @@
 <template>
-    <header>
-        <HeaderNav2></HeaderNav2>
-    </header>
-
     <body>
+        <header>
+            <HeaderNav2></HeaderNav2>
+        </header>
         <main>
             <BreadCrumbs style="margin: 30px 0px;"></BreadCrumbs>
             <div class="current-rent">
@@ -20,10 +19,10 @@
                 </div>
             </div>
         </main>
+        <footer>
+            <FooterComponent></FooterComponent>
+        </footer>
     </body>
-    <footer>
-        <FooterComponent></FooterComponent>
-    </footer>
 </template>
 
 <script>

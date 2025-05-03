@@ -3,7 +3,7 @@
         <header-nav-2></header-nav-2>
     </header>
 
-    <body>
+    <main>
         <div class="containerAcc2">
             <!-- Top left -->
             <div class="wrap">
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-    </body>
+    </main>
     <footer>
         <FooterComponent></FooterComponent>
     </footer>

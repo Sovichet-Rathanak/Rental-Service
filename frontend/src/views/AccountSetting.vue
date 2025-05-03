@@ -3,7 +3,7 @@
         <HeaderNav2></HeaderNav2>
     </header>
 
-    <body>
+    <main>
         <div class="headerText">
             <h1 style="margin: 0;">Account</h1>
             <div class="profileInfo">
@@ -27,7 +27,7 @@
                 <span>Provide personal details and how we can reach you.</span>
             </div>
 
-            <div class="payments">
+            <div class="payments" @click="goToPage('Payment')">
                 <Icon icon="material-symbols:payments-outline-sharp" width="40" height="40" />
                 <h2>Payments</h2>
                 <span>Review payments, payouts, coupons, and gift cards.</span>
@@ -51,7 +51,7 @@
                 <span>Manage taxpayer information and tax documents.</span>
             </div>
         </div>
-    </body>
+    </main>
     <footer>
         <FooterComponent></FooterComponent>
     </footer>

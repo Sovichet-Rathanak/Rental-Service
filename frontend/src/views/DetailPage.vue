@@ -1,9 +1,9 @@
 <template>
-    <header>
-        <HeaderNav2></HeaderNav2>
-    </header>
 
     <body>
+        <header>
+            <HeaderNav2></HeaderNav2>
+        </header>
         <main>
             <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
             <h2 style="font-weight: bold; margin: 30px 0px;">Where you'll be</h2>
@@ -11,10 +11,10 @@
                 <MapComponent></MapComponent>
             </div>
         </main>
+        <footer>
+            <FooterComponent></FooterComponent>
+        </footer>
     </body>
-    <footer>
-        <FooterComponent></FooterComponent>
-    </footer>
 </template>
 
 <script>
