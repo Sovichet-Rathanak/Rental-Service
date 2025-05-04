@@ -52,9 +52,12 @@
                             <Icon icon="logos:unionpay" width="25.6" height="16" />
                         </div>
                         <div class="card-info">
-                            <input class="card-num" type="text" placeholder="Card number">
-                            <input class="exp" type="text" placeholder="MM/YY">
-                            <input class="cvv" type="text" placeholder="CVV">
+                            <input class="card-num" type="text" placeholder="Card number" v-model="cardNumber"
+                                maxlength="19" @input="formatCardNumber">
+                            <input class="exp" type="text" placeholder="MM/YY" v-model="expDate" maxlength="5"
+                                @input="formatMonthYear">
+                            <input class="cvv" type="text" placeholder="CVV" v-model="cvv" maxlength="3"
+                                @input="formatCVV">
                         </div>
                     </div>
 
@@ -99,7 +102,10 @@ import BreadCrumbs from '@/components/BreadCrumbs.vue';
 export default {
     data() {
         return {
-            showPopup: false
+            showPopup: false,
+            cardNumber: '',
+            expDate: '',
+            cvv: ''
         }
     },
     components: {
@@ -110,10 +116,59 @@ export default {
     methods: {
         goToPage(route) {
             this.$router.push({ name: route });
+        },
+
+        formatCardNumber() {
+            let value = this.cardNumber.replace(/\D/g, ''); //get rid of the everything except number
+
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) { //loop through all the digit of the input
+                formattedValue += value[i]; //add value to the format string
+                if (i > 0 && i % 4 == 0) {
+                    formattedValue += ' '; //at the 4 digit add a space
+                }
+            }
+            this.cardNumber = formattedValue;
+        },
+
+        formatMonthYear() { //still buggy
+            let value = this.expDate.replace(/\D/g, '');
+
+            if (value.length > 0) {
+                let month = value.substring(0, 2); //cut the first two digit to assess
+                if (month.length === 1) {
+                    this.expDate = month; //allow single digit
+                } else if (month.length === 2) {
+                    const monthNum = parseInt(month);
+                    if (monthNum > 12) {
+                        month = '12';
+                    } else if (monthNum < 1) {
+                        month = '01';
+                    }
+                }
+
+                if (value.length > 2) {
+                    console.log('true')
+                    this.expDate = month + '/' + value.substring(2, 4); //add '/' and the second half of the input
+                } else {
+                    this.expDate = month;
+                }
+            }
+
+            if (this.expDate.length === 2 && !this.expDate.includes('/')) {
+                this.expDate += '/';
+            }
+        },
+
+        formatCVV() {
+            this.cvv = this.cvv.replace(/\D/g, '');
+            if (this.cvv.length > 3) {
+                this.cvv = '';
+            }
         }
     },
-    watch:{
-        showPopup(newVal){
+    watch: {
+        showPopup(newVal) {
             document.body.style.overflow = newVal ? 'hidden' : 'auto';
         }
     }
@@ -205,6 +260,12 @@ hgroup>h4 {
     flex-direction: column;
     box-sizing: border-box;
     overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.popup-content::-webkit-scrollbar{
+    display: none;
 }
 
 .content-header {
@@ -358,7 +419,7 @@ hgroup>h4 {
 
 input:focus {
     outline: none;
-    border-color: #0026FF;
+    border: 2px solid #0026FF;
     box-shadow: 0 0 0 2px rgba(0, 38, 255, 0.1);
 }
 
