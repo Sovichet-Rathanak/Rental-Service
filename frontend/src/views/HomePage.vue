@@ -2,7 +2,6 @@
     <header>
         <combined-header></combined-header>
     </header>
-
     <main>
         <div class="homescreen-container">
             <banner-animate></banner-animate>
@@ -57,7 +56,6 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1;
     margin-top: -45px;
     background-color: white;
     border-radius: 55px 55px 0px 0px;

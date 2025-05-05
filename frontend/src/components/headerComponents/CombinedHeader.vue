@@ -1,26 +1,21 @@
 <template>
   <div class="container">
     <header-nav @open-login-modal="showLoginModal = true"></header-nav>
-    <div class="filternav-container">
-      <filter-nav></filter-nav>
-    </div>
+    <filter-nav></filter-nav>
 
     <!-- Login Modal (outside main content flow) -->
-    <LoginPage 
-      :show-modal="showLoginModal" 
-      @close="showLoginModal = false" 
-    />
+    <LoginPage :show-modal="showLoginModal" @close="showLoginModal = false" />
   </div>
 </template>
 
 <script>
 import HeaderNav from './HeaderNav.vue';
 import FilterNav from './FilterNav.vue';
-import LoginPage from './LoginPage.vue';  
+import LoginPage from './LoginPage.vue';
 export default {
   components: {
     HeaderNav,
-    FilterNav, 
+    FilterNav,
     LoginPage
   },
   data() {
@@ -29,29 +24,20 @@ export default {
     }
   },
 }
-</script> 
+</script>
 
 <style scoped>
-.container{
+.container {
   width: 100vw;
   height: 50vh;
   max-width: 100%;
   background-color: #345fcc9d;
   background-image: url("/src/assets/images/PP-bg.png");
-  background-blend-mode:overlay;
+  background-blend-mode: overlay;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.filternav-container{
-  width: 100%;
-  margin-top: 145px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  z-index: 100;
 }
 
 </style>
