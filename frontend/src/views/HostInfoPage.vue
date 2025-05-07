@@ -21,14 +21,14 @@
           </div>
         </div>
       </div>
-      <div v-if="showHostInfo" class="host-info-panel">
+      <div class="host-info-panel">
         <h2>About Shen Yue</h2>
         <p><span>🔊</span> Speak English, French and Khmer <span class="divider"></span> <span>🏠</span> Lives in Phnom Penh, Cambodia</p>
         <p>I love traveling very much, and I know what you need and hope that my villa and service will bring you a more perfect vacation! I hope to make friends with you.</p>
         <h2>Host Details</h2>
         <p>Response rate: 100%</p>
         <p>Responds within an hour</p>
-        <button @click="toggleHostInfo" class="message-btn">Message host</button>
+        <button class="message-btn">Message host</button>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
 export default {
   data() {
     return {
-      showHostInfo: false
+      showHostInfo: true
     };
   },
   methods: {
@@ -61,9 +61,10 @@ export default {
 
 .host-title {
   margin-top: 0;
+  margin-left: 350px;
   font-size: 50px;
   color: #333;
-  text-align: center;
+  text-align: start;
   width: 100%;
 }
 
