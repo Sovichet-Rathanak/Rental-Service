@@ -1,12 +1,16 @@
 <template>
+    <div>
     <header>
-        <combined-header></combined-header>
+        <!-- <combined-header></combined-header> -->
+        <rating></rating>
+        <!-- <ecommerce-rating></ecommerce-rating> -->
     </header>
 
-    <body>
-        <div class="homescreen-container">
-            <banner-animate></banner-animate>
-            <div class="property-container">
+    <!-- <body>
+        <div class="homescreen-container"> -->
+            <!-- <banner-animate></banner-animate> -->
+            
+            <!-- <div class="property-container">
                 <property-card></property-card>
                 <property-card></property-card>
                 <property-card></property-card>
@@ -23,12 +27,14 @@
                 <property-card></property-card>
             </div>
             <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
-            <button class="midlength-btn">Show More</button>
-        </div>
-    </body>
-    <footer>
+            <button class="midlength-btn">Show More</button> -->
+        <!-- </div>
+    </body> -->
+    <!-- <footer>
         <footer-component></footer-component>
-    </footer>
+    </footer> -->
+
+</div>
 </template>
 
 <script>
@@ -37,6 +43,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import BannerAnimate from '@/components/bannerComponents/Banner-Animate.vue';
 import PropertyCard from '@/components/PropertyCard.vue';
 import LoginPage from '@/components/headerComponents/LoginPage.vue';
+import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 
 export default {
     components: {
@@ -46,6 +53,7 @@ export default {
         PropertyCard,
         FooterComponent,
         LoginPage,
+        Rating,
     }
 }
 </script>
