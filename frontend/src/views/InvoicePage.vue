@@ -29,13 +29,15 @@
         <h3 class="due-date">{{ invoiceBox.dueDate }}</h3>
         <h3>{{ invoiceBox.duration }}</h3>
         <button :class="['status', invoiceBox.status.toLowerCase()]">{{ invoiceBox.status }}</button>
-        <button class="actionBtn">
+        <button :class="['actionBtn', invoiceBox.action.toLowerCase().replace(/\s+/g, '')]">
             <Icon icon="mi:share" width="23" height="23" />
             {{invoiceBox.action}}
         </button>
 
     </div>
     <invoice></invoice>
+
+    <!-- Popup Invoice page -->
 </template>
 
 <script>
@@ -81,8 +83,20 @@ export default {
             totalPayment: '$500',
             dueDate: '14-Oct-2025',
             duration: '1 May - 1 June 2026',
-            status: 'Expired',
+            status: 'Paid',
             action: 'Downloaded'
+        }, 
+
+        { 
+            id: 1, 
+            landlordName: 'Shen Yue', 
+            properties: 'A-001 (Brat Villa)' ,
+            address: 'BKK1, Chamkarmon, Phnom Penh',
+            totalPayment: '$500',
+            dueDate: '14-Oct-2025',
+            duration: '1 May - 1 June 2026',
+            status: 'Expired',
+            action: 'Download PDF'
         }, 
       ]
     };
@@ -142,7 +156,7 @@ h2 {
   margin: 20px 120px;
   border: 1px solid #ccc;
   border-radius: 12px;
-  /*box-shadow: 0 2px 5px rgba(0,0,0,0.1);*/
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   display: grid;
   grid-template-columns: 60px 170px 200px 280px 145px 150px 210px 100px 190px;
   align-items: center;
@@ -150,17 +164,18 @@ h2 {
   padding: 10px 30px;
   font-size: 20px;
   cursor: pointer;
+  position: relative;
 }
 
-/* .invoiceBox:hover {
+.invoiceBox:hover {
   background-color: #f8f8f8;
   border: none;
-} */
+}
 
-/* .invoiceBox:active {
+.invoiceBox:active {
   background-color: #dcebff;
   border: none;
-} */
+}
 
 .invoiceBox > h3 {
   font-weight: 500;
@@ -216,9 +231,25 @@ h2 {
   gap: 5px;
   cursor: pointer;
   font-size: 20px;
+  position: absolute;
+  right: 2%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+/* .actionBtn.paynow{
+  background-color: #F79E1B;
+} */
 
 .actionBtn:hover {
-  background-color: #1759ff;
+  background-color: #134fe7;
+  border: none;
+  transform: translateY(-4px);
+  /* box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); */
+}
+
+.actionBtn:active {
+  background-color: #aac0ff;
+  border: none;
+  transform: translateY(-1px);
+  /* box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); */
 }
 </style>

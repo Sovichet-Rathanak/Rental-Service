@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
+import InvoicePage from '@/views/InvoicePage.vue' 
 
 const routes = [
   {
@@ -31,7 +32,13 @@ const routes = [
     path: '/accommodation',
     name: 'Accommodation',
     component: DetailPage,
+  },
+  {
+    path: '/invoice',
+    name: 'Invoice',
+    component: InvoicePage,
   }
+
 ]
 
 const router = createRouter({
