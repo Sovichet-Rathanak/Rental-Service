@@ -10,7 +10,7 @@
 
 <script>
 import HeaderNav from './HeaderNav.vue';
-import FilterNav from './FilterNav.vue';
+import FilterNav from './filterNavRelated/FilterNav.vue';
 import LoginPage from './LoginPage.vue';
 export default {
   components: {
