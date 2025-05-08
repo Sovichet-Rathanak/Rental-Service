@@ -5,8 +5,6 @@ import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
-import AccountPage4 from '@/views/AccountPage4.vue'
-import HostInfoPage from '@/views/HostInfoPage.vue'
 
 const routes = [
   {
@@ -34,16 +32,6 @@ const routes = [
     name: 'Accommodation',
     component: DetailPage,
   },
-  {
-    path:'/acc',
-    name: 'Accommodation4',
-    component: AccountPage4
-  },
-  { 
-    path: '/hostInfo',
-    name: 'HostInfo',
-    component: HostInfoPage
-  }
 ]
 
 const router = createRouter({
