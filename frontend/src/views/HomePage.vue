@@ -1,40 +1,37 @@
 <template>
     <div>
-    <header>
-        <!-- <combined-header></combined-header> -->
-        <rating></rating>
-        <!-- <ecommerce-rating></ecommerce-rating> -->
-    </header>
+        <header>
+            <combined-header></combined-header>
+        </header>
 
-    <!-- <body>
-        <div class="homescreen-container"> -->
-            <!-- <banner-animate></banner-animate> -->
-            
-            <!-- <div class="property-container">
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
-                <property-card></property-card>
+        <body>
+            <div class="homescreen-container">
+                <banner-animate></banner-animate>
+
+                <div class="property-container">
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                    <property-card></property-card>
+                </div>
+                <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
+                <button class="midlength-btn">Show More</button>
             </div>
-            <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
-            <button class="midlength-btn">Show More</button> -->
-        <!-- </div>
-    </body> -->
-    <!-- <footer>
-        <footer-component></footer-component>
-    </footer> -->
-
-</div>
+        </body>
+        <footer>
+            <footer-component></footer-component>
+        </footer>
+    </div>
 </template>
 
 <script>

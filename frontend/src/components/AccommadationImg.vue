@@ -19,12 +19,8 @@
         <img :src="images[0].thumb" alt="Main Room" />
       </div>
       <div class="side-photos">
-        <div
-          v-for="(image, index) in images.slice(1, 5)"
-          :key="index"
-          class="small-photo"
-          @click="openModal(index + 1)"
-        >
+        <div v-for="(image, index) in images.slice(1, 5)" :key="index" class="small-photo"
+          @click="openModal(index + 1)">
           <img :src="image.thumb" :alt="`Room ${index + 2}`" />
         </div>
       </div>
@@ -81,14 +77,11 @@ const nextImage = () => {
 </script>
 
 <style scoped>
-.gallery{
-  padding: 60px;
-}
-
 .gallery-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 10px;
+  width: 100%;
   height: 600px;
 }
 
@@ -98,8 +91,6 @@ const nextImage = () => {
   align-items: center;
   justify-content: center;
 }
-
-
 
 .main-photo img,
 .small-photo img {
@@ -151,7 +142,7 @@ const nextImage = () => {
   right: 30px;
   font-size: 30px;
   color: white;
-  line-height: 1; 
+  line-height: 1;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
@@ -215,7 +206,7 @@ const nextImage = () => {
 
 .modal-actions {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
 }
@@ -228,7 +219,7 @@ const nextImage = () => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
   transition: color 0.2s ease;
 }
 
@@ -240,16 +231,16 @@ const nextImage = () => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
   transition: color 0.2s ease;
 }
 
 
 .icon-spacing {
-  margin-right: 8px; 
+  margin-right: 8px;
 }
 
 .icon-spacing-right {
-  margin-left: 8px; 
+  margin-left: 8px;
 }
 </style>

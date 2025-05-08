@@ -51,8 +51,6 @@ const routes = [
     name: 'personalInfo',
     component: PersonalInfoPage,
   },
-  
-
 ]
 
 const router = createRouter({
