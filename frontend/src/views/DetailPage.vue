@@ -5,8 +5,8 @@
     <body>
         <main>
             <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
-             <HostInfoSection></HostInfoSection>
-             <AccommadationImg></AccommadationImg>
+            <AccommadationImg></AccommadationImg>
+            <HostInfoSection></HostInfoSection>
         </main> 
     </body>
     <footer>
