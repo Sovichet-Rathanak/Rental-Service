@@ -8,6 +8,7 @@ import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/PersonalInfoPage.vue'
 import AccommadationImg from '@/components/AccommadationImg.vue'
 import NotificationPage from '@/views/NotificationPage.vue'
+import InvoicePage from '@/views/InvoicePage.vue' 
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     component: DetailPage,
   },
   {
+    path: '/invoice',
+    name: 'Invoice',
+    component: InvoicePage,
+  },
+  {
     path: '/notification',
     name: 'Notification',
     component: NotificationPage,
@@ -46,6 +52,7 @@ const routes = [
     component: PersonalInfoPage,
   },
   
+
 ]
 
 const router = createRouter({
