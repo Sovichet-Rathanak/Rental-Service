@@ -93,8 +93,8 @@ export default {
             activeTab: null,
             activeSangkatChild: false,
             furnitureStatus: null,
-            minPrice: 0,
-            maxPrice: 500,
+            minPrice: 200,
+            maxPrice: 1000,
             adultCount: 1,
             childrenCount: 0
         }

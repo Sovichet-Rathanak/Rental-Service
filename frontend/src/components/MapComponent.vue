@@ -1,6 +1,12 @@
 <template>
-    <V3Map style="width: 100%; height: 100%;" :center="{ lat: 13.360799118759584, lng: 103.85919048107581 }"
-        :api-key=mapKey mapId="e096694d0d688909" :zoom="17" :clickableIcons="false" :disableDefaultUI="true">
+    <V3Map style="width: 100%; height: 100%;" 
+        :center="{ lat: 13.360799118759584, lng: 103.85919048107581 }"
+        :api-key="mapKey" mapId="e096694d0d688909" 
+        :zoom="17" 
+        :clickableIcons="false" 
+        :fullscreenControl="true"
+        :cameraControl="false" 
+        :streetViewControl="true" :mapTypeControl="false">
         <V3Marker :options="{ position: { lat: 13.360799118759584, lng: 103.85919048107581 } }">
             <div class="icon-container">
                 <Icon icon="bi:house-fill" width="24" height="24" style="color: white" />
@@ -11,7 +17,6 @@
 
 <script setup>
 const mapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
 </script>
 
 <style scoped>
@@ -25,6 +30,6 @@ const mapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 5px 4px rgb(0, 0, 0.1, 0.7);
+    box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -8,7 +8,6 @@ import { InfoWindow } from 'vue3-google-map';
 const app = createApp(App);
 
 app.use(router);
-
 app.component('Icon', Icon);
 app.component('IconifyIcon', Icon);
 app.component('V3Map', GoogleMap);
