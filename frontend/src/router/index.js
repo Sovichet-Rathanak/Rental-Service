@@ -5,6 +5,8 @@ import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
+import PersonalInfoPage from '@/views/PersonalInfoPage.vue'
+import AccommadationImg from '@/components/AccommadationImg.vue'
 
 const routes = [
   {
@@ -31,7 +33,13 @@ const routes = [
     path: '/accommodation',
     name: 'Accommodation',
     component: DetailPage,
-  }
+  },
+  {
+    path: '/personalInfo',
+    name: 'personalInfo',
+    component: PersonalInfoPage,
+  },
+  
 ]
 
 const router = createRouter({
