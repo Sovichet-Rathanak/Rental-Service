@@ -30,6 +30,5 @@ const mapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
 }
 </style>

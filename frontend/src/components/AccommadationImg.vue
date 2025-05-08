@@ -201,14 +201,11 @@ const nextImage = () => {
   margin: 4px 8px 0 0;
 }
 
-
-
-
 .modal-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  margin: 50px 0px 30px 0px;
 }
 
 .back-btn {
@@ -234,7 +231,6 @@ const nextImage = () => {
   gap: 8px;
   transition: color 0.2s ease;
 }
-
 
 .icon-spacing {
   margin-right: 8px;

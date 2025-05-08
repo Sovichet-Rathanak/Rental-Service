@@ -1,6 +1,5 @@
 <template>
-
-        <h1>Meet Your Host</h1>
+        <h1 style="margin-top: 100px;">Meet Your Host</h1>
         <div class="info-main">
             <div class="host-card">
 

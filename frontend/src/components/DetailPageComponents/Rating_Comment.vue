@@ -1,12 +1,12 @@
 <template>
   <!-- Total Rating Summary -->
   <div class="totalRating">
-    <Icon icon="material-symbols:star-rounded" width="60" height="60" />
-    <span>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</span>
-    <Icon icon="mdi:dot" width="50" height="50" />
-    <span>{{ ratings.length === 0
+    <Icon icon="material-symbols:star-rounded" width="50" height="50" />
+    <h1>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</h1>
+    <Icon icon="mdi:dot" width="40" height="40" />
+    <h1>{{ ratings.length === 0
       ? 'No rating yet'
-      : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</span>
+      : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</h1>
   </div>
 
   <!-- Rating Section -->
