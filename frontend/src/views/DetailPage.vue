@@ -5,6 +5,7 @@
     <body>
         <main>
             <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
+             <HostInfoSection></HostInfoSection>
              <AccommadationImg></AccommadationImg>
         </main> 
     </body>
@@ -17,12 +18,14 @@
 import AccommadationImg from '@/components/AccommadationImg.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
+import HostInfoSection from '@/components/HostInfoSection.vue';
 
 export default {
     components: {
         HeaderNav2,
         FooterComponent,
-        AccommadationImg
+        AccommadationImg,
+        HostInfoSection,
     }
 }
 </script>
