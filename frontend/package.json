@@ -9,10 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "swiper": "^11.2.6",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-toastification": "^2.0.0-rc.5",
+    "vue3-google-map": "^0.22.0"
   },
   "devDependencies": {
     "@iconify/vue": "^4.3.0",

@@ -9,6 +9,9 @@ import PersonalInfoPage from '@/views/PersonalInfoPage.vue'
 import AccommadationImg from '@/components/AccommadationImg.vue'
 import NotificationPage from '@/views/NotificationPage.vue'
 import InvoicePage from '@/views/InvoicePage.vue' 
+import RentingList from '@/views/RentingList.vue'
+import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
+import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 
 const routes = [
   {
@@ -35,6 +38,21 @@ const routes = [
     path: '/accommodation',
     name: 'Accommodation',
     component: DetailPage,
+  },
+  {
+    path: '/rent-list',
+    name: 'Rent List',
+    component: RentingList,
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: PaymentPage
+  },
+  {
+    path: '/payment/manage-payment',
+    name: 'Manage Payment',
+    component: ManagePayment
   },
   {
     path: '/invoice',

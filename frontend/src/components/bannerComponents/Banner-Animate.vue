@@ -72,7 +72,6 @@ export default {
 /*opacity for btn 0 only visible when hover*/
 .swiper-button-prev, .swiper-button-next {
     opacity: 0; 
-    z-index: 10;
     transition: opacity 0.5s ease-in-out; 
     color: gray;
 }

@@ -1,37 +1,33 @@
 <template>
-    <div>
-        <header>
-            <combined-header></combined-header>
-        </header>
-
-        <body>
-            <div class="homescreen-container">
-                <banner-animate></banner-animate>
-
-                <div class="property-container">
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                    <property-card></property-card>
-                </div>
-                <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
-                <button class="midlength-btn">Show More</button>
+    <header>
+        <combined-header></combined-header>
+    </header>
+    <main>
+        <div class="homescreen-container">
+            <banner-animate></banner-animate>
+            <div class="property-container">
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
+                <property-card></property-card>
             </div>
-        </body>
-        <footer>
-            <footer-component></footer-component>
-        </footer>
-    </div>
+            <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
+            <button class="midlength-btn">Show More</button>
+        </div>
+    </main>
+    <footer>
+        <footer-component></footer-component>
+    </footer>
 </template>
 
 <script>
@@ -62,7 +58,6 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1;
     margin-top: -45px;
     background-color: white;
     border-radius: 55px 55px 0px 0px;
