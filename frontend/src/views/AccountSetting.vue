@@ -49,7 +49,7 @@
                 <Icon icon="hugeicons:invoice-03" width="40" height="40" />
                 <h2>Invoice</h2>
                 <span>Manage taxpayer information and tax documents.</span>
-    f        </div>
+            </div>
         </div>
     </main>
     <footer>
@@ -75,8 +75,12 @@ export default {
 </script>
 
 <style scoped>
+main{
+    padding-inline: 100px;
+}
+
 .headerText {
-    padding: 50px 230px 0px 230px;
+    margin: 50px 0px 50px 130px
 }
 
 .headerText>h1 {
@@ -112,9 +116,11 @@ export default {
 
 /* all the buttons */
 .buttons {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    padding: 25px 230px 0px 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 
