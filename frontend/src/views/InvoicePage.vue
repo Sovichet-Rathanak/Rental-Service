@@ -1,110 +1,127 @@
 <template>
-    <header-nav-2></header-nav-2>
-    <div class="navheader">
-        <span>Account</span>
-        <Icon icon="iconamoon:arrow-right-2-light" width="34" height="34" />
-        <span>Invoices</span>
-    </div>
-    <h2>Invoices</h2>
+  <header-nav-2></header-nav-2>
+  <div class="header">
+    <bread-crumbs></bread-crumbs>
+    <h1>Invoices</h1>
+  </div>
 
-    <!-- table -->
-    <div class="title">
-        <h3>ID</h3>
-        <h3>Landlord Name</h3>  
-        <h3>Properties</h3>
-        <h3>Address</h3>
-        <h3>Total Payment</h3>
-        <h3>Due Date</h3> 
-        <h3>Duration</h3>
-        <h3>Status</h3>
-        <h3>Action</h3>
-    </div>
+  <div class="title">
+    <h3>ID</h3>
+    <h3>Landlord Name</h3>  
+    <h3>Properties</h3>
+    <h3>Address</h3>
+    <h3>Total Payment</h3>
+    <h3>Due Date</h3> 
+    <h3>Duration</h3>
+    <h3>Status</h3>
+    <h3>Action</h3>
+  </div>
 
-    <div class="invoiceBox" v-for="invoiceBox in invoiceBoxs" :key="invoiceBox.id">
-        <h3>{{ invoiceBox.id }}</h3>
-        <h3>{{ invoiceBox.landlordName }}</h3>
-        <h3>{{ invoiceBox.properties }}</h3>
-        <h3>{{ invoiceBox.address }}</h3>
-        <h3 class="totalPayment">{{ invoiceBox.totalPayment }}</h3>
-        <h3 class="due-date">{{ invoiceBox.dueDate }}</h3>
-        <h3>{{ invoiceBox.duration }}</h3>
-        <button :class="['status', invoiceBox.status.toLowerCase()]">{{ invoiceBox.status }}</button>
-        <button :class="['actionBtn', invoiceBox.action.toLowerCase().replace(/\s+/g, '')]">
-            <Icon icon="mi:share" width="23" height="23" />
-            {{invoiceBox.action}}
-        </button>
-
-    </div>
-    <invoice></invoice>
-
-    <!-- Popup Invoice page -->
+  <div 
+    class="invoiceBox" 
+    v-for="invoiceBox in invoiceBoxs" 
+    :key="invoiceBox.id" 
+    @click="invoicePopup(invoiceBox)"
+  >
+    <h3>{{ invoiceBox.id }}</h3>
+    <h3>{{ invoiceBox.landlordName }}</h3>
+    <h3>{{ invoiceBox.properties }}</h3>
+    <h3>{{ invoiceBox.address }}</h3>
+    <h3 class="totalPayment">{{ invoiceBox.totalPayment }}</h3>
+    <h3 class="due-date">{{ invoiceBox.dueDate }}</h3>
+    <h3>{{ invoiceBox.duration }}</h3>
+    <button :class="['status', invoiceBox.status.toLowerCase()]">{{ invoiceBox.status }}</button>
+    <button :class="['actionBtn', invoiceBox.action.toLowerCase().replace(/\s+/g, '')]" @click.stop>
+      <Icon :icon="invoiceBox.icon" width="23" height="23" />
+      {{invoiceBox.action}}
+    </button>
+  </div>
+  
+  
+  <!-- Popup Invoice page -->
+  <invoiceComponent
+    v-if="showCard"
+    :invoice="selectedInvoice"
+    @close="showCard = false"
+  />
+  
 </template>
 
 <script>
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
+import BreadCrumbs from '../components/BreadCrumbs.vue';
+import invoiceComponent from '@/components/invoiceComponent.vue';
 
 export default {
-    components: {
-        HeaderNav2,
-    },
-
-    data() {
-      return {
+  components: {
+    HeaderNav2,
+    BreadCrumbs,
+    invoiceComponent
+  },
+  data() {
+    return {
+      showCard: false,
+      selectedInvoice: null,
       invoiceBoxs: [
         { 
-            id: 1, 
-            landlordName: 'Shen Yue', 
-            properties: 'A-001 (Brat Villa)' ,
-            address: 'BKK1, Chamkarmon, Phnom Penh',
-            totalPayment: '$500',
-            dueDate: '14-Oct-2025',
-            duration: '1 May - 1 June 2026',
-            status: 'Paid',
-            action: 'Download PDF'
-        }, 
+          id: 1, 
+          landlordName: 'Shen Yue', 
+          properties: 'A-001 (Brat Villa)',
+          address: 'BKK1, Chamkarmon, Phnom Penh',
+          totalPayment: '$500',
+          dueDate: '14-Oct-2025',
+          duration: '1 May - 1 June 2026',
+          status: 'Paid',
+          action: 'Download',
+          icon: 'mi:share'
+        },
+        { 
+          id: 2, 
+          landlordName: 'Shen Yue', 
+          properties: 'A-001 (Brat Villa)',
+          address: 'BKK1, Chamkarmon, Phnom Penh',
+          totalPayment: '$500',
+          dueDate: '14-Oct-2025',
+          duration: '1 May - 1 June 2026',
+          status: 'Unpaid',
+          action: 'Pay Now',
+          icon: 'uiw:pay'
+        },
+        { 
+          id: 3, 
+          landlordName: 'Shen Yue', 
+          properties: 'A-001 (Brat Villa)',
+          address: 'BKK1, Chamkarmon, Phnom Penh',
+          totalPayment: '$500',
+          dueDate: '14-Oct-2025',
+          duration: '1 May - 1 June 2026',
+          status: 'EXpired',
+          action: 'Pay Now',
+          icon: 'uiw:pay'
+        },
         
-        { 
-            id: 1, 
-            landlordName: 'Shen Yue', 
-            properties: 'A-001 (Brat Villa)' ,
-            address: 'BKK1, Chamkarmon, Phnom Penh',
-            totalPayment: '$500',
-            dueDate: '14-Oct-2025',
-            duration: '1 May - 1 June 2026',
-            status: 'Unpaid',
-            action: 'Download PDF'
-        }, 
-
-        { 
-            id: 1, 
-            landlordName: 'Shen Yue', 
-            properties: 'A-001 (Brat Villa)' ,
-            address: 'BKK1, Chamkarmon, Phnom Penh',
-            totalPayment: '$500',
-            dueDate: '14-Oct-2025',
-            duration: '1 May - 1 June 2026',
-            status: 'Paid',
-            action: 'Downloaded'
-        }, 
-
-        { 
-            id: 1, 
-            landlordName: 'Shen Yue', 
-            properties: 'A-001 (Brat Villa)' ,
-            address: 'BKK1, Chamkarmon, Phnom Penh',
-            totalPayment: '$500',
-            dueDate: '14-Oct-2025',
-            duration: '1 May - 1 June 2026',
-            status: 'Expired',
-            action: 'Download PDF'
-        }, 
       ]
     };
+  },
+  methods: {
+    invoicePopup(invoiceBox) {
+      this.selectedInvoice = invoiceBox;
+      this.showCard = true;
+    }
   }
-}
+};
 </script>
 
+
 <style scoped>
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-inline: 150px;
+    gap: 15px;
+    margin-bottom: 20px 
+}
 
 .navheader{
     display: flex;
@@ -132,8 +149,8 @@ export default {
     font-weight: bold;
 }
 
-h2 {
-    padding: 0px 230px 0px 120px;
+h1 {
+    /* padding: 0px 230px 0px 120px; */
     font-size: 35px;
     font-weight: bolder;
     margin: 20px 0 5px 0;                                                                                                                                                                                                                                                                        
@@ -158,13 +175,13 @@ h2 {
   border-radius: 12px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   display: grid;
-  grid-template-columns: 60px 170px 200px 280px 145px 150px 210px 100px 190px;
+  grid-template-columns: 60px 170px 200px 280px 145px 150px 210px 100px 155px;
   align-items: center;
   gap: 30px;
   padding: 10px 30px;
   font-size: 20px;
   cursor: pointer;
-  position: relative;
+  /* position: relative; */
 }
 
 .invoiceBox:hover {
@@ -172,10 +189,10 @@ h2 {
   border: none;
 }
 
-.invoiceBox:active {
+/* .invoiceBox:active {
   background-color: #dcebff;
   border: none;
-}
+} */
 
 .invoiceBox > h3 {
   font-weight: 500;
@@ -219,8 +236,7 @@ h2 {
 /* Action Button */
 .actionBtn {
   height: 50px;
-  width: auto;
-  padding: 5px 10px;
+  padding: 5px 15px;
   font-size: 16px;
   background-color: #487CFF;
   color: white;
@@ -228,16 +244,26 @@ h2 {
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   cursor: pointer;
   font-size: 20px;
-  position: absolute;
+  /* position: absolute;
   right: 2%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; */
 }
-/* .actionBtn.paynow{
-  background-color: #F79E1B;
-} */
+.actionBtn.paynow{
+  background-color: #2d2d2d ;
+  color: white;
+}
+
+.actionBtn.paynow:hover{
+  background-color: #000000;
+  color: white;
+}
+.actionBtn.paynow:active{
+  background-color: #b4b4b4;
+  color: white;
+}
 
 .actionBtn:hover {
   background-color: #134fe7;

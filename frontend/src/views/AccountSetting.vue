@@ -45,7 +45,7 @@
                 <span>Choose notification preferences and how you want to be contacted.</span>
             </div>
 
-            <div class="invoice">
+            <div class="invoice" @click="goToPage('Invoice')">
                 <Icon icon="hugeicons:invoice-03" width="40" height="40" />
                 <h2>Invoice</h2>
                 <span>Manage taxpayer information and tax documents.</span>
