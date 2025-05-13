@@ -1,17 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import Home from '@/App.vue' // Using @ alias for src
 import Login from '@/components/headerComponents/LoginPage.vue' // Full path with extension
 import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/PersonalInfoPage.vue'
-import AccommadationImg from '@/components/AccommadationImg.vue'
 import NotificationPage from '@/views/NotificationPage.vue'
-import InvoicePage from '@/views/InvoicePage.vue' 
+import InvoicePage from '@/views/InvoicePage.vue'
 import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
+import HostingSteps from '@/views/HostViews/HostingSteps.vue'
+import StepOverview from '@/views/HostViews/StepOverview.vue'
+import AboutPlace from '@/views/HostViews/AboutPlace.vue'
 
 const routes = [
   {
@@ -69,6 +70,34 @@ const routes = [
     name: 'personalInfo',
     component: PersonalInfoPage,
   },
+  {
+    path: '/hosting-steps',
+    name: 'Hosting Steps',
+    component: HostingSteps,
+    redirect: {name: 'Step Overview'},
+    children: [
+      {
+        path: 'overview',
+        name: 'Step Overview',
+        component: StepOverview,
+      },
+      {
+        path: 'about-your-place',
+        name: 'About Place',
+        component: AboutPlace,
+      },
+      // {
+      //   path: 'structure',
+      //   name: 'Structure',
+      //   component: Structure,
+      // },
+      // {
+      //   path: 'type',
+      //   name: 'Type',
+      //   component: AccommodationType,
+      // }
+    ]
+  }
 ]
 
 const router = createRouter({
