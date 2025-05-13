@@ -13,6 +13,7 @@ import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
+import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
 
 const routes = [
   {
@@ -75,6 +76,12 @@ const routes = [
     name: 'WishList',
     component: WishlistPage,
   },
+  
+  {
+    path: '/listing-Editor',
+    name: 'Listing Editor',
+    component: ListingEditorPage
+  }
 ]
 
 const router = createRouter({
