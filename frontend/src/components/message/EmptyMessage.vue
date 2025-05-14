@@ -44,7 +44,6 @@
 
 <style scoped>
 .message-page {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #fff;
 }
 
@@ -101,10 +100,11 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 40px; 
-    height: 40px;
+    width: 50px; 
+    height: 50px;
     background-color: #f0f0f0; 
     border-radius: 50%; 
+    border: none;
     transition: background-color 0.3s; /* Smooth hover effect */
 }
 

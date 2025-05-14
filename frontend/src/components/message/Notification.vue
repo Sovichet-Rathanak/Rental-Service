@@ -19,6 +19,9 @@
         </div>
       </div>
     </div>
+    <button class="close-btn" @click="$emit('close')">
+      <Icon icon="material-symbols:close-rounded" width="25" height="25"  style="color: #000" />
+    </button>
   </div>
 </template>
 
@@ -77,13 +80,15 @@ export default {
 <style scoped>
 .notifications {
   background: #ffffff;
-  padding: 10px;
+  padding: 20px 40px;
   border-radius: 30px;
-  width: 500px;
+  width: 450px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   min-height: 500px; /* Ensure visibility */
-  margin-right: 85px;
+  position: absolute; 
+  z-index: 1000; 
+  margin-left: -620px;
   margin-top: -90px;
 }
 
@@ -178,5 +183,20 @@ export default {
   font-size: 12px;
   color: #666666;
   text-align: right;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666666;
+}
+
+.close-btn:hover {
+  color: #000000;
 }
 </style>

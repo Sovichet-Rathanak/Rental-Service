@@ -5,7 +5,7 @@
     <div class="main-container">
         <EmptyMessage></EmptyMessage>
         <div class="notification-popup" v-if="showNotifications">
-            <Notification></Notification>
+            <Notification :visible="showNotifications" @close="toggleNotifications(false)"></Notification>
         </div>
     </div>
 </template>

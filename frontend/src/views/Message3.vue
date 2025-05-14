@@ -3,24 +3,22 @@
         <MessageHeader></MessageHeader>
 
         <div class="message-wrapper">
-            <div class="menu-info">
-                <div class="empty"></div>
-                <div class="all-menu">
-                    <button class="menu-btn">
-                        <Icon icon="material-symbols:menu-rounded" width="45" height="45" style="color: white" />
-                        <Icon icon="raphael:chat" width="45" height="45" style="color: white;" />
-                        <Icon icon="fluent:number-circle-2-32-filled" width="30" height="30" style="color: palegreen; position:absolute; right: 0.5%; bottom: 0.5%;" />
-                    </button>
-                </div>
-            </div>
             <div class="left-side">
                 <div class="message-header">
+                    <h1>Messages</h1>
                     <div class="icon">
                         <button class="search-btn">
-                            <p>Search</p>
                             <Icon icon="ic:baseline-search" width="25" height="25" />
                         </button>
+                        <button class="filter-btn">
+                            <Icon icon="mage:filter" width="25" height="25"  style="color: #000" />
+                        </button>
                     </div>
+                </div>
+
+                <div class="btn-tabs">
+                    <button class="tab-active">All<Icon icon="mingcute:down-fill" width="20" height="20"  style="color: #fff; position: absolute; padding: 3px" /></button>
+                    <button class="tab-unactive">Unread</button>
                 </div>
 
                 <div class="profile-image">
@@ -44,9 +42,9 @@
                     <div class="chat-header">
                         <p>{{ selectedUser }}</p>
                         <div class="icon-group">
-                            <Icon icon="ic:baseline-search" width="25" height="25" />
-                            <Icon icon="material-symbols:call" width="25" height="25" style="color: #000" />
-                            <Icon icon="nrk:more" width="25" height="25" style="color: #000" />
+                            <Icon icon="ic:baseline-search" width="30" height="30" />
+                            <Icon icon="material-symbols:call" width="30" height="30" style="color: #000" />
+                            <Icon icon="nrk:more" width="30" height="30" style="color: #000" />
                         </div>
                     </div>
 
@@ -66,7 +64,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="empty-r"></div>
             </div>
         </div>
     </div>
@@ -142,15 +139,10 @@ export default {
     width: 100%;
 }
 
-.menu-info {
-    width: 15%;
-    display: flex;
-}
-
 .left-side {
-    width: 30%;
+    width: 45%;
     border-right: 1px solid gray;
-    background-color: rgb(248, 245, 245);
+    background-color: rgb(255, 255, 255);
 }
 
 .right-side {    
@@ -159,48 +151,15 @@ export default {
 }
 
 .conversation {
-    width: 80%;  
+    width: 100%;  
     height: 100%; 
-}
-
-.empty-r {
-    width: 20%;
-    height: 100%;
-}
-
-.empty {
-    width: 75%;
-    height: 100%;
-}
-
-.all-menu {
-    display: flex;
-    height: 100%;
-    width: 30%;
-    justify-content: center;
-    background-color: rgb(14, 14, 68);
-}
-
-.menu-btn {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80px; 
-    height: 100px;
-    border: none; 
-    background: none; 
-    margin-top: 20px;
-    gap: 10px;
-    position: relative;
 }
 
 .chat-conversation {
     border-top: 1px solid gray; 
     width: 100%;
     height: 80%;
-    background-color: rgb(247, 248, 245);
+    background-color: rgb(255, 255, 255);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -214,7 +173,9 @@ export default {
     border-radius: 15px;
     display: inline-block;
     padding: 8px 12px;
-    margin: 15px;
+    margin: 10px;
+    margin-top: 25px;
+    margin-left: 30px;
 }
 
 .sent-message {
@@ -240,6 +201,15 @@ export default {
     align-items: center;
     margin-bottom: 15px;
     padding-bottom: 20px;
+    margin-top: 25px;
+
+}
+
+.message-header h1 {
+    font-size: 30px;
+    padding-left: 200px;
+    margin-top: 0px;
+
 }
 
 .icon {
@@ -248,32 +218,64 @@ export default {
     gap: 20px;
 }
 
-.search-btn {
+.search-btn, .filter-btn {
     cursor: pointer;
+    padding: 5px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 515px;
-    height: 40px;
+    width: 50px; 
+    height: 50px;
     background-color: #f0f0f0; 
-    border-radius: 30px; 
-    margin-top: 25px;
-    margin-left: 30px;
+    border-radius: 50%; 
+    border: none;
+    transition: background-color 0.3s; /* Smooth hover effect */
 }
 
-.search-btn p {
-    margin-right: 370px;
+.btn-tabs {
+    display: flex;
+    gap: 10px;
+    padding-left: 200px;
+    margin-top: -25px;
+}
+
+.tab-unactive {
+    position: relative;
+    margin-top: 15px;
+    width: 100px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 30px; 
     font-size: 16px;
     font-weight: bold;
-    color: #000; 
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.tab-active {
+    margin-top: 15px;
+    width: 100px;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 30px; 
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
 }
 
 .profile-image {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin-top: -25px;
+    margin-top: 45px;
     position: relative;
+    margin-left: 200px;
 }
 
 .profile1, .profile2 {
@@ -287,14 +289,14 @@ export default {
     border-radius: 0; 
     font-size: 16px;
     font-weight: bold;
-    text-transform: uppercase;
     cursor: pointer;
     gap: 10px; /* Adjusted gap for better spacing */
     background-color: white;
+    border: none;
 }
 
 .profile1.selected, .profile2.selected {
-    background-color: rgb(53, 45, 197);
+    background-color: rgba(0, 0, 255, 0.5); /* Change background color when selected */
     color: rgb(255, 255, 255);
 }
 
@@ -303,48 +305,47 @@ export default {
     height: 60px;
     border-radius: 50%; 
     object-fit: cover; /* Ensure image fills container */
-    margin-left: 15px; /* Match original icon margin */
+    margin-left: 35px; /* Match original icon margin */
     margin-right: 10px; /* Space between image and name */
 }
 
 .user-name {
-    font-size: 16px;
+    font-size: 26px;
     font-weight: bold;
-    margin-top: -20px;
-    text-transform: uppercase;
+    margin-top: -25px;
     color: inherit; /* Inherit color from parent (black or white when selected) */
 }
 
 .profile1 p, .profile2 p {
     position: absolute;
-    font-size: 10px;
-    margin-left: 95px;
-    margin-top: 40px;
-    color: gray;
+    font-size: 15px;
+    margin-left: 115px;
+    margin-top: 60px;
+    color: rgb(86, 85, 85);
 }
 
 .profile1.selected p, .profile2.selected p {
-    color: rgb(187, 176, 176);
+    color:white;
 }
 
 .profile1 p1, .profile2 p1 {
     position: absolute;
-    font-size: 10px;
-    margin-left: 500px;
+    font-size: 15px;
+    margin-left: 560px;
     margin-top: 40px;
-    color: gray;
+    color: rgb(86, 85, 85);
 }
 
 .profile1.selected p1, .profile2.selected p1 {
-    color: rgb(187, 176, 176);
+    color: white;
 }
 
 .chat-header {
     display: flex;
     align-items: center;
     width: 100%;
-    gap: 595px; 
-    background-color: rgb(242, 242, 234);
+    gap: 780px; 
+    background-color: rgb(255, 255, 255);
     height: 10%;
 }
 
@@ -367,7 +368,7 @@ export default {
 }
 
 .chat-header p {
-    font-size: 21px;
+    font-size: 26px;
     color: #000; 
     margin: 0;
     margin-left: 30px;
