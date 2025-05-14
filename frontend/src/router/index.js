@@ -16,7 +16,8 @@ import Message from '@/views/Message.vue'
 import Message1 from '@/views/Message1.vue'
 import Message2 from '@/views/Message2.vue'
 import Message3 from '@/views/Message3.vue'
-import Notification from '@/views/Notification.vue' 
+import Message4 from '@/views/Message4.vue'
+
 
 const routes = [
   {
@@ -94,10 +95,10 @@ const routes = [
     name: 'Message3',
     component: Message3,
   },
-    {
-    path: '/notification',
-    name: 'Notification',
-    component: Notification,
+  {
+    path: '/message4',
+    name: 'Message4',
+    component: Message4,
   },
 ]
 

@@ -301,7 +301,7 @@ export default {
 .profile-pic {
     width: 60px;
     height: 60px;
-    border-radius: 50%; /* Make image circular */
+    border-radius: 50%; 
     object-fit: cover; /* Ensure image fills container */
     margin-left: 15px; /* Match original icon margin */
     margin-right: 10px; /* Space between image and name */

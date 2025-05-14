@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import linaImage from '@/assets/images/message/lina.jpg'; // Import image directly
+import linaImage from '@/assets/images/message/lina.jpg'; 
 
 export default {
   data() {
@@ -79,7 +79,7 @@ export default {
   background: #ffffff;
   padding: 10px;
   border-radius: 30px;
-  width: 400px;
+  width: 500px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   min-height: 500px; /* Ensure visibility */

@@ -55,13 +55,13 @@
 }
 
 .left-side {
-    width: 45%; /* Left side takes 40% of the width */
+    width: 45%; 
     border-right: 1px solid gray; /* Vertical dividing line */
     padding-top: 15px;
 }
 
 .right-side {
-    width: 55%; /* Right side takes 60% of the width */
+    width: 55%; 
     background: #fff; 
     padding-top: 35px;
     position: relative; 
@@ -103,8 +103,8 @@
     align-items: center;
     width: 40px; 
     height: 40px;
-    background-color: #f0f0f0; /* Light background */
-    border-radius: 50%; /* Makes it a circle */
+    background-color: #f0f0f0; 
+    border-radius: 50%; 
     transition: background-color 0.3s; /* Smooth hover effect */
 }
 
