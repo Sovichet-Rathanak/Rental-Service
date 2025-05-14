@@ -1,6 +1,15 @@
 <template>
-  <HelpCenterHeader />
+  <HeaderNav2 />
+  <div class="container">
+
+    <div class="centered-text">
+      <h1>Contact | Romdoul</h1>
+    </div>
+
+
+  </div>
   <div class="help-center-faq">
+
     <h2>Top Questions</h2>
     <div v-for="(faq, idx) in faqs" :key="idx" class="faq-block">
       <div class="faq-question" @click="toggleAnswer(idx)" :style="{ cursor: 'pointer' }">
@@ -29,12 +38,12 @@
 
 <script>
 import FooterComponent from '@/components/FooterComponent.vue';
-import HelpCenterHeader from '@/components/headerComponents/HelpCenterHeader.vue';
+import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
 
 export default {
   components: {
-    HelpCenterHeader,
     FooterComponent,
+    HeaderNav2
   },
   data() {
     return {
@@ -84,6 +93,33 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  width: 100vw;
+  height: 50vh;
+  max-width: 100%;
+  background-color: #345fcc9d;
+  background-image: url("/src/assets/images/PP-bg.png");
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 100;
+  margin-top: -20px;
+}
+
+.centered-text {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: 2px;
+  text-align: center;
+  pointer-events: none;
+}
+
 .help-center-faq {
   background: #fff;
   max-width: 1300px;
@@ -134,7 +170,6 @@ hr {
   background: #fff;
   max-width: 1300px;
   margin: 0 auto;
-  margin-top: 0;
   padding: 10px 32px 48px 32px;
   background: #fff;
   border-radius: 8px;
