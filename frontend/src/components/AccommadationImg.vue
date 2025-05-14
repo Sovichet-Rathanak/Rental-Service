@@ -1,53 +1,58 @@
 <template>
   <div class="modal-actions">
     <!-- Back Button -->
-    <button class="action-btn back-btn" @click="closeModal">
+    <button class="action-btn back-btn" @click="goBack">
       <Icon icon="weui:back-filled" class="icon-spacing" />
       <span>Back</span>
     </button>
 
     <!-- Save Button -->
     <button class="action-btn save-btn" @click="saveImage">
-      <Icon icon="mdi:heart" class="icon-spacing-right" />
+      <Icon icon="solar:heart-linear" class="icon-spacing-right" />
       <span>Save</span>
     </button>
   </div>
   <!-- Accommadation image -->
-  <div class="gallery">
-    <div class="gallery-layout">
-      <div class="main-photo" @click="openModal(0)">
-        <img :src="images[0].thumb" alt="Main Room" />
-      </div>
-      <div class="side-photos">
-        <div v-for="(image, index) in images.slice(1, 5)" :key="index" class="small-photo"
-          @click="openModal(index + 1)">
-          <img :src="image.thumb" :alt="`Room ${index + 2}`" />
-        </div>
+  <div class="gallery-layout">
+    <div class="main-photo" @click="openModal(0)">
+      <img :src="images[0].thumb" alt="Main Room" />
+    </div>
+    <div class="side-photos">
+      <div
+        v-for="(image, index) in images.slice(1, 5)"
+        :key="index"
+        class="small-photo"
+        @click="openModal(index + 1)"
+      >
+        <img :src="image.thumb" :alt="`Room ${index + 2}`" />
       </div>
     </div>
+  </div>
 
-    <!-- Modal close btn-->
-    <div v-if="currentIndex !== null" class="modal" @click="closeModal">
-      <span class="close-btn" @click="closeModal">
-        <Icon icon="charm:cross" />
-      </span>
-      <div class="modal-content" @click.stop>
-        <img :src="images[currentIndex].full" class="enlarged-image" />
-
-        <!-- Navigation buttons -->
-        <button class="nav-btn left" @click="prevImage">
-          <i class="arrow left"></i>
-        </button>
-        <button class="nav-btn right" @click="nextImage">
-          <i class="arrow right"></i>
-        </button>
+  <!-- Modal -->
+  <div v-if="currentIndex !== null" class="modal" @click="closeModal">
+    <span class="close-btn" @click="closeModal">
+      <Icon icon="charm:cross" />
+    </span>
+    <div class="modal-content" @click.stop>
+      <div class="image-counter">
+        {{ currentIndex + 1 }} / {{ images.length }}
       </div>
+      <img :src="images[currentIndex].full" class="enlarged-image" />
+      <!-- Navigation buttons -->
+      <button class="nav-btn left" @click="prevImage">
+        <i class="arrow left"></i>
+      </button>
+      <button class="nav-btn right" @click="nextImage">
+        <i class="arrow right"></i>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const images = [
   { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
@@ -55,9 +60,16 @@ const images = [
   { thumb: '/src/assets/images/accommadationImg/bedroom3.jpeg', full: '/src/assets/images/accommadationImg/bedroom3.jpeg' },
   { thumb: '/src/assets/images/accommadationImg/bedroom4.jpeg', full: '/src/assets/images/accommadationImg/bedroom4.jpeg' },
   { thumb: '/src/assets/images/accommadationImg/bedroom5.jpeg', full: '/src/assets/images/accommadationImg/bedroom5.jpeg' },
+  { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
+  { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
+  { thumb: '/src/assets/images/accommadationImg/bedroom4.jpeg', full: '/src/assets/images/accommadationImg/bedroom4.jpeg' },
+  { thumb: '/src/assets/images/accommadationImg/bedroom5.jpeg', full: '/src/assets/images/accommadationImg/bedroom5.jpeg' },
+
+
 ]
 
 const currentIndex = ref(null)
+const router = useRouter()
 
 const openModal = (index) => {
   currentIndex.value = index
@@ -74,6 +86,10 @@ const prevImage = () => {
 const nextImage = () => {
   currentIndex.value = currentIndex.value < images.length - 1 ? currentIndex.value + 1 : 0
 }
+
+const goBack = () => {
+  router.back()
+}
 </script>
 
 <style scoped>
@@ -83,6 +99,8 @@ const nextImage = () => {
   gap: 10px;
   width: 100%;
   height: 600px;
+  border-radius: 18px;      
+  overflow: hidden;         
 }
 
 .main-photo,
@@ -104,6 +122,19 @@ const nextImage = () => {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 10px;
+  height: 100%;
+}
+
+.small-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0; 
+}
+
+
+.small-photo:nth-child(4) img {
+  border-radius: 0 0 18px 0;
 }
 
 .modal {
@@ -212,7 +243,7 @@ const nextImage = () => {
   background: none;
   border: none;
   color: #080808;
-  font-size: 20px;
+  font-size: 25px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -224,7 +255,7 @@ const nextImage = () => {
   background: none;
   border: none;
   color: #080808;
-  font-size: 20px;
+  font-size: 25px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -239,4 +270,20 @@ const nextImage = () => {
 .icon-spacing-right {
   margin-left: 8px;
 }
+.image-counter {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 12px;
+  border-radius: 20px;
+  z-index: 1001;
+  pointer-events: none;
+  user-select: none;
+}
+
 </style>
