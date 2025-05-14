@@ -59,12 +59,12 @@
         <!-- equipement -->
         <div class="texT">Equipment Status:</div>
         <div class="equipment">
-        <EquipmentItem
+        <!-- <EquipmentItem
             v-for="(equipement, index) in equipements"
             :key="index"
             :icon="equipement.icon"
             :text="equipement.text"
-        />
+        /> -->
         </div>
 
         <div class="texT">Description:</div>
@@ -86,12 +86,12 @@
 
 <script>
 import HeaderNav3 from '@/components/Landlord/HeaderNav3.vue';
-import EquipmentItem from '@/components/Landlord/EquipementComponent.vue';
+// import EquipmentItem from '@/components/Landlord/EquipementComponent.vue';
 import MapComponent from '@/components/MapComponent.vue';
 export default {
     components: {
         HeaderNav3,
-        EquipmentItem,
+        // EquipmentItem,
         MapComponent
     },
 
