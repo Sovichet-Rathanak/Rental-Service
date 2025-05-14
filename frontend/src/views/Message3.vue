@@ -1,0 +1,412 @@
+<template>
+    <div class="message-page">
+        <MessageHeader></MessageHeader>
+
+        <div class="message-wrapper">
+            <div class="menu-info">
+                <div class="empty"></div>
+                <div class="all-menu">
+                    <button class="menu-btn">
+                        <Icon icon="material-symbols:menu-rounded" width="45" height="45" style="color: white" />
+                        <Icon icon="raphael:chat" width="45" height="45" style="color: white;" />
+                        <Icon icon="fluent:number-circle-2-32-filled" width="30" height="30" style="color: palegreen; position:absolute; right: 0.5%; bottom: 0.5%;" />
+                    </button>
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="message-header">
+                    <div class="icon">
+                        <button class="search-btn">
+                            <p>Search</p>
+                            <Icon icon="ic:baseline-search" width="25" height="25" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-image">
+                    <button class="profile1" :class="{ 'selected': selectedUser === 'Lina Van' }" @click="selectUser('Lina Van')">
+                        <img :src="linaImage" alt="Lina Van Avatar" class="profile-pic" />
+                        <span class="user-name">Lina Van</span>
+                        <p>How much b?</p>
+                        <p1>3:01PM</p1>
+                    </button>
+                    <button class="profile2" :class="{ 'selected': selectedUser === 'Sa Synin' }" @click="selectUser('Sa Synin')">
+                        <img :src="saSyninImage" alt="Sa Synin Avatar" class="profile-pic" />
+                        <span class="user-name">Sa Synin</span>
+                        <p>Hello b</p>
+                        <p1>2:34PM</p1>
+                    </button>
+                </div>
+            </div>
+
+            <div class="right-side">
+                <div class="conversation">
+                    <div class="chat-header">
+                        <p>{{ selectedUser }}</p>
+                        <div class="icon-group">
+                            <Icon icon="ic:baseline-search" width="25" height="25" />
+                            <Icon icon="material-symbols:call" width="25" height="25" style="color: #000" />
+                            <Icon icon="nrk:more" width="25" height="25" style="color: #000" />
+                        </div>
+                    </div>
+
+                    <div class="chat-conversation" ref="chatContainer">
+                        <div v-for="(message, index) in messages[selectedUser]" :key="index" :class="message.isSent ? 'sent-message' : 'received-message'">
+                            <p>{{ message.text }}</p>
+                        </div>
+                    </div>
+
+                    <div class="reply-chat">
+                        <Icon icon="uiw:paper-clip" width="25" height="25" style="color: #000; margin-left: 30px;" />
+                        <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="write a message..." class="message-input" />
+                        <Icon v-if="newMessage.trim()" icon="fluent:send-28-filled" width="25" height="25" style="color: #000" @click="sendMessage" class="send-icon" />
+                        <div class="text-reply" :class="{ 'shift-left': newMessage.trim() }">
+                            <Icon icon="proicons:emoji" width="25" height="25" style="color: #000" />
+                            <Icon icon="uil:microphone" width="25" height="25" style="color: #000" />
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-r"></div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import MessageHeader from '@/components/message/MessageHeader.vue';
+import linaImage from '@/assets/images/message/lina.jpg'; // Import Lina's image
+import saSyninImage from '@/assets/images/message/sa-synin.jpg'; // Import Sa Synin's image
+
+export default {
+    components: {
+        MessageHeader
+    },
+    name: 'Message',
+    data() {
+        return {
+            linaImage, // Make images available in template
+            saSyninImage,
+            selectedUser: 'Lina Van', // Default selected user
+            newMessage: '', // For typing new messages
+            messages: {
+                'Lina Van': [
+                    { text: 'Hi b', isSent: false },
+                    { text: 'I\'m interested in your house.', isSent: false },
+                    { text: 'How much b?', isSent: false }
+                ],
+                'Sa Synin': [
+                    { text: 'Hello b', isSent: false }
+                ]
+            }
+        };
+    },
+    methods: {
+        selectUser(user) {
+            this.selectedUser = user; // Update the selected user
+            this.scrollToBottom(); // Scroll to the bottom when switching users
+        },
+        sendMessage() {
+            if (this.newMessage.trim()) {
+                this.messages[this.selectedUser].push({
+                    text: this.newMessage,
+                    isSent: true // Mark the message as sent
+                });
+                this.newMessage = ''; // Clear the input field
+                this.$nextTick(() => {
+                    this.scrollToBottom(); // Scroll to the bottom after sending a message
+                });
+            }
+        },
+        scrollToBottom() {
+            const chatContainer = this.$refs.chatContainer;
+            if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom of the chat
+            }
+        }
+    },
+    mounted() {
+        this.scrollToBottom(); // Scroll to the bottom when the component is mounted
+    }
+};
+</script>
+
+<style scoped>
+.message-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #ffffff;
+}
+
+.message-wrapper {
+    display: flex;
+    min-height: calc(100vh - 135px);
+    width: 100%;
+}
+
+.menu-info {
+    width: 15%;
+    display: flex;
+}
+
+.left-side {
+    width: 30%;
+    border-right: 1px solid gray;
+    background-color: rgb(248, 245, 245);
+}
+
+.right-side {    
+    width: 55%; 
+    position: relative; 
+}
+
+.conversation {
+    width: 80%;  
+    height: 100%; 
+}
+
+.empty-r {
+    width: 20%;
+    height: 100%;
+}
+
+.empty {
+    width: 75%;
+    height: 100%;
+}
+
+.all-menu {
+    display: flex;
+    height: 100%;
+    width: 30%;
+    justify-content: center;
+    background-color: rgb(14, 14, 68);
+}
+
+.menu-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80px; 
+    height: 100px;
+    border: none; 
+    background: none; 
+    margin-top: 20px;
+    gap: 10px;
+    position: relative;
+}
+
+.chat-conversation {
+    border-top: 1px solid gray; 
+    width: 100%;
+    height: 80%;
+    background-color: rgb(247, 248, 245);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.received-message p {
+    font-size: 18px;
+    color: #ffffff;  
+    font-weight: bold;
+    background-color: #000000;
+    border-radius: 15px;
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 15px;
+}
+
+.sent-message {
+    align-self: flex-end;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+
+.sent-message p {
+    font-size: 18px;
+    color: #ffffff;
+    background-color: rgb(15, 7, 173);
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin: 5px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 20px;
+}
+
+.icon {
+    margin-right: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.search-btn {
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 515px;
+    height: 40px;
+    background-color: #f0f0f0; 
+    border-radius: 30px; 
+    margin-top: 25px;
+    margin-left: 30px;
+}
+
+.search-btn p {
+    margin-right: 370px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000; 
+}
+
+.profile-image {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: -25px;
+    position: relative;
+}
+
+.profile1, .profile2 {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    position: relative;
+    margin-top: 0;
+    width: 100%;
+    padding: 10px;
+    color: black;
+    border-radius: 0; 
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    gap: 10px; /* Adjusted gap for better spacing */
+    background-color: white;
+}
+
+.profile1.selected, .profile2.selected {
+    background-color: rgb(53, 45, 197);
+    color: rgb(255, 255, 255);
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Make image circular */
+    object-fit: cover; /* Ensure image fills container */
+    margin-left: 15px; /* Match original icon margin */
+    margin-right: 10px; /* Space between image and name */
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: -20px;
+    text-transform: uppercase;
+    color: inherit; /* Inherit color from parent (black or white when selected) */
+}
+
+.profile1 p, .profile2 p {
+    position: absolute;
+    font-size: 10px;
+    margin-left: 95px;
+    margin-top: 40px;
+    color: gray;
+}
+
+.profile1.selected p, .profile2.selected p {
+    color: rgb(187, 176, 176);
+}
+
+.profile1 p1, .profile2 p1 {
+    position: absolute;
+    font-size: 10px;
+    margin-left: 500px;
+    margin-top: 40px;
+    color: gray;
+}
+
+.profile1.selected p1, .profile2.selected p1 {
+    color: rgb(187, 176, 176);
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 595px; 
+    background-color: rgb(242, 242, 234);
+    height: 10%;
+}
+
+.reply-chat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    background-color: rgb(242, 242, 234); 
+    border-radius: 0; 
+    gap: 10px;
+}
+
+.icon-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.chat-header p {
+    font-size: 21px;
+    color: #000; 
+    margin: 0;
+    margin-left: 30px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.icon-group > [data-icon] {
+    width: 25px;
+    height: 25px;
+}
+
+.text-reply {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-right: 30px;
+    transition: margin-left 0.3s ease;
+}
+
+.text-reply.shift-left {
+    margin-left: 10px;
+}
+
+.message-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    color: #000;
+    background-color: #f0f0f0;
+}
+
+.message-input::placeholder {
+    color: #969696;
+}
+
+.send-icon {
+    cursor: pointer;
+}
+</style>

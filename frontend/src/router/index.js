@@ -12,6 +12,11 @@ import InvoicePage from '@/views/InvoicePage.vue'
 import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
+import Message from '@/views/Message.vue'
+import Message1 from '@/views/Message1.vue'
+import Message2 from '@/views/Message2.vue'
+import Message3 from '@/views/Message3.vue'
+import Notification from '@/views/Notification.vue' 
 
 const routes = [
   {
@@ -68,6 +73,31 @@ const routes = [
     path: '/personalInfo',
     name: 'personalInfo',
     component: PersonalInfoPage,
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message,
+  },
+  {
+    path: '/message1',
+    name: 'Message1',
+    component: Message1,
+  },
+    {
+    path: '/message2',
+    name: 'Message2',
+    component: Message2,
+  },
+  {
+    path: '/message3',
+    name: 'Message3',
+    component: Message3,
+  },
+    {
+    path: '/notification',
+    name: 'Notification',
+    component: Notification,
   },
 ]
 
