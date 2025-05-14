@@ -1,37 +1,72 @@
 <template>
-    <div class="property-card" @click="goToDetailPage">
-        <div class="image-container">
-            <img src="../assets/images/property_images/property1.jpeg" alt="property image">
-            <button class="fave-btn">
-                <Icon icon="si:heart-duotone" width="32" height="32"  style="color: #fff" />
-            </button>
-        </div>
-        <div class="info">
-            <div class="info-heading">
-                <h3 class="rent">$3000/month</h3>
-                <div class="property-rating">
-                    <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
-                    <h3>4.5</h3>
-                </div>
-            </div>
-            <div class="info-location">
-                <h3>BKK1, Chamkarmon,
-                    Phnom Penh</h3>
-            </div>
-        </div>
+  <div class="property-card" @click="goToDetailPage">
+    <div class="image-container">
+      <img src="../assets/images/property_images/property1.jpeg" alt="property image" />
+      <button class="fave-btn" @click.stop="toggleWishlist">
+        <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32" :style="{color: isWishlisted ? '#08FF10' : '#fff'}" />
+      </button>
     </div>
+    <div class="info">
+      <div class="info-heading">
+        <h3 class="rent">$3000/month</h3>
+        <div class="property-rating">
+          <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
+          <h3>4.5</h3>
+        </div>
+      </div>
+      <div class="info-location">
+        <h3>BKK1, Chamkarmon, Phnom Penh</h3>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script>
-  export default{
-    methods: {
-      goToDetailPage(){
-        this.$router.push({name: 'Accommodation'})
-      }
+export default {
+  props: {
+    id: String
+  },
+  data() {
+    return {
+      isWishlisted: false
     }
+  },
+  methods: {
+    goToDetailPage() {
+      this.$router.push({ name: 'Accommodation' })
+    },
+
+    toggleWishlist() {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || []
+      const index = wishlist.indexOf(this.id)
+
+      if (index === -1) {
+        wishlist.push(this.id)
+        this.isWishlisted = true
+      } else {
+        wishlist.splice(index, 1)
+        this.isWishlisted = false
+      }
+
+      localStorage.setItem('wishlist', JSON.stringify(wishlist))
+      window.dispatchEvent(new Event('wishlist-updated'))
+    },
+
+    checkWishlist() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || []
+      this.isWishlisted = wishlist.includes(this.id)
+    }
+  },
+  mounted() {
+    this.checkWishlist()
+    window.addEventListener('wishlist-updated', this.checkWishlist)
+  },
+  beforeUnmount() {
+    window.removeEventListener('wishlist-updated', this.checkWishlist)
   }
+}
 </script>
+
 
 <style scoped>
 .property-card{
