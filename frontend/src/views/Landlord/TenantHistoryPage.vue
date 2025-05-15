@@ -85,8 +85,6 @@
                                 Communicative, responsible, and left the place in excellent condition. No issues at all—highly recommend!</span>
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
         </div>
