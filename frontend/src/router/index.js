@@ -13,6 +13,13 @@ import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 import HostingSteps from '@/views/HostViews/HostingSteps.vue'
 import StepOverview from '@/views/HostViews/StepOverview.vue'
 import AboutPlace from '@/views/HostViews/AboutPlace.vue'
+import AccommodationType from '@/views/HostViews/AccommodationType.vue'
+import PlaceLocation from '@/views/HostViews/PlaceLocation.vue'
+import FloorPlan from '@/views/HostViews/FloorPlan.vue'
+import StandOut from '@/views/HostViews/StandOut.vue'
+import Amenities from '@/views/HostViews/Amenities.vue'
+import PropertyPhoto from '@/views/HostViews/PropertyPhoto.vue'
+import PropertyTitle from '@/views/HostViews/PropertyTitle.vue'
 
 const routes = [
   {
@@ -86,16 +93,41 @@ const routes = [
         name: 'About Place',
         component: AboutPlace,
       },
-      // {
-      //   path: 'structure',
-      //   name: 'Structure',
-      //   component: Structure,
-      // },
-      // {
-      //   path: 'type',
-      //   name: 'Type',
-      //   component: AccommodationType,
-      // }
+      {
+        path: 'type',
+        name: 'Type',
+        component: AccommodationType,
+      },
+      {
+        path: 'location',
+        name: 'Location',
+        component: PlaceLocation
+      },
+      {
+        path: 'floor-plan',
+        name: 'Floor Plan',
+        component: FloorPlan
+      },
+      {
+        path: 'stand-out',
+        name: 'Stand Out',
+        component: StandOut
+      },
+      {
+        path: 'amenities',
+        name: 'Amenities',
+        component: Amenities
+      },
+      {
+        path: 'photos',
+        name: 'Photo',
+        component: PropertyPhoto
+      },
+      {
+        path: 'title',
+        name: 'Title',
+        component: PropertyTitle
+      }
     ]
   }
 ]

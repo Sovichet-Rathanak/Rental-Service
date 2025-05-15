@@ -3,9 +3,10 @@
         <header>
             <button class="exit-btn">Exit</button>
         </header>
-
         <main>
-            <router-view></router-view>
+            <Transition>
+                <router-view></router-view>
+            </Transition>
         </main>
 
         <footer>
@@ -44,13 +45,13 @@ export default {
         nextPage() {
             const childRoutes = this.getAllChildRoutes("Hosting Steps");
             console.log(this.percent);
-            
+
             if (this.currentRoute < childRoutes.length) {
                 this.currentRoute++;
                 this.progressPercent = (100 / childRoutes.length) * this.currentRoute;
 
-                let childRouteName = childRoutes[this.currentRoute-1].name;
-                this.$router.push({name: `${childRouteName}`});
+                let childRouteName = childRoutes[this.currentRoute - 1].name;
+                this.$router.push({ name: `${childRouteName}` });
             } else {
                 return;
             }
@@ -63,14 +64,14 @@ export default {
 
                 console.log(this.currentRoute)
                 this.progressPercent = (100 / childRoutes.length) * this.currentRoute;
-                
-                let childRouteName = childRoutes[this.currentRoute -1].name;
-                this.$router.push({name: `${childRouteName}`});
+
+                let childRouteName = childRoutes[this.currentRoute - 1].name;
+                this.$router.push({ name: `${childRouteName}` });
             }
         },
     },
-    computed:{
-        percent(){
+    computed: {
+        percent() {
             let childRoutes = this.getAllChildRoutes("Hosting Steps");
             return (100 / childRoutes.length) * this.currentRoute;
         }
@@ -80,36 +81,58 @@ export default {
 
 <style scoped>
 .main-container {
-    height: 100vh;
     display: flex;
+    height: 100vh;
     flex-direction: column;
     margin: 0;
     padding: 0;
 }
 
-header,
-footer {
-    width: 100%;
-    display: flex;
-}
-
 header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: white;
+    display: flex;
     justify-content: flex-end;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 footer {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: white;
+    display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 main {
+    flex: 1;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
-    padding-inline: 300px;
+    padding: 0 14%;
+    margin: 0 auto;
     width: 100%;
-    height: 100%;
+    padding-bottom: 30px;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 1s ease, transform 1s ease-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
 }
 
 .progress-border {
@@ -120,6 +143,7 @@ main {
 .progress-bar {
     height: 5px;
     background-color: black;
+    transition: 700ms width ease-in;
 }
 
 .button-container {

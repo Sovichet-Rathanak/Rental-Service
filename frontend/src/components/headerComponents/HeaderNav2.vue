@@ -11,7 +11,7 @@
         </div>
 
         <div class="text">
-            <button class="applyLandlord">Applying for Landlord
+            <button class="applyLandlord" @click="this.$router.push({ name: 'Hosting Steps' })">Applying for Landlord
                 <Icon icon="tabler:world" width="40" height="40" />
             </button>
             <button class="sigin-btn">
