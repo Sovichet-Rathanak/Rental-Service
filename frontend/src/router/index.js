@@ -12,6 +12,7 @@ import InvoicePage from '@/views/InvoicePage.vue'
 import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
+import EarningChartPage from '@/views/EarningChartPage.vue'
 
 const routes = [
   {
@@ -68,6 +69,11 @@ const routes = [
     path: '/personalInfo',
     name: 'personalInfo',
     component: PersonalInfoPage,
+  },
+  {
+    path: '/earningChart',
+    name: 'earningChart',
+    component: EarningChartPage,
   },
 ]
 
