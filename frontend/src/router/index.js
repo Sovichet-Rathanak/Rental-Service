@@ -13,6 +13,8 @@ import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
+import ListingPage from '@/views/Landlord/ListingPage.vue'
+import ListingOverview from '@/components/Landlord/ListingOverview.vue'
 
 const routes = [
   {
@@ -72,9 +74,21 @@ const routes = [
   },
   
   {
-    path: '/listing-Editor',
-    name: 'Listing Editor',
-    component: ListingEditorPage
+    path: '/listing',
+    name: 'Listing Page',
+    component: ListingPage,
+    children: [
+      {
+        path: '',
+        name: 'Listing Overview',
+        component: ListingOverview
+      },
+      {
+        path: 'listing-editor',
+        name: 'Listing Editor',
+        component: ListingEditorPage
+      }
+    ]
   }
 ]
 

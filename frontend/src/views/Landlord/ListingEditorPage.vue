@@ -1,12 +1,9 @@
 <template>
-    <header>
-        <header-nav-3></header-nav-3>
-    </header>
 
     <main>
-        <div class="header">
-            <Icon icon="material-symbols:arrow-back-rounded" width="33" height="33"></Icon>
-            Listing Editor
+        <div class="header" >
+            <router-link to="/listing"><Icon icon="material-symbols:arrow-back-rounded" width="37" height="37" class="icon"></Icon></router-link>
+            <span style="margin-left: 35px; font-size: 33px;">Listing Editor</span>
         </div>
 
         <!-- upload image -->
@@ -85,12 +82,10 @@
 </template>
 
 <script>
-import HeaderNav3 from '@/components/Landlord/HeaderNav3.vue';
 // import EquipmentItem from '@/components/Landlord/EquipementComponent.vue';
 import MapComponent from '@/components/MapComponent.vue';
 export default {
     components: {
-        HeaderNav3,
         // EquipmentItem,
         MapComponent
     },
@@ -139,10 +134,21 @@ main{
 .header{
     display: flex;
     align-items: center;
-    font-size: 27px;
     font-weight: bold;
     gap: 20px;
-    margin-bottom: 20px
+    margin-bottom: 30px;
+    color: black;
+    text-decoration: none;
+    margin-left: 0;
+    justify-content: start;
+    position: relative;
+}
+.icon{
+    position: absolute;
+    top:10%;
+    left:0%;
+    color: black;
+    margin-right: 10px;
 }
 
 /* upload image */
@@ -185,7 +191,6 @@ main{
     background-color: #333;
 }
 
-
 /* input text */
 .houseInfo{
     display: grid;
@@ -195,6 +200,7 @@ main{
 label{
     font-size: 22px;
     font-weight: 400;
+    margin-right: 15px;
 }
 input{
     width: 820px;
@@ -203,7 +209,7 @@ input{
     box-shadow: 0 12px 10px 0 rgba(0, 0, 0, 0.05);
     padding: 19px;
     font-size: 20px;
-    margin-top:10px
+    margin-top:10px;
 }
 input::placeholder{
     font-size: 20px;

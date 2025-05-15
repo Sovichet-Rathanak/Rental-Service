@@ -69,6 +69,7 @@ span:active{
   justify-content: center;
   text-align: center;
   display: flex;
+  background-color: white;
 }
 
 .profile{
