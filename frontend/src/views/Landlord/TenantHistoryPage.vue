@@ -18,21 +18,28 @@
                         <div class="profile">
                             <img src="/src/assets/images/comment/_.jpeg" alt="">
                             
-                            <div style="font-size: 25px;">
+                            <div style="font-size: 24px;">
                                 Lina Van
                                 <span class="contract">Contract Expiration: 
                                     <span style="font-weight: bold;"> 16/02/2025</span>
                                 </span>
-                                <Icon icon="mdi:star-outline" width="50" height="50" v-for="n in 5" :key="n"></Icon>
+                                <Icon width="45" height="45" v-for="n in 5" :key="n"
+                                    :icon="n <= selectedRating ? 'mdi:star' : 'mdi:star-outline'"
+                                    :style="{color: n <= selectedRating ? 'orange' : 'black', cursor: 'pointer'}"
+                                    @click="selectedRating = n"
+                                ></Icon>
                             </div>
                         </div>
 
-                        <textarea class="textBox" placeholder="Write something about your tenant..."></textarea>
+                        <textarea class="textBox" placeholder="Write something about your tenant..."
+                            v-model="commentText"
+                            @keydown.enter.exact.prevent="submitComment"
+                        ></textarea>
                     </div>
                 </div>
 
                 <div style="font-size: 28px; font-weight: bold;"> Post Tenant
-                    <div class="comment">
+                    <div class="comment" v-for="(post, index) in postedComments" :key="index">
                         <div class="landlordProfile">
                             <img src="/src/assets/images/comment/landlord.jpeg" alt="">
                             Snowy
@@ -41,48 +48,12 @@
                             <span class="contract">Contract Expiration: 
                                     <span style="font-weight: bold;margin-right: 30px;"> 16/02/2025</span>
                             </span>
-                            <Icon icon="material-symbols:star-rounded" width="32" height="32" v-for="s in 5" :key="s" style="color: #FFA629"></Icon>
+                            <Icon icon="mdi:star" width="33" height="33" 
+                                v-for="i in post.rating" :key="i" style="color: #FFA629"></Icon>
                         </div>
                         <div class="text">
                             Remark
-                            <span>Great tenant! Always paid rent on time, maintained the property well, and was respectful to neighbors. <br>
-                                Communicative, responsible, and left the place in excellent condition. No issues at all—highly recommend!</span>
-                        </div>
-                    </div>
-
-                    <div class="comment">
-                        <div class="landlordProfile">
-                            <img src="/src/assets/images/comment/landlord.jpeg" alt="">
-                            Snowy
-                        </div>
-                        <div class="data">
-                            <span class="contract">Contract Expiration: 
-                                    <span style="font-weight: bold;margin-right: 30px;"> 16/02/2025</span>
-                            </span>
-                            <Icon icon="material-symbols:star-rounded" width="32" height="32" v-for="s in 5" :key="s" style="color: #FFA629"></Icon>
-                        </div>
-                        <div class="text">
-                            Remark
-                            <span>Great tenant! Always paid rent on time, maintained the property well, and was respectful to neighbors. <br>
-                                Communicative, responsible, and left the place in excellent condition. No issues at all—highly recommend!</span>
-                        </div>
-                    </div>
-
-                    <div class="comment">
-                        <div class="landlordProfile">
-                            <img src="/src/assets/images/comment/landlord.jpeg" alt="">
-                            Snowy
-                        </div>
-                        <div class="data">
-                            <span class="contract">Contract Expiration: 
-                                    <span style="font-weight: bold; margin-right: 30px;"> 16/02/2025</span>
-                            </span>
-                            <Icon icon="material-symbols:star-rounded" width="32" height="32" v-for="s in 5" :key="s" style="color: #FFA629"></Icon>
-                        </div>
-                        <div class="text">
-                            Remark
-                            <span>Great tenant! Always paid rent on time, maintained the property well, and was respectful to neighbors. <br>
-                                Communicative, responsible, and left the place in excellent condition. No issues at all—highly recommend!</span>
+                            <span>{{ post.text }}</span>
                         </div>
                     </div>
                 </div>
@@ -90,6 +61,34 @@
         </div>
     </div>
 </template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      selectedRating: 0,
+      commentText: '',
+      postedComments: []
+    };
+  },
+  methods: {
+    submitComment() {
+      if (!this.commentText.trim() || this.selectedRating === 0) return;
+
+      this.postedComments.push({
+        rating: this.selectedRating,
+        text: this.commentText.trim()
+      });
+
+      // Reset form
+      this.commentText = '';
+      this.selectedRating = 0;
+    }
+  }
+};
+</script>
+
 
 <style>
 .overview::-webkit-scrollbar{
@@ -116,19 +115,18 @@
 .currentTenant{
     display: flex;
     gap: 50px;
-    margin-bottom: 10px;
 }
 .currentTenant > img{
     width: 500px;
-    height: 500px;
+    height: 436px;
     border-radius: 15px;
     object-fit: cover
 }
 .tenant{
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    font-size: 29px;
+    gap: 25px;
+    font-size: 27px;
     font-weight: bolder;
 }
 .profile{
@@ -136,27 +134,27 @@
     gap: 30px
 }
 .profile > img{
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border-radius: 100px;
 }
 .contract{
     font-weight: 400;
     display: flex;
-    font-size: 22px;
-    margin: 17px 0;
+    font-size: 20px;
+    margin: 11px 0;
     gap: 10px
 }
 .textBox{
-    width: 570px;
-    height: 224px;
+    width: 535px;
+    height: 190px;
     font-size: 22px;
     padding: 15px 20px;
     border: 2px solid rgba(0, 0, 0, 0.3);
     border-radius: 20px;
 }
 .comment{
-    width: 97%;
+    width: 1090px;
     padding: 27px 23px;
     border-radius: 20px;
     border: 1px solid #A1A1A1;
@@ -165,24 +163,21 @@
 .landlordProfile{
     display: flex;
     align-items: center;
-    gap: 20px
+    gap: 20px;
+    font-size: 26px;
 }
 .landlordProfile > img{
-    width: 75px;
-    height: 75px;
+    width: 70px;
+    height: 70px;
     border-radius: 50px;
     object-fit: cover
 }
 .data{
     display: flex;
     align-items: center;
-    /* gap: 30px; */
-}
-.text{
-    font-size: 25px;
 }
 .text > span{
-    font-size: 23px;
+    font-size: 22px;
     margin-top: 8px;
 }
 </style>

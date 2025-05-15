@@ -1,25 +1,18 @@
 <template>
   <div class="item">
-    <div class="status">
+    <div class="image" @click="showTenantHistory = true">
+      <img src="/src/assets/images/property_images/property1.jpeg" alt="">
       <div class="box">
         <div class="circle"></div>
         Pending
       </div>
-    </div>
-
-    <!-- Image that navigates to show the popup -->
-    <div class="image" @click="showTenantHistory = true">
-      <img src="/src/assets/images/property_images/property1.jpeg" alt="">
-    </div>
-
-    <!-- Edit button -->
-    <router-link to="/listing/listing-editor" class="edit">
-      <Icon icon="solar:pen-bold" width="35" height="35" style="color: white"></Icon>
-    </router-link>
-
-    <div class="text">
+      <router-link to="/listing/listing-editor" class="edit">
+        <Icon icon="solar:pen-bold" width="35" height="35" style="color: white"></Icon>
+      </router-link>
+      <div class="text">
       BKK1, Cambodia
       <span>Phnom Penh, Phnom Penh</span>
+    </div>
     </div>
   </div>
 
@@ -53,10 +46,10 @@ export default {
 
 <style>
 .item{
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 30px 180px;
+    display: grid;
+    grid-template-columns: repeat(auto, 2);
+    padding: 0px 200px;
+    gap: 110px;
 }
 .box{
     display: flex;
@@ -67,8 +60,8 @@ export default {
     border-radius: 30px;
     background-color: white;
     position: absolute;
-    top: 8.5%;
-    left:9%;
+    top: 5%;
+    left:5%;
     padding: 3px 13px;
     font-size: 20px;
     font-weight: bold;
@@ -80,8 +73,9 @@ export default {
     background-color: #EC0000;
 }
 .image{
-    width: 440px;
-    height: 440px;
+    width: 350px;
+    height: 350px;
+    position: relative;
 }
 .image > img{
     border-radius: 30px;
@@ -98,16 +92,16 @@ export default {
     justify-content: center;
     border: 1px solid white;
     position: absolute;
-    bottom: 17.5%;
-    left: 25.1%
+    bottom: -4%;
+    right: -6.5%
 }
 .text{
     font-weight: bold;
     font-size: 21px;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    gap: 9px
+    margin-top: 5px;
+    gap: 0
 }
 .text > span{
     font-weight: 200;
