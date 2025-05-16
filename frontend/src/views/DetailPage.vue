@@ -5,6 +5,7 @@
     <div class="main-container">
         <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
         <AccommadationImg></AccommadationImg>
+        <Calendar_section></Calendar_section>
         <Rating></Rating>
         <h1 style="font-weight: bold; margin: 100px 0px 30px 0px;">Where you'll be</h1>
         <div class="map-container">
@@ -24,6 +25,7 @@ import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
 import HostInfoSection from '@/components/HostInfoSection.vue';
 import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 import MapComponent from '@/components/MapComponent.vue';
+import Calendar_section from '@/components/DetailPageComponents/calendar_section.vue';
 export default {
     components: {
         HeaderNav2,
@@ -31,7 +33,8 @@ export default {
         AccommadationImg,
         HostInfoSection,
         Rating,
-        MapComponent
+        MapComponent,
+        Calendar_section
     }
 }
 </script>

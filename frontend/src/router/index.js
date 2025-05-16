@@ -12,6 +12,7 @@ import InvoicePage from '@/views/InvoicePage.vue'
 import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
+import CalendarPage from '@/components/bannerComponents/landlord/calendarPage.vue'
 
 const routes = [
   {
@@ -69,6 +70,11 @@ const routes = [
     name: 'personalInfo',
     component: PersonalInfoPage,
   },
+  {
+    path: '/landlordCalendar',
+    name: 'landlordCalendar',
+    component: CalendarPage
+  }
 ]
 
 const router = createRouter({
