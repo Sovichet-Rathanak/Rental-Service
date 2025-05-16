@@ -20,6 +20,11 @@ import StandOut from '@/views/HostViews/StandOut.vue'
 import Amenities from '@/views/HostViews/Amenities.vue'
 import PropertyPhoto from '@/views/HostViews/PropertyPhoto.vue'
 import PropertyTitle from '@/views/HostViews/PropertyTitle.vue'
+import PropertyDesc from '@/views/HostViews/PropertyDesc.vue'
+import FinishPublish from '@/views/HostViews/FinishPublish.vue'
+import MonthlyPrice from '@/views/HostViews/MonthlyPrice.vue'
+import YearlyPrice from '@/views/HostViews/YearlyPrice.vue'
+import ListingReview from '@/views/HostViews/ListingReview.vue'
 
 const routes = [
   {
@@ -127,6 +132,31 @@ const routes = [
         path: 'title',
         name: 'Title',
         component: PropertyTitle
+      },
+      {
+        path: 'description',
+        name:'Description',
+        component: PropertyDesc
+      },
+      {
+        path: 'finish-setup',
+        name: 'Finish Setup',
+        component: FinishPublish
+      },
+      {
+        path: 'monthly-price',
+        name: 'Monthly Price',
+        component: MonthlyPrice
+      },
+      {
+        path: 'yearly-price',
+        name: 'Yearly Price',
+        component: YearlyPrice 
+      },
+      {
+        path: 'listing-review',
+        name: 'Listing Review',
+        component: ListingReview
       }
     ]
   }

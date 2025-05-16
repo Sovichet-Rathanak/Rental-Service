@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <hgroup>
-            <h1 style="margin: 0;">Share some basics about your place</h1>
-            <h3 style="margin: 10px 0px 25px 0px; color: grey;">You'll add more details later, like amenities.</h3>
+            <h1>Share some basics about your place</h1>
+            <h2>You'll add more details later, like amenities.</h2>
         </hgroup>
         <div class="input-container">
             <div class="row">
@@ -113,6 +113,25 @@ export default {
     justify-content: center;
     align-items: flex-start;
     width: 55%;
+}
+
+hgroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: flex-start;
+    width: 100%;
+}
+
+hgroup>h1 {
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+hgroup>h2 {
+    margin: 0px 0px 50px;
+    color: grey;
 }
 
 .input-container {

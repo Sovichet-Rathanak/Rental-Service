@@ -3,7 +3,7 @@
         <div class="left-content">
             <hgroup>
                 <h1>Where is your place located?</h1>
-                <h3>Your address is only shared with guests after confirmation</h3>
+                <h2>Your address is only shared with guests after confirmation</h2>
             </hgroup>
 
             <div class="input-container">
@@ -69,24 +69,19 @@ hgroup {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: flex-start;
     width: 100%;
 }
 
 hgroup>h1 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-    color: #222222;
-    line-height: 1.2;
+    margin-bottom: 10px;
+    padding-top: 20px;
 }
 
-hgroup>h3 {
-    color: #717171;
-    margin-top: 12px;
-    font-weight: 400;
-    font-size: 18px;
+hgroup>h2 {
+    margin: 0px 0px 50px;
+    color: grey;
 }
 
 .input-container {
