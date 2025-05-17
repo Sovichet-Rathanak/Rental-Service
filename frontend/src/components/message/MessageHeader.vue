@@ -55,19 +55,19 @@ export default defineComponent({
     background-color: #ffffff;
     padding: 20px 210px 20px 600px;
     border-bottom: 1px solid gray;
-    height: 60px;
+    height: 65px;
 }
 
 .nav-items {
     display: flex;
-    gap: 40px;
+    gap: 50px;
 }
 
 .nav-item {
     display: flex;
     background: none;
     border: none;
-    font-size: 25px;
+    font-size: 28px;
     color: #333;
     cursor: pointer;
     padding: 10px 15px; 

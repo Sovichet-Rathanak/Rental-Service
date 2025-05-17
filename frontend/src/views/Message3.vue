@@ -140,13 +140,13 @@ export default {
 }
 
 .left-side {
-    width: 45%;
+    width: 30%;
     border-right: 1px solid gray;
     background-color: rgb(255, 255, 255);
 }
 
 .right-side {    
-    width: 55%; 
+    width: 70%; 
     position: relative; 
 }
 
@@ -207,7 +207,7 @@ export default {
 
 .message-header h1 {
     font-size: 30px;
-    padding-left: 200px;
+    padding-left: 50px;
     margin-top: 0px;
 
 }
@@ -235,7 +235,7 @@ export default {
 .btn-tabs {
     display: flex;
     gap: 10px;
-    padding-left: 200px;
+    padding-left: 50px;
     margin-top: -25px;
 }
 
@@ -275,7 +275,8 @@ export default {
     gap: 0;
     margin-top: 45px;
     position: relative;
-    margin-left: 200px;
+    margin-left: 50px;
+    justify-content: space-between; /* Space between image and text */
 }
 
 .profile1, .profile2 {
@@ -305,7 +306,7 @@ export default {
     height: 60px;
     border-radius: 50%; 
     object-fit: cover; /* Ensure image fills container */
-    margin-left: 35px; /* Match original icon margin */
+    margin-left: 10px; /* Match original icon margin */
     margin-right: 10px; /* Space between image and name */
 }
 
@@ -319,7 +320,7 @@ export default {
 .profile1 p, .profile2 p {
     position: absolute;
     font-size: 15px;
-    margin-left: 115px;
+    margin-left: 90px;
     margin-top: 60px;
     color: rgb(86, 85, 85);
 }
@@ -331,7 +332,7 @@ export default {
 .profile1 p1, .profile2 p1 {
     position: absolute;
     font-size: 15px;
-    margin-left: 560px;
+    margin-left: 450px;
     margin-top: 40px;
     color: rgb(86, 85, 85);
 }
@@ -344,8 +345,8 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    gap: 780px; 
-    background-color: rgb(255, 255, 255);
+    gap: 1050px; 
+    background-color: rgb(242, 242, 234);
     height: 10%;
 }
 
@@ -385,7 +386,7 @@ export default {
     display: flex;
     gap: 10px;
     align-items: center;
-    margin-right: 30px;
+    margin-right: 50px;
     transition: margin-left 0.3s ease;
 }
 

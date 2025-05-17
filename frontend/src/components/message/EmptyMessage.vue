@@ -54,13 +54,13 @@
 }
 
 .left-side {
-    width: 45%; 
+    width: 30%; 
     border-right: 1px solid gray; /* Vertical dividing line */
     padding-top: 15px;
 }
 
 .right-side {
-    width: 55%; 
+    width: 70%; 
     background: #fff; 
     padding-top: 35px;
     position: relative; 
@@ -83,7 +83,7 @@
 
 .message-header h1 {
     font-size: 30px;
-    padding-left: 200px;
+    padding-left: 50px;
     margin-top: 0px;
 
 }
@@ -111,7 +111,7 @@
 .btn-tabs {
     display: flex;
     gap: 10px;
-    padding-left: 200px;
+    padding-left: 50px;
     margin-top: -25px;
 }
 
