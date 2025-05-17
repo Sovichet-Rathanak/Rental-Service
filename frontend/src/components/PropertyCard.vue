@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="info-location">
-        <h3>product.location</h3>
+        <h3>{{product.location}}</h3>
       </div>
     </div>
   </div>
