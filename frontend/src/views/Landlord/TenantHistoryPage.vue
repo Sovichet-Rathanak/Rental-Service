@@ -35,6 +35,9 @@
                             v-model="commentText"
                             @keydown.enter.exact.prevent="submitComment"
                         ></textarea>
+                        <div class="submitButton">
+                            <button @click="submitComment">Send</button>
+                        </div>
                     </div>
                 </div>
 
@@ -67,7 +70,7 @@
 export default {
   data() {
     return {
-      selectedRating: 0,
+      selectedRating: 4,
       commentText: '',
       postedComments: []
     };
@@ -81,9 +84,8 @@ export default {
         text: this.commentText.trim()
       });
 
-      // Reset form
       this.commentText = '';
-      this.selectedRating = 0;
+      this.selectedRating = 4;
     }
   }
 };
@@ -147,11 +149,28 @@ export default {
 }
 .textBox{
     width: 535px;
-    height: 190px;
+    height: 155px;
     font-size: 22px;
     padding: 15px 20px;
     border: 2px solid rgba(0, 0, 0, 0.3);
     border-radius: 20px;
+    margin-top: -5px
+}
+.submitButton{
+    display: flex;
+    justify-content: end;
+}
+button{
+    background-color: #487CFF;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: -7px
 }
 .comment{
     width: 1090px;

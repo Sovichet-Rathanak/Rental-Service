@@ -2,8 +2,8 @@
 
     <main>
         <div class="header" >
-            <router-link to="/listing"><Icon icon="material-symbols:arrow-back-rounded" width="37" height="37" class="icon"></Icon></router-link>
-            <span style="margin-left: 35px; font-size: 33px;">Listing Editor</span>
+            <router-link to="/landlord"><Icon icon="material-symbols:arrow-back-rounded" width="37" height="37" class="icon"></Icon></router-link>
+            <span style="margin-left: 35px; font-size: 31px;">Listing Editor</span>
         </div>
 
         <!-- upload image -->
@@ -22,9 +22,9 @@
         </div>
 
         <div class="houseInfo">
-            <div class="title">
+            <div class="t">
                 <label for="title">Title:</label>
-                <input type="text" placeholder="BKK1, Cambodia">
+                <input type="text" placeholder="Cozy Home">
             </div>
 
             <div class="price">
@@ -200,7 +200,6 @@ main{
 label{
     font-size: 22px;
     font-weight: 400;
-    margin-right: 15px;
 }
 input{
     width: 820px;
@@ -214,6 +213,11 @@ input{
 input::placeholder{
     font-size: 20px;
 }
+/* .title, .city, .floor{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+} */
 
 /* Equipment */
 .texT {

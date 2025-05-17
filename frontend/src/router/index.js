@@ -13,8 +13,8 @@ import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
-import ListingPage from '@/views/Landlord/ListingPage.vue'
-import ListingOverview from '@/components/Landlord/ListingOverview.vue'
+import LandlordPage from '@/views/Landlord/LandlordPage.vue'
+import ListingPage from '@/components/Landlord/LisitngPage.vue'
 
 const routes = [
   {
@@ -74,22 +74,24 @@ const routes = [
   },
   
   {
-    path: '/listing',
-    name: 'Listing Page',
-    component: ListingPage,
-    children: [
-      {
-        path: '',
-        name: 'Listing Overview',
-        component: ListingOverview
-      },
-      {
-        path: 'listing-editor',
-        name: 'Listing Editor',
-        component: ListingEditorPage
-      }
-    ]
-  }
+  path: '/landlord',
+  name: 'Landlord Page',
+  component: LandlordPage,
+  redirect: { name: 'Listing Page' },
+  children: [
+    {
+      path: 'listing',
+      name: 'Listing Page',
+      component: ListingPage
+    },
+    {
+      path: 'listing/listing-editor',
+      name: 'Listing Editor',
+      component: ListingEditorPage
+    }
+  ]
+}
+
 ]
 
 const router = createRouter({

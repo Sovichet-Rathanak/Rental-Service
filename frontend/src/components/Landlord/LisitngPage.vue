@@ -1,4 +1,21 @@
 <template>
+  <div class="title" >
+            <h1>Your Listing</h1>
+            <div class="icons">
+                <div class="search">
+                    <Icon icon="ic:baseline-search" width="35" height="35"></Icon>
+                </div>
+
+                <div class="list">
+                    <Icon icon="tabler:layout-list" width="35" height="35"></Icon>
+                </div>
+
+                <div class="addNew">
+                    <Icon icon="material-symbols:add" width="35" height="35"></Icon>
+                </div>
+            </div>
+  </div>
+  
   <div class="item">
     <div class="image" @click="showTenantHistory = true">
       <img src="/src/assets/images/property_images/property1.jpeg" alt="">
@@ -6,7 +23,7 @@
         <div class="circle"></div>
         Pending
       </div>
-      <router-link to="/listing/listing-editor" class="edit">
+      <router-link :to="{ name: 'Listing Editor'}" class="edit">
         <Icon icon="solar:pen-bold" width="35" height="35" style="color: white"></Icon>
       </router-link>
       <div class="text">
@@ -45,6 +62,27 @@ export default {
 </script>
 
 <style>
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 200px 0 200px;
+}
+.icons{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
+}
+.search, .list, .addNew{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    background-color: #F3F3F3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .item{
     display: grid;
     grid-template-columns: repeat(auto, 2);
