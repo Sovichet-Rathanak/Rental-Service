@@ -6,20 +6,11 @@
         <div class="homescreen-container">
             <banner-animate></banner-animate>
             <div class="property-container">
-                <property-card id="property1"></property-card>
-                <property-card id="property2"></property-card>
-                <property-card id="property3"></property-card>
-                <property-card id="property4"></property-card>
-                <property-card id="property5"></property-card>
-                <property-card id="property6" ></property-card>
-                <property-card id="property7"></property-card>
-                <property-card id="property8"></property-card>
-                <property-card id="property9"></property-card>
-                <property-card id="property10"></property-card>
-                <property-card id="property11"></property-card>
-                <property-card id="property12"></property-card>
-                <property-card id="property13"></property-card>
-                <property-card id="property14"></property-card>
+               <property-card 
+                v-for="property in propertyList"
+                :key="property.id"
+                :product="property"
+               />
             </div>
             <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
             <button class="midlength-btn">Show More</button>
@@ -44,9 +35,28 @@ export default {
         FooterComponent,
         BannerAnimate,
         PropertyCard,
-        FooterComponent,
         LoginPage,
         Rating,
+    },
+    data(){
+        return{
+            propertyList: [
+                { id:1, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:2, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:3, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:4, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:5, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:6, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:7, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:8, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:8, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:10, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:11, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:12, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:13, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+                { id:14, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+            ]
+        }
     }
 }
 </script>

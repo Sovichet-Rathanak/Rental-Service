@@ -2,28 +2,24 @@
   <main>
     <header-nav-2></header-nav-2>
     <div class="title">
-      <Icon icon="material-symbols:arrow-back-ios-rounded" width="32" height="32" />
+      <Icon icon="material-symbols:arrow-back-ios-rounded" width="32" height="32" @click="goBack"/>
       <h1>Wishlist</h1>
     </div>
 
-    <div class="content">
-      <div class="hasItem">
-        <PropertyCard v-if="wishlist.includes('property1')" id="property1" />
-        <PropertyCard v-if="wishlist.includes('property2')" id="property2" />
-        <PropertyCard v-if="wishlist.includes('property3')" id="property3" />
-        <PropertyCard v-if="wishlist.includes('property4')" id="property4" />
-        <PropertyCard v-if="wishlist.includes('property5')" id="property5" />
-        <PropertyCard v-if="wishlist.includes('property6')" id="property6" />
-        <PropertyCard v-if="wishlist.includes('property7')" id="property7" />
-        <PropertyCard v-if="wishlist.includes('property8')" id="property8" />
-        <PropertyCard v-if="wishlist.includes('property9')" id="property9" />
-        <PropertyCard v-if="wishlist.includes('property10')" id="property10" />
-        <PropertyCard v-if="wishlist.includes('property11')" id="property11" />
-        <PropertyCard v-if="wishlist.includes('property12')" id="property12" />
-        <PropertyCard v-if="wishlist.includes('property13')" id="property13" />
-        <PropertyCard v-if="wishlist.includes('property14')" id="property14" />
-      </div>
+    <!-- Wishlist items -->
+    <div v-if="wishlist.length > 0" class="hasItem">
+      <PropertyCard
+        v-for="item in wishlist"
+        :key="item.id"
+        :product="item"
+      />
     </div>
+
+    <!-- Empty message -->
+    <div v-else class="empty-message">
+      <p>No items in wishlist.</p>
+    </div>
+
   </main>
 </template>
 
@@ -31,29 +27,32 @@
 <script>
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue'
 import PropertyCard from '@/components/PropertyCard.vue'
+import { mapState } from 'pinia'
+import { useWishlistStore } from '@/stores/wishlist'
 
 export default {
   components: {
     HeaderNav2,
     PropertyCard
   },
-  data() {
+  // computed: {
+  //   ...mapState(useWishlistStore, ['items']),
+  //   wishlist() {
+  //     return this.items
+  //   }
+  // },
+  methods:{
+    goBack(){
+      this.$router.push({name: 'Home'})
+    }
+  },
+  
+  setup() {
+    const wishlistStore = useWishlistStore()
+    console.log('WISHLIST IN PAGE:', wishlistStore.items)
     return {
-      wishlist: []
+      wishlist: wishlistStore.items,
     }
-  },
-  methods: {
-    loadWishlist() {
-      const stored = localStorage.getItem('wishlist')
-      this.wishlist = stored ? JSON.parse(stored) : []
-    }
-  },
-  mounted() {
-    this.loadWishlist()
-    window.addEventListener('wishlist-updated', this.loadWishlist)
-  },
-  beforeUnmount() {
-    window.removeEventListener('wishlist-updated', this.loadWishlist)
   }
 }
 </script>
@@ -81,5 +80,14 @@ export default {
     border-radius: 50px 50px 0px 0px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.empty-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-size: 27px;
+  color: rgb(0, 0, 0);
 }
 </style>
