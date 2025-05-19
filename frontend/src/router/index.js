@@ -13,6 +13,7 @@ import RentingList from '@/views/RentingList.vue'
 import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
+import EarningChartPage from '@/views/EarningChartPage.vue'
 
 const routes = [
   {
@@ -74,6 +75,11 @@ const routes = [
     path: '/helpCenter',
     name: 'Help Center',
     component: HelpCenterPage,
+  },
+  {
+    path: '/earningChart',
+    name: 'earningChart',
+    component: EarningChartPage,
   },
 ]
 
