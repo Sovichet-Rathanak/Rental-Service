@@ -34,6 +34,9 @@ import Message2 from '@/views/Message2.vue'
 import Message3 from '@/views/Message3.vue'
 import Message4 from '@/views/Message4.vue'
 
+import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
+import LandlordPage from '@/views/Landlord/LandlordPage.vue'
+import ListingPage from '@/components/Landlord/LisitngPage.vue'
 
 const routes = [
   {
@@ -209,6 +212,26 @@ const routes = [
     name: 'Message4',
     component: Message4,
   },
+  
+  {
+  path: '/landlord',
+  name: 'Landlord Page',
+  component: LandlordPage,
+  redirect: { name: 'Listing Page' },
+  children: [
+    {
+      path: 'listing',
+      name: 'Listing Page',
+      component: ListingPage
+    },
+    {
+      path: 'listing/listing-editor',
+      name: 'Listing Editor',
+      component: ListingEditorPage
+    }
+  ]
+}
+
 ]
 
 const router = createRouter({
