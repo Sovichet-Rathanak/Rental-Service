@@ -172,7 +172,7 @@ const routes = [
         component: ListingReview
       }
     ]
-  }
+  },
   {
     path: '/landlordCalendar',
     name: 'landlordCalendar',
