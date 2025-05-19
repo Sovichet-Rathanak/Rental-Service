@@ -27,6 +27,7 @@ import YearlyPrice from '@/views/HostViews/YearlyPrice.vue'
 import ListingReview from '@/views/HostViews/ListingReview.vue'
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
 import EarningChartPage from '@/views/EarningChartPage.vue'
+import CalendarPage from '@/components/bannerComponents/landlord/calendarPage.vue'
 
 const routes = [
   {
@@ -171,6 +172,11 @@ const routes = [
         component: ListingReview
       }
     ]
+  }
+  {
+    path: '/landlordCalendar',
+    name: 'landlordCalendar',
+    component: CalendarPage
   }
 ]
 

@@ -39,7 +39,7 @@
                 <span>Update your password and secure your account.</span>
             </div>
 
-            <div class="notification">
+            <div class="notification" @click="goToPage('Notification')">
                 <Icon icon="oui:bell" width="40" height="40" />
                 <h2>Notification</h2>
                 <span>Choose notification preferences and how you want to be contacted.</span>

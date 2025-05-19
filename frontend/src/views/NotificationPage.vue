@@ -1,8 +1,10 @@
 <template>
     <header> <HeaderNav2></HeaderNav2> </header>
     <body>
-        <span>Account  >  Notifications</span>
-        <h1>Notifications</h1>
+        <div class="breadContainer">
+            <BreadCrumbs></BreadCrumbs>
+            <h1>Notifications</h1>
+        </div>
         <div class="notiList">
             <notiComponent
                 img-url="src/assets/images/pfp.jpg"
@@ -45,11 +47,13 @@
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
 import notiComponent from '@/components/notificationComponent/notiComponent.vue';
+import BreadCrumbs from '@/components/BreadCrumbs.vue';
 export default {
     components: {
         FooterComponent,
         HeaderNav2,
-        notiComponent
+        notiComponent,
+        BreadCrumbs
     }
 }
 </script>
@@ -61,6 +65,13 @@ span{
 body{
     margin-top: 30px;
     padding-inline: 200px;
+}
+.breadContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 15px;
+    margin-bottom: 20px
 }
 .notList{
     display: flex;

@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "add": "^2.0.6",
     "apexcharts": "^4.7.0",
     "swiper": "^11.2.6",
+    "v-calendar": "^3.1.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1",
     "vue-toastification": "^2.0.0-rc.5",
