@@ -213,26 +213,25 @@ const routes = [
     name: 'Message4',
     component: Message4,
   },
-  
-  {
-  path: '/landlord',
-  name: 'Landlord Page',
-  component: LandlordPage,
-  redirect: { name: 'Listing Page' },
-  children: [
-    {
-      path: 'listing',
-      name: 'Listing Page',
-      component: ListingPage
-    },
-    {
-      path: 'listing/listing-editor',
-      name: 'Listing Editor',
-      component: ListingEditorPage
-    }
-  ]
-}
 
+  {
+    path: '/landlord',
+    name: 'Landlord Page',
+    component: LandlordPage,
+    redirect: { name: 'Listing Page' },
+    children: [
+      {
+        path: 'listing',
+        name: 'Listing Page',
+        component: ListingPage
+      },
+      {
+        path: 'listing/listing-editor',
+        name: 'Listing Editor',
+        component: ListingEditorPage
+      }
+    ]
+  },
   {
     path: '/wishlist',
     name: 'Wishlist Page',
