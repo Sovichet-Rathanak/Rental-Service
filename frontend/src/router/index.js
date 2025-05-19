@@ -28,6 +28,12 @@ import ListingReview from '@/views/HostViews/ListingReview.vue'
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
 import EarningChartPage from '@/views/EarningChartPage.vue'
 import CalendarPage from '@/components/bannerComponents/landlord/calendarPage.vue'
+import Message from '@/views/Message.vue'
+import Message1 from '@/views/Message1.vue'
+import Message2 from '@/views/Message2.vue'
+import Message3 from '@/views/Message3.vue'
+import Message4 from '@/views/Message4.vue'
+
 
 const routes = [
   {
@@ -178,6 +184,31 @@ const routes = [
     name: 'landlordCalendar',
     component: CalendarPage
   }
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message,
+  },
+  {
+    path: '/message1',
+    name: 'Message1',
+    component: Message1,
+  },
+    {
+    path: '/message2',
+    name: 'Message2',
+    component: Message2,
+  },
+  {
+    path: '/message3',
+    name: 'Message3',
+    component: Message3,
+  },
+  {
+    path: '/message4',
+    name: 'Message4',
+    component: Message4,
+  },
 ]
 
 const router = createRouter({
