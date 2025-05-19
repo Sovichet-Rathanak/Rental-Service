@@ -24,7 +24,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .title {
   font-weight: bold;
   margin: 0 120px -30px 120px;

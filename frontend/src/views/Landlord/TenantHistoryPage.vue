@@ -92,7 +92,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .overview::-webkit-scrollbar{
     display: none;
 }

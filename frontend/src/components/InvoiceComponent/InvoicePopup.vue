@@ -101,7 +101,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .popupOverlay{
     position: fixed;
     display: flex; 

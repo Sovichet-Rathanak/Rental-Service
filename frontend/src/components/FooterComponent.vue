@@ -33,7 +33,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .footer-container {
     display: flex;
     border-top: 1px solid rgba(128, 128, 128, 0.508);
