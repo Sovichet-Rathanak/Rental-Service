@@ -4,6 +4,10 @@
     </header>
 
     <main>
+        <div class="back">
+            <bread-crumbs-vue></bread-crumbs-vue>
+        </div>
+        
         <div class="containerAcc2">
             <!-- Top left -->
             <div class="wrap">
@@ -57,21 +61,32 @@
 <script>
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '../components/headerComponents/HeaderNav2.vue';
+import BreadCrumbsVue from '../components/BreadCrumbs.vue';
 
 export default {
     components: {
         HeaderNav2,
-        FooterComponent
+        FooterComponent,
+        BreadCrumbsVue
     }
 }
 </script>
 
 <style scoped>
+main{
+    padding-inline: 150px;
+}
+.back{
+    display: flex;
+    align-items: start;
+    padding-inline: 200px;
+}
 .containerAcc2 {
     padding: 25px 230px 0px 230px;
     display: flex;
     align-items: center;
     gap: 90px;
+    padding-inline: 150px;
 }
 
 /* Top left */

@@ -65,7 +65,7 @@
 
 
 <script>
-import PropertyCard from './PropertyCard.vue';
+import PropertyCard from '../PropertyCard.vue';
 
 export default {
   components: {
