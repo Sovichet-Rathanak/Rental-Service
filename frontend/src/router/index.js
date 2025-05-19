@@ -91,7 +91,7 @@ const routes = [
     name: 'personalInfo',
     component: PersonalInfoPage,
   },
-   {
+  {
     path: '/helpCenter',
     name: 'Help Center',
     component: HelpCenterPage,
@@ -105,7 +105,7 @@ const routes = [
     path: '/hosting-steps',
     name: 'Hosting Steps',
     component: HostingSteps,
-    redirect: {name: 'Step Overview'},
+    redirect: { name: 'Step Overview' },
     children: [
       {
         path: 'overview',
@@ -154,7 +154,7 @@ const routes = [
       },
       {
         path: 'description',
-        name:'Description',
+        name: 'Description',
         component: PropertyDesc
       },
       {
@@ -170,7 +170,7 @@ const routes = [
       {
         path: 'yearly-price',
         name: 'Yearly Price',
-        component: YearlyPrice 
+        component: YearlyPrice
       },
       {
         path: 'listing-review',
@@ -183,7 +183,7 @@ const routes = [
     path: '/landlordCalendar',
     name: 'landlordCalendar',
     component: CalendarPage
-  }
+  },
   {
     path: '/message',
     name: 'Message',
@@ -194,7 +194,7 @@ const routes = [
     name: 'Message1',
     component: Message1,
   },
-    {
+  {
     path: '/message2',
     name: 'Message2',
     component: Message2,
