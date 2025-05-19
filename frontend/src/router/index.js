@@ -37,6 +37,7 @@ import Message4 from '@/views/Message4.vue'
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
 import LandlordPage from '@/views/Landlord/LandlordPage.vue'
 import ListingPage from '@/components/Landlord/LisitngPage.vue'
+import WishlistPage from '@/views/WishlistPage.vue'
 
 const routes = [
   {
@@ -232,6 +233,11 @@ const routes = [
   ]
 }
 
+  {
+    path: '/wishlist',
+    name: 'Wishlist Page',
+    component: WishlistPage,
+  }
 ]
 
 const router = createRouter({

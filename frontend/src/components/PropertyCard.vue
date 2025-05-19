@@ -1,37 +1,56 @@
 <template>
-    <div class="property-card" @click="goToDetailPage">
-        <div class="image-container">
-            <img src="../assets/images/property_images/property1.jpeg" alt="property image">
-            <button class="fave-btn">
-                <Icon icon="si:heart-duotone" width="32" height="32"  style="color: #fff" />
-            </button>
-        </div>
-        <div class="info">
-            <div class="info-heading">
-                <h3 class="rent">$3000/month</h3>
-                <div class="property-rating">
-                    <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
-                    <h3>4.5</h3>
-                </div>
-            </div>
-            <div class="info-location">
-                <h3>BKK1, Chamkarmon,
-                    Phnom Penh</h3>
-            </div>
-        </div>
+  <div class="property-card" @click="goToDetailPage">
+    <div class="image-container">
+      <img :src="product.image" alt="property image" />
+      <button class="fave-btn" @click.stop="handleWishlist">
+        <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32" :style="{color: isWishlisted ? '#08FF10' : '#fff'}" />
+      </button>
     </div>
+    <div class="info">
+      <div class="info-heading">
+        <h3 class="rent">{{ product.price }}</h3>
+        <div class="property-rating">
+          <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
+          <h3>{{ product.rating }}</h3>
+        </div>
+      </div>
+      <div class="info-location">
+        <h3>{{product.location}}</h3>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script>
-  export default{
-    methods: {
-      goToDetailPage(){
-        this.$router.push({name: 'Accommodation'})
-      }
+import { mapActions, mapState } from 'pinia'
+import { useWishlistStore } from '@/stores/wishlist'
+
+export default {
+  props: {
+    product: {
+      type: Object,
+      require: true
     }
-  }
+  },
+  computed: {
+    ...mapState(useWishlistStore, ['items']),
+    isWishlisted() {
+      return this.items.some(item => item.id === this.product.id)
+    }
+  },
+  methods: {
+    goToDetailPage() {
+      this.$router.push({ name: 'Accommodation' })
+    },
+
+    ...mapActions(useWishlistStore, ['toggleWishlist']),
+    handleWishlist() {
+      this.toggleWishlist(this.product)
+    }  
+  },   
+}
 </script>
+
 
 <style scoped>
 .property-card{
