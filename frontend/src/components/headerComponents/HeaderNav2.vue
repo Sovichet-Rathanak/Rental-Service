@@ -34,6 +34,7 @@ export default {
 
 <style scoped>
 .nav-container {
+    margin: 30px 0px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

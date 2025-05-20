@@ -1,4 +1,5 @@
 <template>
+
     <body>
         <header>
             <HeaderNav2></HeaderNav2>
@@ -8,14 +9,14 @@
             <div class="current-rent">
                 <h1 style="margin: 0px 0px 20px 0px;">Currently Renting</h1>
                 <div class="card-container">
-                    <PropertyCard></PropertyCard>
+                    <property-card v-for="property in propertyList" :key="property.id" :product="property" />
                 </div>
             </div>
 
             <div class="past-rent">
                 <h1 style="margin: 30px 0px 20px 0px;">Renting History</h1>
                 <div class="card-container">
-                    <PropertyCard></PropertyCard>
+                    <property-card v-for="property in propertyList" :key="property.id" :product="property" />
                 </div>
             </div>
         </main>
@@ -37,6 +38,13 @@ export default {
         BreadCrumbs,
         FooterComponent,
         PropertyCard
+    },
+    data() {
+        return {
+            propertyList: [
+                { id: 1, price: '$3000/month', rating: '4.5', location: 'BKK1, Chamkarmon, Phnom Penh', image: '/src/assets/images/property_images/property1.jpeg' },
+            ]
+        }
     }
 }
 </script>

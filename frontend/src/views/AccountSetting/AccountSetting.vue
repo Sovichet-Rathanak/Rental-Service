@@ -21,7 +21,7 @@
                 <span>Keep track of lanlord approvals, and rental activities.</span>
             </div>
 
-            <div class="personalInfo">
+            <div class="personalInfo" @click="goToPage('Personal Information')">
                 <Icon icon="grommet-icons:contact-info" width="40" height="40" />
                 <h2>Personal Info</h2>
                 <span>Provide personal details and how we can reach you.</span>
@@ -33,7 +33,7 @@
                 <span>Review payments, payouts, coupons, and gift cards.</span>
             </div>
 
-            <div class="loginSecurity">
+            <div class="loginSecurity" @click="goToPage('Login and Security')">
                 <Icon icon="carbon:security" width="40" height="40" />
                 <h2>Login & Security</h2>
                 <span>Update your password and secure your account.</span>

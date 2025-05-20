@@ -3,7 +3,7 @@
         <HeaderNav2></HeaderNav2>
     </header>
     <main>
-        <BreadCrumbs></BreadCrumbs>
+        <BreadCrumbs style="margin: 30px 0px;"></BreadCrumbs>
         <h1 style="font-weight: bold; margin-bottom: 50px;">About Your Payments</h1>
         <div class="content-container">
             <div class="left-content">
@@ -176,10 +176,6 @@ export default {
 </script>
 
 <style scoped>
-header {
-    margin: 30px 0px;
-}
-
 main {
     padding-inline: 300px;
     display: flex;

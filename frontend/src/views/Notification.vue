@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import linaImage from '@/assets/images/message/lina.jpg'; // Import image directly
-
+import linaImage from '@/assets/images/message/lina.jpg'; 
 export default {
   data() {
     return {

@@ -36,11 +36,11 @@ export default{
   font-size: 20px;
 
   /* Without Tenant */
-  grid-template-columns: 45px 200px 200px 170px 205px 170px 170px 115px 170px;
+  grid-template-columns: .2fr 1.5fr 1.5fr 2.5fr repeat(5, 1fr);
 }
 
 .title.withTenant {
-  grid-template-columns: 45px 200px 200px 200px 170px 205px 170px 170px 115px 170px;
+  grid-template-columns: 10px 1fr 1fr 1.5fr 2.5fr repeat(5, 1fr);
 }
 
 </style>

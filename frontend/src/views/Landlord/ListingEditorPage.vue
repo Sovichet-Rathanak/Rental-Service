@@ -1,5 +1,4 @@
 <template>
-
     <main>
         <div class="header" >
             <router-link to="/landlord"><Icon icon="material-symbols:arrow-back-rounded" width="37" height="37" class="icon"></Icon></router-link>

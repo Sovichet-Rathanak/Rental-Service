@@ -1,49 +1,57 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/components/headerComponents/LoginPage.vue' // Full path with extension
+import Login from '@/components/headerComponents/LoginPage.vue'
 import HomePage from '@/views/HomePage.vue'
-import AccountSetting from '@/views/AccountSetting.vue'
+import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
-import PersonalInfoPage from '@/views/PersonalInfoPage.vue'
-import NotificationPage from '@/views/NotificationPage.vue'
-import InvoicePage from '@/views/InvoicePage.vue'
-import RentingList from '@/views/RentingList.vue'
-import PaymentPage from '@/views/PaymentRelated/PaymentPage.vue'
-import ManagePayment from '@/views/PaymentRelated/ManagePayment.vue'
-import HostingSteps from '@/views/HostViews/HostingSteps.vue'
-import StepOverview from '@/views/HostViews/StepOverview.vue'
-import AboutPlace from '@/views/HostViews/AboutPlace.vue'
-import AccommodationType from '@/views/HostViews/AccommodationType.vue'
-import PlaceLocation from '@/views/HostViews/PlaceLocation.vue'
-import FloorPlan from '@/views/HostViews/FloorPlan.vue'
-import StandOut from '@/views/HostViews/StandOut.vue'
-import Amenities from '@/views/HostViews/Amenities.vue'
-import PropertyPhoto from '@/views/HostViews/PropertyPhoto.vue'
-import PropertyTitle from '@/views/HostViews/PropertyTitle.vue'
-import PropertyDesc from '@/views/HostViews/PropertyDesc.vue'
-import FinishPublish from '@/views/HostViews/FinishPublish.vue'
-import MonthlyPrice from '@/views/HostViews/MonthlyPrice.vue'
-import YearlyPrice from '@/views/HostViews/YearlyPrice.vue'
-import ListingReview from '@/views/HostViews/ListingReview.vue'
+import PersonalInfoPage from '@/views/AccountSetting/PersonalInfoPage.vue'
+import NotificationPage from '@/views/AccountSetting/NotificationPage.vue'
+import InvoicePage from '@/views/AccountSetting/InvoicePage.vue'
+import RentingList from '@/views/AccountSetting/RentingList.vue'
+import PaymentPage from '@/views/AccountSetting/PaymentRelated/PaymentPage.vue'
+import ManagePayment from '@/views/AccountSetting/PaymentRelated/ManagePayment.vue'
+
+//Hosting Steps
+import HostingSteps from '@/views/Landlord/HostingSteps/HostingSteps.vue'
+import StepOverview from '@/views/Landlord/HostingSteps/StepOverview.vue'
+import AboutPlace from '@/views/Landlord/HostingSteps/AboutPlace.vue'
+import AccommodationType from '@/views/Landlord/HostingSteps/AccommodationType.vue'
+import PlaceLocation from '@/views/Landlord/HostingSteps/PlaceLocation.vue'
+import FloorPlan from '@/views/Landlord/HostingSteps/FloorPlan.vue'
+import StandOut from '@/views/Landlord/HostingSteps/StandOut.vue'
+import Amenities from '@/views/Landlord/HostingSteps/Amenities.vue'
+import PropertyPhoto from '@/views/Landlord/HostingSteps/PropertyPhoto.vue'
+import PropertyTitle from '@/views/Landlord/HostingSteps/PropertyTitle.vue'
+import PropertyDesc from '@/views/Landlord/HostingSteps/PropertyDesc.vue'
+import FinishPublish from '@/views/Landlord/HostingSteps/FinishPublish.vue'
+import MonthlyPrice from '@/views/Landlord/HostingSteps/MonthlyPrice.vue'
+import YearlyPrice from '@/views/Landlord/HostingSteps/YearlyPrice.vue'
+import ListingReview from '@/views/Landlord/HostingSteps/ListingReview.vue'
+
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
-import EarningChartPage from '@/views/EarningChartPage.vue'
-import CalendarPage from '@/components/bannerComponents/landlord/calendarPage.vue'
+import EarningChartPage from '@/views/Landlord/EarningChartPage.vue'
+import Calendar from '@/views/Landlord/Calendar.vue'
 import Message from '@/views/Message.vue'
 import Message1 from '@/views/Message1.vue'
 import Message2 from '@/views/Message2.vue'
 import Message3 from '@/views/Message3.vue'
 import Message4 from '@/views/Message4.vue'
-
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
 import LandlordPage from '@/views/Landlord/LandlordPage.vue'
 import ListingPage from '@/components/Landlord/LisitngPage.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
+import LoginAndSecurity from '@/views/AccountSetting/LoginAndSecurity.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: HomePage,
+  },
+  {
+    path: '/login-and-security',
+    name: 'Login and Security',
+    component: LoginAndSecurity
   },
   {
     path: '/login',
@@ -91,19 +99,14 @@ const routes = [
     component: NotificationPage,
   },
   {
-    path: '/personalInfo',
-    name: 'personalInfo',
+    path: '/personal-info',
+    name: 'Personal Information',
     component: PersonalInfoPage,
   },
   {
-    path: '/helpCenter',
+    path: '/help-center',
     name: 'Help Center',
     component: HelpCenterPage,
-  },
-  {
-    path: '/earningChart',
-    name: 'earningChart',
-    component: EarningChartPage,
   },
   {
     path: '/hosting-steps',
@@ -184,16 +187,6 @@ const routes = [
     ]
   },
   {
-    path: '/landlordCalendar',
-    name: 'landlordCalendar',
-    component: CalendarPage
-  },
-  {
-    path: '/message',
-    name: 'Message',
-    component: Message,
-  },
-  {
     path: '/message1',
     name: 'Message1',
     component: Message1,
@@ -213,7 +206,11 @@ const routes = [
     name: 'Message4',
     component: Message4,
   },
-
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message,
+  },
   {
     path: '/landlord',
     name: 'Landlord Page',
@@ -229,7 +226,17 @@ const routes = [
         path: 'listing/listing-editor',
         name: 'Listing Editor',
         component: ListingEditorPage
-      }
+      },
+      {
+        path: 'earning',
+        name: 'Earning',
+        component: EarningChartPage,
+      },
+      {
+        path: 'calendar',
+        name: 'Calendar',
+        component: Calendar
+      },
     ]
   },
   {

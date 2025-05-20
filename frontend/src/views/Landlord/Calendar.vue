@@ -1,6 +1,5 @@
 <template>
-    <HeaderNav2></HeaderNav2>
-    <body>
+    <div class="container">
         <v-calendar 
             @dayclick="onDayClick" 
             :attributes="attributes" 
@@ -8,19 +7,19 @@
             expanded 
             :rows="2" 
         />
-    </body>
+    </div>
     <paymentOverview :showPayment="togglePaymentPop" @close="handlePayment"></paymentOverview>
 </template>
 
 <script>
-import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
-import paymentOverview from './paymentOverview.vue';
+import HeaderNav3 from '@/components/Landlord/HeaderNav3.vue';
+import paymentOverview from '@/components/bannerComponents/landlord/paymentOverview.vue';
 import { ref, computed } from 'vue';
 
 export default {
     name: "calendar-page",
     components: {
-        HeaderNav2,
+        HeaderNav3,
         paymentOverview
     },
     data() {
@@ -69,13 +68,15 @@ export default {
 
 
 <style scoped>
-body{
-    padding-inline: 190px;
+.container{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 3% 0px;
 }
 ::v-deep(.vc-day-content){
     font-size: 25px !important;
     font-family:  'Airbnb Font';
-    padding: 30px !important;
+    padding: 40px !important;
 }
 ::v-deep(.vc-title){
     margin-left: 50px !important;
@@ -88,11 +89,11 @@ body{
     padding: 50px;
 }
 ::v-deep(.highlight-today){
-    padding: 20px !important;
+    padding: 40px !important;
     background-color: #3B82F6 !important;
 }
 ::v-deep(.highlight-payment){
-    padding: 20px !important;
+    padding: 40px !important;
     background-color: green !important;
 }
 </style>

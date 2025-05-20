@@ -5,9 +5,9 @@
 
     <main>
         <div class="back">
-            <bread-crumbs-vue></bread-crumbs-vue>
+            <BreadCrumbs style="margin: 30px 0px; align-self: flex-start;" />
         </div>
-        
+
         <div class="containerAcc2">
             <!-- Top left -->
             <div class="wrap">
@@ -61,26 +61,28 @@
 <script>
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '../components/headerComponents/HeaderNav2.vue';
-import BreadCrumbsVue from '../components/BreadCrumbs.vue';
+import BreadCrumbs from '../components/BreadCrumbs.vue';
 
 export default {
     components: {
         HeaderNav2,
         FooterComponent,
-        BreadCrumbsVue
+        BreadCrumbs
     }
 }
 </script>
 
 <style scoped>
-main{
+main {
     padding-inline: 150px;
 }
-.back{
+
+.back {
     display: flex;
     align-items: start;
     padding-inline: 200px;
 }
+
 .containerAcc2 {
     padding: 25px 230px 0px 230px;
     display: flex;
