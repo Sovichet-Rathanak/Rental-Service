@@ -41,6 +41,7 @@ import LandlordPage from '@/views/Landlord/LandlordPage.vue'
 import ListingPage from '@/components/Landlord/LisitngPage.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
 import LoginAndSecurity from '@/views/AccountSetting/LoginAndSecurity.vue'
+import AdminDashboard from '@/views/AdminDashboard.vue' 
 
 const routes = [
   {
@@ -243,6 +244,11 @@ const routes = [
     path: '/wishlist',
     name: 'Wishlist Page',
     component: WishlistPage,
+  },
+  {
+    path: '/adminDashboard',
+    name: 'Admin Dashboard',
+    component: AdminDashboard,
   }
 ]
 
