@@ -1,21 +1,19 @@
 <template>
-  <div class="dashboard-grid">
-    <TotalCard
-      v-for="stat in stats"
-      :key="stat.label"
-      :label="stat.label"
-      :value="stat.value"
-      :icon="stat.icon"
-    />
-  </div>
+  <AdminHeader />
+  <div class="dashboard-wrapper">
+    <div class="dashboard-grid">
+      <TotalCard v-for="stat in stats" :key="stat.label" :label="stat.label" :value="stat.value" :icon="stat.icon" />
+    </div>
 
-  <div class="chart-grid">
-    <TotalUserChart />
-    <TotalPaymentChart />
-    <TotalRevenueChart />
-    <LocationChart />
+    <div class="chart-grid">
+      <TotalUserChart />
+      <TotalPaymentChart />
+      <TotalRevenueChart />
+      <LocationChart />
+    </div>
   </div>
 </template>
+
 
 
 <script setup>
@@ -24,6 +22,7 @@ import TotalUserChart from '@/components/Admin/TotalUserChart.vue'
 import TotalPaymentChart from '@/components/Admin/TotalPaymentChart.vue'
 import TotalRevenueChart from '@/components/Admin/TotalRevenueChart.vue'
 import LocationChart from '@/components/Admin/LocationChart.vue'
+import AdminHeader from '@/components/headerComponents/AdminHeader.vue'
 
 const stats = [
   { label: 'Total Houses', value: 369, icon: 'solar:home-bold' },
@@ -36,25 +35,31 @@ const stats = [
 
 
 <style scoped>
+.dashboard-wrapper {
+  max-width: 1730px;
+  margin: 0 auto;
+
+}
+
+.dashboard-grid,
+.chart-grid {
+  padding: 0 24px;
+}
+
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
   gap: 15px;
   justify-content: center;
   align-items: center;
-  padding: 50px 100px 20px 100px;
+  padding-top: 50px;
+  padding-bottom: 20px;
 }
 
 .chart-grid {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-around; */
-  padding: 0 100px 50px 100px;
-  gap: 20px;
+  gap: 15px;
+  padding-bottom: 50px;
 }
-
-/* .chart-grid > * {
-  flex: 1;
-  max-width: 800px;
-} */
 </style>

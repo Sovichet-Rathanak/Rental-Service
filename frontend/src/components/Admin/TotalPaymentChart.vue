@@ -96,8 +96,8 @@ const chartOptions = {
     border-radius: 16px;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    padding: 16px 12px 8px 12px;
-    width: 1140px;
+    padding: 16px 0px 8px 0px;
+    width: 1215px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,7 +107,8 @@ const chartOptions = {
     width: 100%;
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
+    margin: 6px;
+
 }
 
 .chart-title {
@@ -116,6 +117,7 @@ const chartOptions = {
     color: #222;
     display: flex;
     align-items: center;
+    margin-left: 20px;
 }
 
 .chart-icon {
@@ -144,12 +146,13 @@ const chartOptions = {
     font-size: 1rem;
     color: #222;
     font-weight: 500;
+    margin: 10px 30px 0px 30px;
 }
 
 .total-amount {
     font-size: 1.2rem;
     font-weight: 600;
-    margin-top: 2px;
+    margin: 10px 30px 5px 30px;
 }
 
 .total-amount.expected {

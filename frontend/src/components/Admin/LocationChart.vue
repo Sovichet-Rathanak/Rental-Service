@@ -52,9 +52,9 @@ const chartOptions = {
     border-radius: 16px;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    padding: 20px;
+    padding: 20px 10px 10px 0px;
     width: 100%;
-    max-width: 420px;
+    max-width: 505px;
 }
 
 .chart-header {
