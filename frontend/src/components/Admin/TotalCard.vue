@@ -7,7 +7,7 @@
                 </span>
                 {{ label }}
             </span>
-            <a href="#" class="link">View</a>
+            <router-link :to="goToPage"><div class="link" >View</div></router-link>
         </div>
         <hr class="hr" />
         <div class="value">{{ value }}</div>
@@ -20,7 +20,8 @@ export default {
     props: {
         label: String,
         value: [String, Number],
-        icon: String
+        icon: String,
+        goToPage: String
     }
 }
 </script>

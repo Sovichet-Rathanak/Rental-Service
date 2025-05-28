@@ -66,7 +66,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 200px 0 200px;
+    /* padding: 10px 200px 0 200px; */
 }
 .icons{
     display: flex;
@@ -86,7 +86,7 @@ export default {
 .item{
     display: grid;
     grid-template-columns: repeat(auto, 2);
-    padding: 0px 200px;
+    /* padding: 0px 200px; */
     gap: 110px;
 }
 .box{

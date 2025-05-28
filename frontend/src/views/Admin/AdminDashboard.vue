@@ -1,8 +1,7 @@
 <template>
-  <AdminHeader />
   <div class="dashboard-wrapper">
     <div class="dashboard-grid">
-      <TotalCard v-for="stat in stats" :key="stat.label" :label="stat.label" :value="stat.value" :icon="stat.icon" />
+      <TotalCard v-for="stat in stats" :key="stat.label" :label="stat.label" :value="stat.value" :icon="stat.icon" :goToPage="{name: stat.route}"/>
     </div>
 
     <div class="chart-grid">
@@ -22,14 +21,13 @@ import TotalUserChart from '@/components/Admin/TotalUserChart.vue'
 import TotalPaymentChart from '@/components/Admin/TotalPaymentChart.vue'
 import TotalRevenueChart from '@/components/Admin/TotalRevenueChart.vue'
 import LocationChart from '@/components/Admin/LocationChart.vue'
-import AdminHeader from '@/components/headerComponents/AdminHeader.vue'
 
 const stats = [
-  { label: 'Total Houses', value: 369, icon: 'solar:home-bold' },
-  { label: 'Total rooms', value: 231, icon: 'mdi:bed' },
-  { label: 'Total Landlords', value: 320, icon: 'material-symbols:contacts-product' },
-  { label: 'Total Tenants', value: 500, icon: 'material-symbols:contacts-product' },
-  { label: 'Total Revenues', value: '610', icon: 'tdesign:location-1-filled' }
+  { label: 'Total Houses', value: 369, icon: 'solar:home-bold', route: 'Admin Dashboard House' },
+  { label: 'Total rooms', value: 231, icon: 'mdi:bed', route: 'Admin Dashboard Room' },
+  { label: 'Total Landlords', value: 320, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Landlord' },
+  { label: 'Total Tenants', value: 500, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Tenant' },
+  { label: 'Total Revenues', value: 610, icon: 'tdesign:location-1-filled' }
 ]
 </script>
 

@@ -8,26 +8,26 @@
       </div>
     </div>
 
-    <nav class="nav">
-      <router-link to="/adminDashboard" class="nav-link" active-class="active">Dashboard</router-link>
-      <router-link to="/admin/house" class="nav-link" active-class="active">Houses</router-link>
-      <router-link to="/admin/room" class="nav-link" active-class="active">Rooms</router-link>
-      <router-link to="/admin/lanlord" class="nav-link" active-class="active">Landlords</router-link>
-      <router-link to="/admin/Tenant" class="nav-link" active-class="active">Tenants</router-link>
-      <router-link to="/admin/message" class="nav-link" active-class="active">Messages</router-link>
-      <router-link to="/admin/promotion" class="nav-link" active-class="active">Promotion</router-link>
-      <router-link to="/admin/invoice" class="nav-link" active-class="active">Invoices</router-link>
+    <nav class="item-middle">
+      <router-link to="/admin/dashboard" class="nav-item" active-class="active">Dashboard</router-link>
+      <router-link to="/admin/house" class="nav-item" active-class="active">Houses</router-link>
+      <router-link to="/admin/room" class="nav-item" active-class="active">Rooms</router-link>
+      <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
+      <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>
+      <router-link to="/admin/message4" class="nav-item" active-class="active">Messages</router-link>
+      <!-- <router-link to="/admin/promotion" class="nav-item" active-class="active">Promotion</router-link> -->
+      <router-link to="/admin/invoice" class="nav-item" active-class="active">Invoices</router-link>
     </nav>
 
     <div class="nav-right">
-      <button class="notification-btn">
-        <Icon icon="ic:outline-notifications" width="40" height="40" />
-        <span class="notification-dot"></span>
-      </button>
+      <div class="circle notification-btn">
+        <Icon icon="iconamoon:notification-light" width="30" height="30"></Icon>
+        <div class="notification-dot"></div>
+      </div>
       <div class="admin-dropdown">
-        <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
-        <span class="admin-name">Admin</span>
         <Icon icon="material-symbols:menu" width="20" height="20" />
+        <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
+        <!-- <span class="admin-name">Admin</span> -->
       </div>
     </div>
   </header>
@@ -81,31 +81,66 @@ export default {
   color: #6b7280;
 }
 
-.nav{
+.item-middle {
+  margin: 0 auto;
+  justify-content: space-between;
+  width: 65%;
   display: flex;
-  gap: 30px;
-  justify-content: center;
-  flex: 1;
+  gap: 40px;
 }
 
-.nav-link {
-  font-size: 18px;
+.nav-item {
+  font-size: 22px;
   font-weight: 500;
-  color: #374151;
-  text-decoration: none;
-  position: relative;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-  color: #111827;
-}
-
-.nav-link.active {
   color: black;
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-item span {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: black;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 80%;
+}
+
+.nav-item.active {
+  color: #000;
   font-weight: 600;
+}
+
+.nav-item.active::after {
+  width: 80%;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  z-index: 0;
 }
 
 .nav-right {
@@ -114,29 +149,50 @@ export default {
   gap: 20px;
 }
 
-.notification-btn {
-  background: none;
-  border: none;
+.circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  transition: all 0.3s ease;
   position: relative;
+}
+
+.notification-btn {
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s ease;
 }
 
 .notification-btn:hover {
-  background-color: #f3f4f6;
+  border-color: black;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.notification-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  background-color: red;
-  border-radius: 50%;
-} 
+.notification-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 
 .admin-dropdown {
   display: flex;

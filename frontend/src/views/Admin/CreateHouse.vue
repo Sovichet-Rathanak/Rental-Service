@@ -1,51 +1,56 @@
 <template>
   <div class="container">
-
+    <div class="top">
     <ImageInForm 
       title="Create House"
       imageUrl="/src/assets/images/property_images/property1.jpeg"
       text="Add Images"
+      :backRoute="{ name: 'Admin Dashboard House'}"
+      @image-uploaded="handleImage"
     ></ImageInForm>
+
+    <button>Save</button>
+    </div>
+
     <DynamicForm
       class="form"
       icon="material-symbols:arrow-back-rounded"
-      :title="'Create Room'"
       :inputSet="house1Inputs"
       @submit="handleFormSubmit"  
     />
       <div class="texT">Equipment Status:</div>
         <div class="buttons-container">
-            <StepButton :active="amenity_type === 'wifi'" icon="material-symbols:wifi-rounded"
+            <StepButton :active="isAmenitySelected('wifi')" icon="material-symbols:wifi-rounded"
                 label="WIFI" @setActive="() => setActive('wifi')">
             </StepButton>
-            <StepButton :active="amenity_type === 'tv'" icon="material-symbols-light:tv-outline"
+            <StepButton :active="isAmenitySelected('tv')" icon="material-symbols-light:tv-outline"
                 label="TV" @setActive="() => setActive('tv')">
             </StepButton>
-            <StepButton :active="amenity_type === 'kitchen'" icon="hugeicons:oven"
+            <StepButton :active="isAmenitySelected('kitchen')" icon="hugeicons:oven"
                 label="Kitchen" @setActive="() => setActive('kitchen')">
             </StepButton>
-            <StepButton :active="amenity_type === 'smokeAlarm'" icon="tabler:alarm-smoke"
+            <StepButton :active="isAmenitySelected('smokeAlarm')" icon="tabler:alarm-smoke"
                 label="Smoke alarm" @setActive="() => setActive('smokeAlarm')">
             </StepButton>
-            <StepButton :active="amenity_type === 'firstAidKit'" icon="jam:first-aid"
+            <StepButton :active="isAmenitySelected('firstAidKit')" icon="jam:first-aid"
                 label="First aid kit" @setActive="() => setActive('firstAidKit')">
             </StepButton>
-            <StepButton :active="amenity_type === 'washer'" icon="iconoir:washing-machine"
+            <StepButton :active="isAmenitySelected('washer')" icon="iconoir:washing-machine"
                 label="Washer" @setActive="() => setActive('washer')">
             </StepButton>
-            <StepButton :active="amenity_type === 'parking'" icon="fluent:vehicle-car-parking-16-regular"
+            <StepButton :active="isAmenitySelected('parking')" icon="fluent:vehicle-car-parking-16-regular"
                 label="Parking" @setActive="() => setActive('parking')">
             </StepButton>
-            <StepButton :active="amenity_type === 'airConditioning'" icon="mingcute:air-condition-line"
+            <StepButton :active="isAmenitySelected('airConditioning')" icon="mingcute:air-condition-line"
                 label="Air Conditioning" @setActive="() => setActive('airConditioning')">
             </StepButton>
-            <StepButton :active="amenity_type === 'carboneMonoxideAlarn'" icon="carbon:alarm-subtract"
+            <StepButton :active="isAmenitySelected('carboneMonoxideAlarn')" icon="carbon:alarm-subtract"
                 label="Carbon monoxide alarm" @setActive="() => setActive('carboneMonoxideAlarn')">
             </StepButton>
-            <StepButton :active="amenity_type === 'fireExtinguisher'" icon="lucide:fire-extinguisher"
+            <StepButton :active="isAmenitySelected('fireExtinguisher')" icon="lucide:fire-extinguisher"
                 label="Fire extinguisher" @setActive="() => setActive('fireExtinguisher')">
             </StepButton>
-            <StepButton :active="amenity_type === 'pool'" icon="icon-park-outline:swimming-pool"
+            <StepButton :active="isAmenitySelected('pool')" icon="icon-park-outline:swimming-pool"
                 label="Pool" @setActive="() => setActive('pool')">
             </StepButton>
         </div>
@@ -87,7 +92,7 @@ export default {
         { key: "type", label: "Type", type: "text", placeholder: "Select type" },
       ],
 
-      amenity_type: null,
+      selectedAmenities: [],
     };
   },
   methods: {
@@ -96,13 +101,18 @@ export default {
     },
 
     setActive(type) {
-            if(this.amenity_type === type){ 
-                this.amenity_type = null
-            }else{
-                this.amenity_type = type;
-            }
-            console.log(this.amenity_type);
-        }
+      const index = this.selectedAmenities.indexOf(type);
+      if (index > 1 ) {
+        this.seclectedAmenities.splice(index, 1);
+      }else {
+        this.selectedAmenities.push(type);
+      }
+            
+    },
+
+    isAmenitySelected(type) {
+      return this.selectedAmenities.includes(type);
+    }
   },
 };
 </script>
@@ -111,6 +121,30 @@ export default {
 .container{
   display: flex;
   flex-direction: column;
+  padding: 10px 100px;
+  margin-bottom: 50px;
+}
+.top{
+  position: relative;
+}
+button{
+  position: absolute;
+  top: 7%;
+  right: 3%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background-color: #3E5EFF;
+  border-radius: 10px;
+  font-weight: bold;
+  color: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  text-decoration: none;
+  border: none;
+}
+button:hover{
+  background-color: #2335ff;
 }
 .texT {
   font-size: 22px;

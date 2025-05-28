@@ -7,7 +7,7 @@
       <router-link to="/landlord/calendar" class="nav-item" active-class="active">
         <span>Calendar</span>
       </router-link>
-      <router-link to="/message" class="nav-item" active-class="active">
+      <router-link to="landlord/message4" class="nav-item" active-class="active">
         <span>Message</span>
       </router-link>
       <router-link to="/landlord/earning" class="nav-item" active-class="active">
