@@ -3,10 +3,12 @@
     <div class="image-container">
       <img :src="product.image" alt="property image" />
       <button class="fave-btn" @click.stop="handleWishlist">
-        <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32" :style="{color: isWishlisted ? '#08FF10' : '#fff'}" />
+        <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32"
+          :style="{ color: isWishlisted ? '#08FF10' : '#fff' }" />
       </button>
     </div>
     <div class="info">
+      <h3 class="title" style="margin-bottom: 20px; width: 90%; flex-wrap: wrap;">{{ product.title }}</h3>
       <div class="info-heading">
         <h3 class="rent">{{ product.price }}</h3>
         <div class="property-rating">
@@ -15,7 +17,7 @@
         </div>
       </div>
       <div class="info-location">
-        <h3>{{product.location}}</h3>
+        <h4 class="location">{{ product.location }}</h4>
       </div>
     </div>
   </div>
@@ -46,81 +48,87 @@ export default {
     ...mapActions(useWishlistStore, ['toggleWishlist']),
     handleWishlist() {
       this.toggleWishlist(this.product)
-    }  
-  },   
+    }
+  },
 }
 </script>
 
 
 <style scoped>
-.property-card{
-  height: 25.625em;
-  border-radius: 24px;
+.property-card {
+  height: 25rem;
+  border-radius: 12px;
   box-sizing: border-box;
   background-color: white;
   overflow: hidden;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .image-container {
   width: 100%;
-  height: 75%;
+  height: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-bottom: 10px;
 }
 
-.fave-btn{
-    right: 10px;
-    top: 10px;
-    position: absolute;
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
+.fave-btn {
+  right: 10px;
+  top: 10px;
+  position: absolute;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
 }
 
 .image-container img {
   width: 100%;
   height: 100%;
-  border-radius: 24px;
-  object-fit: cover; 
+  border-radius: 12px 12px 0px 0px;
+  object-fit: cover;
   pointer-events: none;
 }
 
-.info h3{
+.info {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.info h3 {
   font-size: 20px;
   margin: 0px;
   padding: 0px;
 }
 
-.info-heading{
+.info-heading {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.property-rating{
+.property-rating {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.info-location{
+.info-location {
+  overflow: hidden;
   width: 70%;
   font-weight: 700;
   color: #565656;
 }
 
-.property-card:hover {
-  transform: scale(1.05); 
-  transition: transform 0.3s ease;
+.location {
+  margin: 10px 0px 0px 0px;
 }
 
-.rent{
-    font-weight: bold;
+.rent {
+  font-weight: bold;
 }
 </style>

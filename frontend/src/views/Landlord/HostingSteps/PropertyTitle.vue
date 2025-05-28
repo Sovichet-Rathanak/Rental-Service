@@ -4,8 +4,8 @@
             <h1>Now, let's give your place a title</h1>
             <h2>Short titles work best. Have fun with it—you can always change it later.</h2>
         </hgroup>
-        <textarea name="property-title" id="property-title" maxlength="32" v-model="title"></textarea>
-        <span style="align-self: flex-start;">{{ characterCount +'/32' }}</span>
+        <textarea name="property-title" id="property-title" maxlength="18" v-model="title"></textarea>
+        <span style="align-self: flex-start;">{{ characterCount +'/18' }}</span>
     </div>
 </template>
 
