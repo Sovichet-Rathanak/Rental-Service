@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/components/headerComponents/LoginPage.vue'
 import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
@@ -10,6 +9,7 @@ import InvoicePage from '@/views/AccountSetting/InvoicePage.vue'
 import RentingList from '@/views/AccountSetting/RentingList.vue'
 import PaymentPage from '@/views/AccountSetting/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/AccountSetting/PaymentRelated/ManagePayment.vue'
+import AuthDisplay from '@/views/AuthScreen/AuthDisaply.vue'
 
 //Hosting Steps
 import HostingSteps from '@/views/Landlord/HostingSteps/HostingSteps.vue'
@@ -56,7 +56,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: AuthDisplay
   },
   {
     path: '/account-setting',

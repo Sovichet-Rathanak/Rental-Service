@@ -26,7 +26,6 @@ import CombinedHeader from '@/components/headerComponents/CombinedHeader.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import BannerAnimate from '@/components/bannerComponents/Banner-Animate.vue';
 import PropertyCard from '@/components/PropertyCard.vue';
-import LoginPage from '@/components/headerComponents/LoginPage.vue';
 import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 
 export default {
@@ -35,7 +34,6 @@ export default {
         FooterComponent,
         BannerAnimate,
         PropertyCard,
-        LoginPage,
         Rating,
     },
     data(){
