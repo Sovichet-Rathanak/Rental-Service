@@ -18,7 +18,6 @@ import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
 import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import invoicePopup from '@/components/InvoiceComponent/InvoicePopup.vue';
 import invoiceTable from '@/components/InvoiceComponent/InvoiceTable.vue';
-import InvoiceHeader from '@/components/InvoiceComponent/InvoiceHeader.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 
 export default {
@@ -27,7 +26,6 @@ export default {
     BreadCrumbs,
     invoicePopup,
     invoiceTable,
-    InvoiceHeader,
     FooterComponent
   },
   data() {

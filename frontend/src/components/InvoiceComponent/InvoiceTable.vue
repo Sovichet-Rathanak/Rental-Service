@@ -30,12 +30,19 @@
               {{ invoice.status }}
             </button>
           </td>
-          <td>
+          <td v-if="useTenantInvoice">
             <button :class="['actionBtn', invoice.action.toLowerCase().replace(/\s+/g, '')]"
               @click.stop="handleActionClick(invoice)">
               <Icon :icon="invoice.icon" width="23" height="23" />
               {{ invoice.action }}
             </button>
+          </td>
+          <td v-else>
+            <ActionButton
+              :index="index"
+              @edit-item="editItem"
+              @delete-item="deleteItem"
+            ></ActionButton>
           </td>
         </tr>
       </tbody>
@@ -44,7 +51,11 @@
 </template>
 
 <script>
+import ActionButton from '../Admin/ActionButton.vue';
 export default {
+  components: {
+    ActionButton
+  },
   props: {
     invoices: {
       type: Array,
@@ -53,6 +64,10 @@ export default {
     showTenantName: {
       type: Boolean,
       default: false
+    },
+    useTenantInvoice: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
@@ -61,8 +76,15 @@ export default {
     },
     handleActionClick(invoice) {
       this.$emit('action-click', invoice);
-    }
-  }
+    },
+    editItem(index) {
+      const row = this.rows[index];
+      this.$emit('edit-item', row);
+    },
+    deleteItem(index) {
+      this.$emit('delete-item', index);
+    },
+  },
 }
 </script>
 
@@ -86,7 +108,7 @@ thead {
 
 th {
   padding: 18px 20px;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   border-bottom: 2px solid #e0e0e0;
   font-size: 18px;
@@ -109,7 +131,7 @@ th {
 
 td {
   padding: 20px 20px;
-  text-align: left;
+  text-align: center;
   font-weight: 500;
   vertical-align: middle;
   height: 70px;
