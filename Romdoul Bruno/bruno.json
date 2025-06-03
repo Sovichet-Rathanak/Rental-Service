@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "name": "Romdoul Bruno",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "size": 0.00078582763671875,
+  "filesCount": 5,
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "http://localhost:3000/api"
+  }
+}
