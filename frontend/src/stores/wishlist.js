@@ -14,5 +14,6 @@ export const useWishlistStore = defineStore('wishlist', {
         this.items.splice(index, 1)
       }
     },
-  }
+  },
+  persist: true
 })
