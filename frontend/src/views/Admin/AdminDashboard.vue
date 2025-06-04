@@ -7,7 +7,7 @@
     <div class="chart-grid">
       <TotalUserChart />
       <TotalPaymentChart />
-      <TotalRevenueChart />
+      <TotalPropertyChart />
       <LocationChart />
     </div>
   </div>
@@ -19,7 +19,7 @@
 import TotalCard from '@/components/Admin/TotalCard.vue'
 import TotalUserChart from '@/components/Admin/TotalUserChart.vue'
 import TotalPaymentChart from '@/components/Admin/TotalPaymentChart.vue'
-import TotalRevenueChart from '@/components/Admin/TotalRevenueChart.vue'
+import TotalPropertyChart from '@/components/Admin/TotalPropertyChart.vue'
 import LocationChart from '@/components/Admin/LocationChart.vue'
 
 const stats = [

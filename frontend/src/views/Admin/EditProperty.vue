@@ -2,7 +2,7 @@
   <div class="container">
     <div class="top">
     <ImageInForm 
-      title="Edit House"
+      title="Edit Property"
       imageUrl="/src/assets/images/property_images/property1.jpeg"
       text="Add Images"
       :backRoute="{ name: 'Admin Dashboard House'}"

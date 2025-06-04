@@ -1,8 +1,8 @@
 <template>
-  <AdminCRUDTitle :title="'House'" icon="solar:home-bold" :invoices="dataSet1" :createRoute="{ name: 'Admin Create House'}"></AdminCRUDTitle>
+  <AdminCRUDTitle :title="'Properties'" icon="solar:home-bold" :invoices="dataSet1" :createRoute="{ name: 'Admin Create House'}"></AdminCRUDTitle>
   <div>
     <DynamicTable
-      class="houses"
+      class="property"
       :columns="columnsSet1"
       :rows="dataSet1"
       :show-status="true"
@@ -44,9 +44,45 @@ export default {
           address: "123 Main St",
           price: "$5000",
           rating: 4.5,
-          status: 'Occupied',
-          tableName: 'house' 
+          // status: 'Approved',
+          tableName: 'property' 
         },
+        {
+          id: 2,
+          image: "/src/assets/images/property_images/property1.jpeg",
+          title: "Building B",
+          owner: "John Doe",
+          totalRooms: 5,
+          address: "123 Main St",
+          price: "$5000",
+          rating: 4.5,
+          // status: 'Approved ',
+          tableName: 'property' 
+        },
+        {
+          id: 3,
+          image: "/src/assets/images/property_images/property1.jpeg",
+          title: "Building C",
+          owner: "John Doe",
+          totalRooms: 5,
+          address: "123 Main St",
+          price: "$5000",
+          rating: 4.5,
+          // status: 'Rejected',
+          tableName: 'property' 
+        },
+        {
+          id: 4,
+          image: "/src/assets/images/property_images/property1.jpeg",
+          title: "Building D",
+          owner: "John Doe",
+          totalRooms: 5,
+          address: "123 Main St",
+          price: "$5000",
+          rating: 4.5,
+          status: 'Available',
+          tableName: 'property' 
+        }
       ],
       
     };
@@ -66,8 +102,9 @@ export default {
 </script >
 
 <style scoped>
-.houses{
+.property {
   margin-left: 100px;
   width: 90%;
+  align-items: center;
 }
 </style>

@@ -10,7 +10,7 @@
 
     <nav class="item-middle">
       <router-link to="/admin/dashboard" class="nav-item" active-class="active">Dashboard</router-link>
-      <router-link to="/admin/property" class="nav-item" active-class="active">Property</router-link>
+      <router-link to="/admin/property" class="nav-item" active-class="active">Properties</router-link>
       <!-- <router-link to="/admin/room" class="nav-item" active-class="active">Rooms</router-link> -->
       <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
       <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>

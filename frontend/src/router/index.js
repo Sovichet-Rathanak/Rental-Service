@@ -30,7 +30,7 @@ import hostings_route from './hostings_route'
 import AdminDashboard from '@/views/Admin/AdminDashboard.vue' 
 import AdminPage from '@/views/Admin/AdminPage.vue'
 import AdminInvoice from '@/views/Admin/AdminInvoice.vue'
-import House from '@/views/Admin/House.vue'
+import Property from '@/views/Admin/Property.vue'
 import Room from '@/views/Admin/Room.vue'
 import Tenant from '@/views/Admin/Tenant.vue'
 import ManageLandlord from '@/views/Admin/ManageLandlord.vue'
@@ -39,7 +39,8 @@ import CreateHouse from '@/views/Admin/CreateHouse.vue'
 import EditTenant from '@/views/Admin/EditTenant.vue'
 import EditRoom from '@/views/Admin/EditRoom.vue'
 import EditLandlord from '@/views/Admin/EditLandlord.vue'
-import EditHouse from '@/views/Admin/EditHouse.vue'
+import EditProperty from '@/views/Admin/EditProperty.vue'
+// import EditHouse from '@/views/Admin/EditHouse.vue'
 
 const routes = [
   ...hostings_route,
@@ -191,7 +192,7 @@ const routes = [
       {
         path: 'property',
         name: 'Admin Dashboard House',
-        component: House
+        component: Property
       },
       {
         path: 'room/create-house',
@@ -199,9 +200,10 @@ const routes = [
         component: CreateHouse
       },
       {
-        path: 'house/edit-house/:id',
+        path: 'property/edit-property/:id',
         name: 'Admin Edit House',
-        component: EditHouse
+        component: EditProperty
+        // component: EditHouse
       },
       {
         path: 'room',

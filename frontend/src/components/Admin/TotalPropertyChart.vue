@@ -2,7 +2,7 @@
   <div class="chart-card">
     <div class="chart-header">
       <Icon icon="mdi:location-city" class="chart-icon" />
-      <span class="chart-title">Total Revenue</span>
+      <span class="chart-title">Total Properties</span>
     </div>
     <apexchart 
       type="bar" 
