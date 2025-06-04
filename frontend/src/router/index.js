@@ -189,7 +189,7 @@ const routes = [
         component: AdminInvoice
       },
       {
-        path: 'house',
+        path: 'property',
         name: 'Admin Dashboard House',
         component: House
       },

@@ -9,17 +9,6 @@
                 <h2>Rental Service</h2>
             </hgroup>
         </div>
-        <!-- accommodation type button -->
-        <div class="accomtype-btn"> 
-            <button class="house-btn">
-                <Icon icon="clarity:house-solid" width="30" height="30" style="color: white;"/>
-                <span class="hBtn-label">House</span>
-            </button>
-            <button class="room-btn">
-                <Icon icon="fa6-solid:bed" width="37.5" height="30" style="color: white;"/>
-                <span class="rBtn-label">Room</span>
-            </button>
-        </div>
         <button @click="goToAuth()" class="sigin-btn">
             <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
             <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
@@ -75,30 +64,6 @@ export default {
         line-height: 1;
         font-weight: 400;
         font-size: 22px;
-        color: white;
-    }
-
-    .accomtype-btn{
-        display: flex;
-        flex-direction: row;
-        gap: 50px;
-    }
-
-    .house-btn, .room-btn{
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        align-items: center ;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        box-sizing: border-box;
-        padding: 10px;
-    }
-
-    .hBtn-label, .rBtn-label{
-        font-weight:500;
-        font-size: 18px;
         color: white;
     }
 

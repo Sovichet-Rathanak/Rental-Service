@@ -27,25 +27,23 @@ export default {
       columnsSet1: [
         { key: "id", label: "ID" },
         { key: "image", label: "Image", type: "image" },
-        { key: "name", label: "Name" },
+        { key: "title", label: "Title" },
         { key: "owner", label: "Owner" },
         { key: "totalRooms", label: "Total Rooms" },
         { key: "address", label: "Address" },
         { key: "price", label: "Price" },
         { key: "rating", label: "Rating" },
-        { key: "floor", label: "Floor" },
       ],
       dataSet1: [
         {
           id: 1,
           image: "/src/assets/images/property_images/property1.jpeg",
-          name: "Building A",
+          title: "Building A",
           owner: "John Doe",
           totalRooms: 5,
           address: "123 Main St",
           price: "$5000",
           rating: 4.5,
-          floor: 2,
           status: 'Occupied',
           tableName: 'house' 
         },

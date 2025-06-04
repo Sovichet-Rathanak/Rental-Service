@@ -12,6 +12,8 @@
     "@popperjs/core": "^2.11.8",
     "add": "^2.0.6",
     "apexcharts": "^4.7.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
     "pinia": "^3.0.2",
     "swiper": "^11.2.6",
     "v-calendar": "^3.1.2",

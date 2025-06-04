@@ -271,6 +271,8 @@ function submitRating() {
   font-size: 22px;
   font-weight: bold;
   margin-right: 1px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .label {
@@ -314,11 +316,14 @@ function submitRating() {
 }
 
 .divider {
-  margin: 0 100px;
+  margin: 0 90px;
 }
 
 .p-icon {
   margin-right: 10px;
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 28px;
   color: #000;
 }
 
