@@ -8,21 +8,21 @@
 
             <div class="input-container">
                 <div class="custom-selector">
-                    <select class="region-selector" name="regions" id="regions">
+                    <select class="region-selector" name="regions" id="regions" v-model="selectedRegion">
                         <option value="" disabled selected>Select your region</option>
-                        <option value="optionA">Option A</option>
-                        <option value="optionB">Option B</option>
-                        <option value="optionC">Option C</option>
-                        <option value="optionD">Option D</option>
+                        <option v-for="region in listingStore.regionOptions" :key="region.id" :value="region.id">
+                            {{ region.region_name }}
+                        </option>
                     </select>
                     <Icon class="icon-chevron" icon="stash:chevron-down-duotone" width="24" height="24" />
                 </div>
 
                 <div class="address-input">
-                    <input type="text" placeholder="Street Address">
-                    <input type="text" placeholder="Apt, floor, house number">
-                    <input type="text" placeholder="Sangkat/khan/phum">
+                    <input v-model.trim="streetAddress" type="text" placeholder="Street Address">
+                    <input v-model.trim="songkat" type="text" placeholder="Songkat">
                 </div>
+
+                <button @click="check">Check</button>
             </div>
         </div>
 
@@ -34,13 +34,52 @@
 
 <script>
 import MapComponent from '@/components/MapComponent.vue';
+import { useListingStore } from '@/stores/listing';
+import { mapStores } from 'pinia';
 
 export default {
     components: {
         MapComponent,
     },
-    computed:{
-        
+    methods: {
+        check() {
+            console.log(this.listingStore.regionOptions);
+        }
+    },
+    mounted() {
+        this.listingStore.fetchRegion();
+    },
+    computed: {
+        ...mapStores(useListingStore),
+
+        streetAddress: {
+            get() {
+                return this.listingStore.listingForm.street_address;
+            },
+            set(value) {
+                this.listingStore.updateField('street_address', value);
+            }
+        },
+
+        songkat: {
+            get() {
+                return this.listingStore.listingForm.songkat;
+            },
+
+            set(value) {
+                this.listingStore.updateField('songkat', value)
+            }
+        },
+
+        selectedRegion: {
+            get() {
+                return this.listingStore.listingForm.region
+            },
+
+            set(value) {
+                this.listingStore.updateField('region_id', value)
+            }
+        }
     }
 }
 </script>

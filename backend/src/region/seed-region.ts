@@ -15,27 +15,28 @@ async function seedRegion() {
 
     await dataSource.initialize();
     const regionRepo = dataSource.getRepository(Region);
+
     const regions = [
+        "Boeng Keng Kang",
         "Chamkarmon",
-        "Dangkao",
-        "Daun Penh",
-        "Mean Chey",
-        "Prampir Makara",
-        "Russei Keo",
-        "Sen Sok",
-        "Toul Kork",
         "Chbar Ampov",
         "Chroy Changvar",
-        "Prek Pnov",
-        "Por Senchey",
+        "Dangkao",
+        "Daun Penh",
         "Kamboul",
-        "Boeng Keng Kang"
+        "Mean Chey",
+        "Por Senchey",
+        "Prampir Makara",
+        "Prek Pnov",
+        "Russei Keo",
+        "Sen Sok",
+        "Toul Kork"
     ];
 
     for (const name of regions) {
         const exists = await regionRepo.findOne({ where: { region_name: name } });
         if (!exists) {
-            const region = regionRepo.create({region_name: name});
+            const region = regionRepo.create({ region_name: name });
             await regionRepo.save(region);
         }
     }

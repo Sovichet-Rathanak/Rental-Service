@@ -6,12 +6,19 @@
         </hgroup>
         <div class="content">
             <div class="card" @click="showPopup">
-                <div class="image-container">
-                    <img src="@/assets/images/property_images/property1.jpeg" alt="property image">
+                <div class="image-container" v-if="firstImage">
+                    <img :src="firstImage.dataUrl" alt="property image">
                 </div>
                 <div class="card-desc">
-                    <h2>Loft Apartment in BKK1</h2>
-                    <h3>$2000/month</h3>
+                    <h2 style="margin-bottom: 20px;">{{ listingForm.title }}</h2>
+                    <div class="card-desc-sub">
+                        <h3>${{ listingForm.price_monthly }}/month</h3>
+                        <h3 style="display: flex; align-items: center; justify-content: center;">
+                            <Icon icon="material-symbols:star-rounded" width="26" height="26" style="color: #000" />New
+                        </h3>
+                    </div>
+                    <h3 style="width: 60%; color: grey;">{{ regionName }}, {{ listingForm.songkat }}, {{
+                        listingForm.street_address }}</h3>
                 </div>
             </div>
             <div class="next-step">
@@ -41,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="popup-overlay" v-if="popup">
+        <div class="popup-overlay" v-if="popUp">
             <div class="popup-content">
                 <div class="popup-head">
                     <Icon class="icon" icon="material-symbols:close-rounded" width="32" height="32" style="color: #000"
@@ -50,37 +57,32 @@
                 </div>
                 <div class="popup-main">
                     <div class="popup-image-container">
-                        <img src="@/assets/images/property_images/property1.jpeg" alt="property image">
+                        <img :src="firstImage.dataUrl" alt="property image">
                     </div>
                     <div class="popup-desc">
                         <div class="desc-title">
-                            <h1 style="margin: 0;">Loft Apartment in BKK1</h1>
+                            <h1 style="margin: 0;">{{ listingForm.title }}</h1>
                             <div class="rent-and-rating">
-                                <h2>$2000/month</h2>
+                                <h2>${{ listingForm.price_monthly }}/month</h2>
                                 <div style="display: flex; flex-direction: row; align-items: center; gap: 5px;">
                                     <Icon icon="material-symbols:star-rounded" width="32" height="32"
                                         style="color: #000" />
                                     <h2>New</h2>
                                 </div>
                             </div>
-                            <h2 style="margin: 0px 0px 40px;">Street 271, Phnom Penh, Cambodia</h2>
+                            <h2 style="margin: 0px 0px 40px;">{{ regionName }}, {{ listingForm.songkat }}, {{
+                                listingForm.street_address }}</h2>
                         </div>
                         <div class="amenities"
                             style="display: flex; align-items: center; justify-content: flex-start; gap: 15px;">
                             <h3>Amenities:</h3>
-                            <Icon icon="material-symbols:wifi" width="20" height="20" style="color: #000" />
-                            <Icon icon="ion:snow-outline" width="20" height="20" style="color: #000" />
-                            <Icon icon="fluent:washer-32-regular" width="20" height="20" style="color: #000" />
+                            <Icon v-for="(amenities, index) in listingForm.amenities.slice(0,3)" :key="index" :icon="amenities.icon" width="20"
+                                height="20" style="color: #000" />
                             <Icon icon="bi:three-dots" width="20" height="20" style="color: #000" />
                         </div>
                         <div>
                             <h2>Description</h2>
-                            <p style="font-size: 20px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus necessitatibus quaerat
-                                unde tenetur nulla voluptas temporibus. Harum hic culpa sint? Tempora dolorum deserunt
-                                est quidem odit, illum consequatur minima! Quas. Perferendis dolore facilis, quisquam
-                                culpa hic nobis rem reprehenderit itaque pariatur ipsa omnis distinctio voluptatem
-                                tenetur ratione. Eligendi modi voluptas sequi porro natus deleniti ea ab esse dolores
-                                delectus delectus delectus delectus.</p>
+                            <p style="font-size: 20px;">{{ listingForm.description }}</p>
                         </div>
                     </div>
                 </div>
@@ -90,15 +92,49 @@
 </template>
 
 <script>
+import { useImageStore } from '@/stores/image';
+import { useListingStore } from '@/stores/listing';
+import axios from 'axios';
+import { mapState, mapStores } from 'pinia';
+
 export default {
     data() {
         return {
-            popup: false
-        };
+            regionName: null,
+            popUp: false,
+        }
     },
+
+    computed: {
+        ...mapStores(useImageStore),
+        ...mapState(useListingStore, ['listingForm']),
+
+        firstImage() {
+            return this.imageStore.images.length > 0 ? this.imageStore.images[0] : null;
+        }
+    },
+
+    mounted() {
+        this.imageStore.loadFromLocalStorage();
+        this.fetchRegion()
+    },
+
     methods: {
+        async fetchRegion() {
+            try {
+                const { data: regionData } = await axios.get('http://localhost:3000/api/region');
+                const selectedRegion = regionData.find(region => region.id === this.listingForm.region_id);
+                this.regionName = selectedRegion.region_name;
+                
+                return this.regionName;
+            } catch (error) {
+                console.error("Failed to fetch region data:", error);
+                return null;
+            }
+        },
+
         showPopup() {
-            this.popup = !this.popup
+            this.popUp = !this.popUp
         }
     }
 }
@@ -244,7 +280,7 @@ export default {
     background-color: grey;
 }
 
-.popup-image-container > img{
+.popup-image-container>img {
     width: 100%;
     height: 100%;
 }
@@ -264,5 +300,14 @@ export default {
     width: 50%;
 }
 
-.desc-title {}
+.card-desc-sub {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-desc-sub>h3 {
+    margin: 0;
+    padding: 0;
+}
 </style>

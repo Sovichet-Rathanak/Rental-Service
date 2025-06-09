@@ -22,6 +22,11 @@
 </template>
 
 <script>
+import { useImageStore } from '@/stores/image';
+import { useListingStore } from '@/stores/listing';
+import axios from 'axios';
+import { mapStores } from 'pinia';
+
 export default {
     name: 'MainLayout',
     data() {
@@ -46,6 +51,8 @@ export default {
             const nextIndex = this.currentRouteIndex + 1;
             if (nextIndex < this.childRoutes.length) {
                 this.$router.push({ name: this.childRoutes[nextIndex].name });
+            } else {
+                this.handleSubmit();
             }
         },
 
@@ -54,9 +61,24 @@ export default {
             if (prevIndex >= 0) {
                 this.$router.push({ name: this.childRoutes[prevIndex].name });
             }
+        },
+
+        async handleSubmit() {
+            const form = this.listingStore.listingForm;
+            try {
+                console.log(form)
+                const createRsp = await axios.post('http://localhost:3000/api/listing/', form)
+                const listingId = createRsp.data.id;
+                console.log(listingId)
+            }catch(error){
+                console.log(error);
+            }
         }
     },
     computed: {
+        ...mapStores(useListingStore),
+        ...mapStores(useImageStore),
+
         percent() {
             const childRoutes = this.getAllChildRoutes("Hosting Steps");
             const index = childRoutes.findIndex(r => r.name === this.$route.name);
@@ -67,7 +89,7 @@ export default {
             const childRoutes = this.getAllChildRoutes("Hosting Steps");
             return childRoutes.findIndex(r => r.name === this.$route.name);
         },
-        
+
         childRoutes() {
             return this.getAllChildRoutes("Hosting Steps");
         }

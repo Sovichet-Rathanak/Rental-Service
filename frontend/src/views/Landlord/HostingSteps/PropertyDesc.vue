@@ -5,22 +5,32 @@
             <h2>Share what makes your place special</h2>
         </hgroup>
         <textarea name="property-desc" id="property-desc" maxlength="500" v-model="desc"></textarea>
-        <span style="align-self: flex-start;">{{ characterCount() + '/500' }}</span>
+        <span style="align-self: flex-start;">{{ characterCount + '/500' }}</span>
     </div>
 </template>
 
 <script>
+import { useListingStore } from '@/stores/listing';
+import { mapStores } from 'pinia';
+
 export default {
-    data() {
-        return {
-            desc: ''
-        }
-    },
-    methods: {
+    computed: {
+        ...mapStores(useListingStore),
+
+        desc: {
+            get() {
+                return this.listingStore.listingForm.description;
+            },
+
+            set(value) {
+                this.listingStore.updateField('description', value);
+            }
+        },
+
         characterCount() {
             return this.desc.length;
         }
-    }
+    },
 }
 </script>
 

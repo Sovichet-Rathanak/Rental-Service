@@ -6,7 +6,7 @@
         <div class="homescreen-container">
             <banner-animate></banner-animate>
             <div class="property-container">
-                <property-card v-for="property in propertyList" :key="property.id" :product="property" />
+                <property-card v-for="property in propertyList" :key="property.id" :data="property" />
             </div>
             <h3 style="font-weight: bold; font-size: 20px;">Continue Exploring Accommodations</h3>
             <button class="midlength-btn">Show More</button>

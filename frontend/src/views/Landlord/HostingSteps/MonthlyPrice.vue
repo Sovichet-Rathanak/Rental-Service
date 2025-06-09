@@ -4,26 +4,57 @@
             <h1>Now, set a monthly base price</h1>
             <h2>You'll set your yearly price next.</h2>
         </hgroup>
+
         <div class="input-container">
-            <input class="currency-input" maxlength="7" type="text" name="monthly-rent" id="monthly-rent" v-model="monthRent" @input="formatInput">
+            <input class="currency-input" maxlength="9" type="text" name="monthly-rent" id="monthly-rent"
+                v-model="formattedPrice" @blur="enforceMinimum" placeholder="$0" />
         </div>
+
+        <p v-if="numericPriceMonthly < 50" class="warning">Minimum price is $50</p>
     </div>
 </template>
 
 <script>
-    export default{
-        data(){
-            return{
-                monthRent: '$',
+import { useListingStore } from '@/stores/listing';
+import { mapStores } from 'pinia';
+
+export default {
+    computed: {
+        ...mapStores(useListingStore),
+
+        price_monthly: {
+            get() {
+                return this.listingStore.listingForm.price_monthly;
+            },
+            set(value) {
+                this.listingStore.updateField('price_monthly', Number(value));
             }
         },
-        methods:{
-            formatInput(){
-                let val = this.monthRent.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                this.monthRent = '$' + val;
+
+        formattedPrice: {
+            get() {
+                if (!this.price_monthly) return '';
+                return '$' + Number(this.price_monthly).toLocaleString();
+            },
+            set(val) {
+                const numeric = val.replace(/\D/g, '');
+                this.price_monthly = numeric;
+            }
+        },
+
+        numericPriceMonthly() {
+            return Number(this.price_monthly || 0);
+        }
+    },
+
+    methods: {
+        enforceMinimum() {
+            if (this.numericPriceMonthly < 50) {
+                this.price_monthly = 50;
             }
         }
     }
+};
 </script>
 
 <style scoped>
@@ -46,13 +77,13 @@ h2 {
     color: grey;
 }
 
-.input-container{
+.input-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.currency-input{
+.currency-input {
     text-align: center;
     background-color: transparent;
     border: none;
@@ -60,7 +91,7 @@ h2 {
     width: 50%;
 }
 
-.currency-input:focus{
+.currency-input:focus {
     outline: none;
 }
 </style>

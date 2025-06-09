@@ -19,9 +19,6 @@ export class Listing {
     @JoinColumn({ name: "region_id" })
     region: Region;
 
-    @Column()
-    region_id: string;
-
     @Column({ nullable: true })
     street_address: string;
 

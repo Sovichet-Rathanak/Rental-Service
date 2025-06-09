@@ -8,7 +8,15 @@ export class createListingDTO {
 
     @IsString()
     @IsOptional()
+    p
+
+    @IsString()
+    @IsOptional()
     street_address: string;
+
+    @IsString()
+    @IsOptional()
+    region_id: string
 
     @IsString()
     @IsOptional()

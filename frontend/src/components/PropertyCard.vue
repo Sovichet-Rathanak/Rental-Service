@@ -1,23 +1,23 @@
 <template>
   <div class="property-card" @click="goToDetailPage">
     <div class="image-container">
-      <img :src="product.image" alt="property image" />
+      <img :src="data.image" alt="property image" />
       <button class="fave-btn" @click.stop="handleWishlist">
         <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32"
           :style="{ color: isWishlisted ? '#08FF10' : '#fff' }" />
       </button>
     </div>
     <div class="info">
-      <h3 class="title" style="margin-bottom: 20px; width: 90%; flex-wrap: wrap;">{{ product.title }}</h3>
+      <h3 class="title" style="margin-bottom: 20px; width: 90%; flex-wrap: wrap;">{{ data.title }}</h3>
       <div class="info-heading">
-        <h3 class="rent">{{ product.price }}</h3>
+        <h3 class="rent">{{ data.price }}</h3>
         <div class="property-rating">
           <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
-          <h3>{{ product.rating }}</h3>
+          <h3>{{ data.rating }}</h3>
         </div>
       </div>
       <div class="info-location">
-        <h4 class="location">{{ product.location }}</h4>
+        <h4 class="location">{{ data.location }}</h4>
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@ import { useWishlistStore } from '@/stores/wishlist'
 
 export default {
   props: {
-    product: {
+    data: {
       type: Object,
       require: true
     }

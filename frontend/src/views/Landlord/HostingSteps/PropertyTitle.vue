@@ -4,24 +4,34 @@
             <h1>Now, let's give your place a title</h1>
             <h2>Short titles work best. Have fun with it—you can always change it later.</h2>
         </hgroup>
-        <textarea name="property-title" id="property-title" maxlength="18" v-model="title"></textarea>
-        <span style="align-self: flex-start;">{{ characterCount +'/18' }}</span>
+        <textarea name="property-title" id="property-title" maxlength="32" v-model="title"></textarea>
+        <span style="align-self: flex-start;">{{ characterCount + '/32' }}</span>
     </div>
 </template>
 
 <script>
-    export default{
-        data(){
-            return{
-                title: ''
+import { useListingStore } from '@/stores/listing';
+import { mapStores } from 'pinia';
+
+export default {
+    computed: {
+        ...mapStores(useListingStore),
+
+        title: {
+            get() {
+                return this.listingStore.listingForm.title;
+            },
+
+            set(value) {
+                this.listingStore.updateField('title', value);
             }
         },
-        computed:{
-            characterCount(){
-                return this.title.length;
-            }
-        }
+
+        characterCount() {
+            return this.title.length;
+        },
     }
+}
 </script>
 
 <style scoped>
