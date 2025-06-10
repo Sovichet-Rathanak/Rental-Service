@@ -37,13 +37,6 @@
                     </div>
                     <div><Icon icon="iconoir:nav-arrow-down" width="35" height="35" style="color: #000; cursor: pointer"/></div>
                 </div>
-                <div class="filter-detail-row">
-                    <h3>Furniture</h3>
-                    <div class="filter-btn-group">
-                        <button class="select-status-btn"  :class="{ 'active-btn': furnitureType === 'furnished'}" @click="setFurniture('furnished')">Fully Furnished</button>
-                        <button class="select-status-btn"  :class="{ 'active-btn': furnitureType === 'empty' }" @click="setFurniture('empty')">Empty Room</button>
-                    </div>
-                </div>
                 <div class="filter-detail-last-row">
                     <h3>Rental Duration</h3>
                     <div class="filter-btn-group">

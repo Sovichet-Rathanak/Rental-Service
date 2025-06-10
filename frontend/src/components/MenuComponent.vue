@@ -2,22 +2,22 @@
     <div class="menu-popup">
         <div class="menu-items">
             <button @click="navigate('Account Setting')" class="menu-item">
-                <Icon icon="material-symbols:account-circle" width="24" height="24" />
+                <Icon icon="ion:person-circle-outline" width="24" height="24" />
                 <span>Account</span>
             </button>
             
             <button @click="navigate('Message3')" class="menu-item">
-                <Icon icon="material-symbols:chat" width="24" height="24" />
+                <Icon icon="mage:message" width="24" height="24" />
                 <span>Messages</span>
             </button>
             
             <button @click="navigate('Notification')" class="menu-item">
-                <Icon icon="material-symbols:notifications" width="24" height="24" />
+                <Icon icon="basil:notification-outline" width="24" height="24" />
                 <span>Notifications</span>
             </button>
             
             <button @click="navigate('Wishlist Page')" class="menu-item">
-                <Icon icon="material-symbols:favorite" width="24" height="24" />
+                <Icon icon="solar:heart-outline" width="24" height="24" />
                 <span>Wishlist</span>
             </button>
             
@@ -27,7 +27,7 @@
             </button>
             
             <button @click="navigate('Help Center')" class="menu-item">
-                <Icon icon="material-symbols:help-center" width="24" height="24" />
+                <Icon icon="tabler:help" width="24" height="24" />
                 <span>Help Center</span>
             </button>
             
