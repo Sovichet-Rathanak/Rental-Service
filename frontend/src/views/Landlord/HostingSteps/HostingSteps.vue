@@ -70,7 +70,19 @@ export default {
                 const createRsp = await axios.post('http://localhost:3000/api/listing/', form)
                 const listingId = createRsp.data.id;
                 console.log(listingId)
-            }catch(error){
+
+                try {
+                    await this.imageStore.uploadAllImagesToBackend(listingId);
+                } catch (error) {
+                    console.log('upload image failed: ', error);
+                }
+
+                this.listingStore.resetListingForm();
+                this.imageStore.images= [];
+                localStorage.removeItem('propertyImages');
+
+                this.$router.push({name: 'Landlord Page'})
+            } catch (error) {
                 console.log(error);
             }
         }

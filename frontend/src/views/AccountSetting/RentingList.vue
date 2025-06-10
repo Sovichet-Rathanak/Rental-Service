@@ -9,14 +9,14 @@
             <div class="current-rent">
                 <h1 style="margin: 0px 0px 20px 0px;">Currently Renting</h1>
                 <div class="card-container">
-                    <property-card v-for="property in propertyList" :key="property.id" :product="property" />
+                    <property-card v-for="property in propertyList" :key="property.id" :data="property" />
                 </div>
             </div>
 
             <div class="past-rent">
                 <h1 style="margin: 30px 0px 20px 0px;">Renting History</h1>
                 <div class="card-container">
-                    <property-card v-for="property in propertyList" :key="property.id" :product="property" />
+                    <property-card v-for="property in propertyList" :key="property.id" :data="property" />
                 </div>
             </div>
         </main>

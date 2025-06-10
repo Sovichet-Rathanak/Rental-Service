@@ -6,9 +6,9 @@ export class createListingDTO {
     @IsOptional()
     property_type: PropertyType;
 
-    @IsString()
-    @IsOptional()
-    p
+    // @IsString()
+    // @IsOptional()
+    // p
 
     @IsString()
     @IsOptional()

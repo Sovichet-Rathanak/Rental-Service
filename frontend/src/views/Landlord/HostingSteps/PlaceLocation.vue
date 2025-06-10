@@ -21,8 +21,6 @@
                     <input v-model.trim="streetAddress" type="text" placeholder="Street Address">
                     <input v-model.trim="songkat" type="text" placeholder="Songkat">
                 </div>
-
-                <button @click="check">Check</button>
             </div>
         </div>
 
@@ -73,7 +71,7 @@ export default {
 
         selectedRegion: {
             get() {
-                return this.listingStore.listingForm.region
+                return this.listingStore.listingForm.region_id;
             },
 
             set(value) {

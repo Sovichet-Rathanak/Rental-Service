@@ -5,7 +5,7 @@ export const useListingStore = defineStore('listing', {
     state: () => ({
         listingForm: {
             property_type: '',
-            region:'',
+            region: '',
             region_id: '',
             street_address: '',
             songkat: '',
@@ -21,6 +21,8 @@ export const useListingStore = defineStore('listing', {
         },
         regionOptions: [],
         amenitiesOptions: [],
+        listings: [],
+        listingImages: []
     }),
 
     actions: {
@@ -64,7 +66,34 @@ export const useListingStore = defineStore('listing', {
             } catch (error) {
                 console.error('Failed to fetch amenities', error)
             }
+        },
+
+        async fetchAllListingsWithImages() {
+            try {
+                const propertyData = await axios.get('http://localhost:3000/api/listing/');
+                this.listings = propertyData.data;
+
+                const imageFetches = this.listings.map((listing) =>
+                    axios.get(`http://localhost:3000/api/picture/${listing.id}`).then(res => res.data)
+                );
+
+                this.listingImages = await Promise.all(imageFetches);
+            } catch (error) {
+                console.error('Failed to fetch listings/images:', error);
+            }
+        },
+
+        getThumbnailByIndex(index) {
+            const images = this.listingImages[index];
+            if (!images || images.length === 0) return '';
+
+            const thumbImage = images.find(img => img.isThumbnail);
+            const imageToUse = thumbImage || images[0]; 
+
+            const key = imageToUse.isThumbnail ? imageToUse.thumbnail_url : `original/${imageToUse.original_url}`;
+            return `http://localhost:9000/romdoul/${key}`;
         }
+
     },
 
     persist: true

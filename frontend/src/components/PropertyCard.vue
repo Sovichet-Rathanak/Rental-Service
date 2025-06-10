@@ -8,23 +8,26 @@
       </button>
     </div>
     <div class="info">
-      <h3 class="title" style="margin-bottom: 20px; width: 90%; flex-wrap: wrap;">{{ data.title }}</h3>
+      <h3 class="title"
+        style="margin-bottom: 20px; width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        {{ data.title }}
+      </h3>
       <div class="info-heading">
         <h3 class="rent">{{ data.price }}</h3>
         <div class="property-rating">
           <Icon icon="material-symbols:star-rounded" width="31" height="31" style="color: #000" />
-          <h3>{{ data.rating }}</h3>
+          <h3>{{ data.rating ?? "New" }}</h3>
         </div>
       </div>
       <div class="info-location">
-        <h4 class="location">{{ data.location }}</h4>
+        <h4 class="location">{{ data.khan }}, {{ data.songkat }}, {{ data.street }}, Phnom Penh</h4>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia'
+import { mapState } from 'pinia'
 import { useWishlistStore } from '@/stores/wishlist'
 
 export default {
@@ -36,19 +39,19 @@ export default {
   },
   computed: {
     ...mapState(useWishlistStore, ['items']),
-    isWishlisted() {
-      return this.items.some(item => item.id === this.product.id)
-    }
+    // isWishlisted() {
+    //   return this.items.some(item => item.id === this.data.id)
+    // }
   },
   methods: {
     goToDetailPage() {
       this.$router.push({ name: 'Accommodation' })
     },
 
-    ...mapActions(useWishlistStore, ['toggleWishlist']),
-    handleWishlist() {
-      this.toggleWishlist(this.product)
-    }
+    // ...mapActions(useWishlistStore, ['toggleWishlist']),
+    // handleWishlist() {
+    //   this.toggleWishlist(this.data)
+    // }
   },
 }
 </script>
@@ -56,6 +59,7 @@ export default {
 
 <style scoped>
 .property-card {
+  width: 22.2rem;
   height: 25rem;
   border-radius: 12px;
   box-sizing: border-box;
@@ -73,6 +77,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+  overflow: hidden; 
 }
 
 .fave-btn {
@@ -85,6 +90,7 @@ export default {
 }
 
 .image-container img {
+  display: block;
   width: 100%;
   height: 100%;
   border-radius: 12px 12px 0px 0px;
