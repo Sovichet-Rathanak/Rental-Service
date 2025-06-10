@@ -16,13 +16,10 @@
             <h3>The space</h3>
             <p>Big yard</p>
             <h3>What this place offer</h3>
-            <div class="amenContainer">
-                <div class="amenities"><Icon icon="mdi:flower-outline" width="25" height="25"/><p>Courtyard view</p></div>
-                <div class="amenities"><Icon icon="hugeicons:shampoo" width="25" height="25"/><p>Shampoo</p></div>
-                <div class="amenities"><Icon icon="material-symbols:bath-private-outline-rounded" width="25" height="25"/><p>Hot water</p></div>
-                <div class="amenities"><Icon icon="lucide-lab:wardrobe" width="25" height="25"/><p>Wardrobe</p></div>
-                <div class="amenities"><Icon icon="material-symbols:wifi-rounded" width="25" height="25"/><p>Wifi</p></div>
-                <div class="amenities"><Icon icon="material-symbols:microwave" width="25" height="25"/><p>Microwave</p></div>
+            <div class="fave-amen-container">
+                <StepButton v-for="(amenity, index) in guestFavorites" :key="'fave-' + index" :label="amenity.label"
+                    :icon="amenity.icon" :active="selectedAmenities.includes(amenity)"
+                    @setActive="toggleAmenity(amenity)"></StepButton>
             </div>
             <button class="showAmen" @click="toggleAmenities = true">Show all amenities</button>
         </div>
@@ -69,6 +66,7 @@ import Amenities_pop_up from './amenities_pop_up.vue';
 import Date_pop_up from './date_pop_up.vue';
 import Request_tour from './request_tour.vue';
 import Tenants_pop_up from './tenants_pop_up.vue';
+import StepButton from '@/components/StepButton.vue';
 
 export default {
     name: "calendar-section",
@@ -76,7 +74,8 @@ export default {
         Date_pop_up,
         Tenants_pop_up,
         Request_tour,
-        Amenities_pop_up
+        Amenities_pop_up,
+        StepButton
     },
     data(){
         return{
@@ -88,7 +87,35 @@ export default {
             rentalDuration: '', 
             isDateSelected: false,
             toggleTour: false,
-            toggleAmenities: false
+            toggleAmenities: false,
+
+            selectedAmenities: [],
+            guestFavorites: [
+                {
+                    label: "Wifi",
+                    icon: 'material-symbols:wifi'
+                },
+                {
+                    label: "TV",
+                    icon: 'material-symbols-light:tv-outline-rounded'
+                },
+                {
+                    label: "Kitchen",
+                    icon: 'fluent:oven-48-regular'
+                },
+                {
+                    label: "Washer",
+                    icon: 'fluent:washer-32-regular'
+                },
+                {
+                    label: "Free parking",
+                    icon: 'iconoir:parking'
+                },
+                {
+                    label: "Paid parking",
+                    icon: 'maki:parking-paid'
+                }
+            ]
         }
     },
     methods:{
@@ -123,6 +150,13 @@ export default {
                 day: 'numeric'
             }).format(date);
         },
+        toggleAmenity(amenity) {
+            if (this.selectedAmenities.includes(amenity)) {
+                this.selectedAmenities = this.selectedAmenities.filter(a => a !== amenity);
+            } else {
+                this.selectedAmenities.push(amenity);
+            }
+        }
     }
 }
 
@@ -150,7 +184,7 @@ main{
     background-color: rgb(55, 120, 240);
     color: white;
 }
-h2,h3{
+h2, h3{
     margin-top: 20px;
     margin-bottom: -10px ;
 }
@@ -166,6 +200,17 @@ p{
     font-size: 18px;
     margin-bottom: 0px;
 }
+
+.fave-amen-container {
+    display: grid;
+    align-self: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px 5px 20px 5px;
+}
+
 .desContainer{
     display: flex;
     flex-direction: column;
@@ -176,22 +221,6 @@ p{
     gap: 20px;
     align-items: center;
     margin-top: 20px;
-}
-.amenContainer{
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: auto auto;
-    column-gap: 100px;
-    row-gap: 15px;
-}
-.amenities{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding-top: 20px;
-}
-.amenities p{
-    margin: 0px;
 }
 .calContainer{
     padding-top: 20px;

@@ -9,23 +9,46 @@
                 <h2>Rental Service</h2>
             </hgroup>
         </div>
-        <button @click="goToAuth()" class="sigin-btn">
-            <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
-            <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
-        </button>
+        <div class="account-actions">
+            <button @click="toggleMenu" class="menu-btn">
+                <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
+            </button>
+            <button @click="goToAuth()" class="sigin-btn">
+                <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
+            </button>
+            <MenuComponent 
+                v-if="showMenu" 
+                @close="showMenu = false"
+                @navigate="handleNavigation"
+            />
+        </div>
     </div>
 </template>
 
 <script>
 import { Icon } from '@iconify/vue';
+import MenuComponent from '@/components/MenuComponent.vue';
 
 export default {
   components: {
-    Icon
+    Icon,
+    MenuComponent
+  },
+  data() {
+    return {
+      showMenu: false
+    }
   },
   methods: {
     goToAuth(){
         this.$router.push({ name: 'Login' })
+    },
+    toggleMenu() {
+        this.showMenu = !this.showMenu;
+    },
+    handleNavigation(routeName) {
+        this.$router.push({ name: routeName });
+        this.showMenu = false; // Close the menu after navigation
     }
   }
 }
@@ -68,6 +91,18 @@ export default {
     }
 
     .sigin-btn{
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .menu-btn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .account-actions {
         display: flex;
         gap: 12px;
         flex-direction: row;
@@ -78,6 +113,7 @@ export default {
         border: 1.5px solid white;
         padding: 12px 15px;
         border-radius: 50px;
+        position: relative;
         cursor: pointer;
     }
 </style>

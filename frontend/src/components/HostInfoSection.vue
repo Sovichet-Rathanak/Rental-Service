@@ -26,7 +26,7 @@
               </div>
               <div class="info-item">
                 <span class="rating">
-                  <span class="star-icon">
+                  <span class="star-icon">  
                     <Icon icon="stash:star-solid" width="24" height="24" style="color: #000" />
                   </span>
                   {{ rating }}
@@ -113,7 +113,7 @@ import pfp from '@/assets/images/pfp.jpg';
 
 const showPopup = ref(false);
 const selectedRating = ref(0);
-const rating = ref(4.88);
+const rating = ref(4);
 
 function submitRating() {
   rating.value = selectedRating.value;
@@ -146,7 +146,7 @@ function submitRating() {
 }
 
 .profile {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .profile h3 {
@@ -155,9 +155,9 @@ function submitRating() {
 }
 
 .popup-content h2 {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 35px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 35px;
 }
 
 .feedback {
@@ -263,7 +263,7 @@ function submitRating() {
 .years {
   font-size: 22px;
   font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 
 .rating .star-icon {

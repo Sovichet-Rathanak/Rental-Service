@@ -2,7 +2,7 @@
   <div class="header">
     <div style="display: flex; align-items: center; gap: 20px; color: black">
       <router-link :to="backRoute">
-        <Icon icon="material-symbols:arrow-back-rounded" width="33" height="33" />
+        <Icon icon="material-symbols:arrow-back-rounded" width="33" height="33" style="color: black;"/>
       </router-link>
       <h2>{{ title }}</h2>
     </div>

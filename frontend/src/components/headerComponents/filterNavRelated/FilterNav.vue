@@ -145,7 +145,7 @@ export default {
     justify-content: center;
     align-items: center;
     position: relative;
-    z-index: 200;
+    z-index: 50;
 }
 
 .filter-container {

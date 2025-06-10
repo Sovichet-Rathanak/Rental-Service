@@ -40,7 +40,6 @@ import EditTenant from '@/views/Admin/EditTenant.vue'
 import EditRoom from '@/views/Admin/EditRoom.vue'
 import EditLandlord from '@/views/Admin/EditLandlord.vue'
 import EditProperty from '@/views/Admin/EditProperty.vue'
-// import EditHouse from '@/views/Admin/EditHouse.vue'
 
 const routes = [
   ...hostings_route,
@@ -202,8 +201,8 @@ const routes = [
       {
         path: 'property/edit-property/:id',
         name: 'Admin Edit House',
-        component: EditProperty
-        // component: EditHouse
+        component: EditProperty,
+        props: true
       },
       {
         path: 'room',

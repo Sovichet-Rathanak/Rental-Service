@@ -18,44 +18,28 @@
       :inputSet="RoomInputs"
       @submit="handleFormSubmit"  
     />
-      <div class="texT">Equipment Status:</div>
-        <div class="buttons-container">
-            <StepButton :active="isAmenitySelected('wifi')" icon="material-symbols:wifi-rounded"
-                label="WIFI" @setActive="() => setActive('wifi')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('tv')" icon="material-symbols-light:tv-outline"
-                label="TV" @setActive="() => setActive('tv')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('kitchen')" icon="hugeicons:oven"
-                label="Kitchen" @setActive="() => setActive('kitchen')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('smokeAlarm')" icon="tabler:alarm-smoke"
-                label="Smoke alarm" @setActive="() => setActive('smokeAlarm')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('firstAidKit')" icon="jam:first-aid"
-                label="First aid kit" @setActive="() => setActive('firstAidKit')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('washer')" icon="iconoir:washing-machine"
-                label="Washer" @setActive="() => setActive('washer')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('parking')" icon="fluent:vehicle-car-parking-16-regular"
-                label="Parking" @setActive="() => setActive('parking')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('airConditioning')" icon="mingcute:air-condition-line"
-                label="Air Conditioning" @setActive="() => setActive('airConditioning')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('carboneMonoxideAlarn')" icon="carbon:alarm-subtract"
-                label="Carbon monoxide alarm" @setActive="() => setActive('carboneMonoxideAlarn')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('fireExtinguisher')" icon="lucide:fire-extinguisher"
-                label="Fire extinguisher" @setActive="() => setActive('fireExtinguisher')">
-            </StepButton>
-            <StepButton :active="isAmenitySelected('pool')" icon="icon-park-outline:swimming-pool"
-                label="Pool" @setActive="() => setActive('pool')">
-            </StepButton>
-        </div>
+      <div class="buttons-container">
+            <h3>What about these guest favorites?</h3>
+            <div class="fave-amen-container">
+                <StepButton v-for="(amenity, index) in guestFavorites" :key="'fave-' + index" :label="amenity.label"
+                    :icon="amenity.icon" :active="selectedAmenities.includes(amenity)"
+                    @setActive="toggleAmenity(amenity)"></StepButton>
+            </div>
+            <h3>Do you have any standout amenities?</h3>
+            <div class="stand-amen-container">
+                <StepButton v-for="(amenity, index) in standOut" :key="'standOut-' + index" :label="amenity.label"
+                    :icon="amenity.icon" :active="selectedAmenities.includes(amenity)"
+                    @setActive="toggleAmenity(amenity)"></StepButton>
+            </div>
+            <h3>Do you have any of these safety items?</h3>
+            <div class="safety-amen-container">
+                <StepButton v-for="(amenity, index) in safetyItems" :key="'safety-' + index" :label="amenity.label"
+                    :icon="amenity.icon" :active="selectedAmenities.includes(amenity)"
+                    @setActive="toggleAmenity(amenity)"></StepButton>
+            </div>
+      </div>
 
-        <div class="texT">Description:</div>
+      <div class="texT">Description:</div>
     <textarea class="description" placeholder="Enter description for your house"></textarea>
 
         <!-- map -->
@@ -93,6 +77,80 @@ export default {
       ],
 
       selectedAmenities: [],
+        guestFavorites: [
+            {
+                label: "Wifi",
+                icon: 'material-symbols:wifi'
+            },
+            {
+                label: "TV",
+                icon: 'material-symbols-light:tv-outline-rounded'
+            },
+            {
+                label: "Kitchen",
+                icon: 'fluent:oven-48-regular'
+            },
+            {
+                label: "Washer",
+                icon: 'fluent:washer-32-regular'
+            },
+            {
+                label: "Free parking",
+                icon: 'iconoir:parking'
+            },
+            {
+                label: "Paid parking",
+                icon: 'maki:parking-paid'
+            },
+            {
+                label: "Air conditioning",
+                icon: 'mynaui:snow'
+            },
+            {
+                label: "Dedicated workspace",
+                icon: 'streamline:workspace-desk'
+            }
+        ],
+        standOut: [
+            {
+                label: "Pool",
+                icon: 'cil:pool'
+            },
+            {
+                label: "Coffee machine",
+                icon: 'icon-park-outline:coffee-machine'
+            },
+            {
+                label: "Balcony",
+                icon: 'iconoir:balcony'
+            },
+            {
+                label: "Garden",
+                icon: 'hugeicons:flower-pot'
+            },
+            {
+                label: "Fire pit",
+                icon: 'hugeicons:fire-pit'
+            },
+            {
+                label: "BBQ grill",
+                icon: 'hugeicons:bbq-grill'
+            }
+        ],
+        safetyItems: [
+            {
+                label: "Smoke Alarm",
+                icon: 'tabler:alarm-smoke'
+            },
+            {
+                label: "First aid kit",
+                icon: 'hugeicons:first-aid-kit'
+            },
+            {
+                label: "Fire extinguisher",
+                icon: 'streamline:fire-extinguisher-sign'
+            },
+        ]
     };
   },
   methods: {
@@ -112,6 +170,14 @@ export default {
 
     isAmenitySelected(type) {
       return this.selectedAmenities.includes(type);
+    },
+
+    toggleAmenity(amenity) {
+        if (this.selectedAmenities.includes(amenity)) {
+            this.selectedAmenities = this.selectedAmenities.filter(a => a !== amenity);
+        } else {
+            this.selectedAmenities.push(amenity);
+        }
     }
   },
 
@@ -147,17 +213,44 @@ button{
 button:hover{
   background-color: #2335ff;
 }
-.texT {
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 35px;
-  margin-bottom: 25px;
-}
 
 .equipment {
   display: grid;
   grid-template-columns: repeat(5, auto);
   gap: 15px;
+}
+
+h3 {
+    margin: 50px 0px 10px 0px;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fave-amen-container,
+.stand-amen-container,
+.safety-amen-container {
+    display: grid;
+    align-self: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 5px;
+}
+
+.texT{
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 35px;
+    margin-bottom: 10px;
 }
 
 .description{
@@ -203,13 +296,5 @@ button:hover{
     background-color: grey;
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 30px
-}
-.buttons-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 20px;
-    width: 89vw;
-    box-sizing: border-box;
-    padding: 15px;
 }
 </style>
