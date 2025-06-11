@@ -1,0 +1,22 @@
+meta {
+  name: get user by name
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:3000/api/user/?search=daro
+  body: json
+  auth: inherit
+}
+
+params:query {
+  search: daro
+}
+
+body:json {
+  {
+      "firstname": "Sophia",
+      "lastname": "Kao"
+  }
+}

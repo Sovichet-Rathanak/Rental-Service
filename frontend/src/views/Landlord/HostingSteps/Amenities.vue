@@ -94,7 +94,7 @@ export default {
             ],
             safetyItems: [
                 {
-                    label: "Smoke Alarm",
+                    label: "Smoke alarm",
                     icon: 'tabler:alarm-smoke'
                 },
                 {

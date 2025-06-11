@@ -1,0 +1,34 @@
+meta {
+  name: create listing
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/listing/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "property_type": "HOUSE",
+    "street_address": "ST271",
+    "songkat": "Teuk Tla",
+    "region_id": "4775f171-7e6f-40a2-8b19-15832906c83e",
+    "guests": 3,
+    "bedrooms":  2,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "property_type": "apartment",
+    "furnishing": true,
+    "title": "Test Title",
+    "description": "Test Description",
+    "price_monthly": 200,
+    "price_yearly": 2000,
+    "amenity_id": [
+      "aec258b6-0985-43af-8280-dc8828a33b9e",
+      "67d8d444-b632-4637-918c-39a9218f3377"
+    ]
+  }
+}

@@ -11,5 +11,19 @@ services:
     ports:
       - "2707:5432"
     mem_limit: 512m
+
+  minio:
+    image: minio/minio
+    container_name: minio_romdoul
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
 volumes:
   postgres_data:
+  minio_data:

@@ -15,6 +15,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "pinia": "^3.0.2",
+    "pinia-plugin-persistedstate": "^4.3.0",
     "swiper": "^11.2.6",
     "v-calendar": "^3.1.2",
     "vue": "^3.5.13",
