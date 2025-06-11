@@ -17,7 +17,7 @@ export class createListingDTO {
     @IsString()
     @IsOptional()
     region_id: string
-
+    
     @IsString()
     @IsOptional()
     songkat: string;

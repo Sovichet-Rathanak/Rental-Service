@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./user_role.enum";
+import { AccomReview } from "src/accom-review/accom-review.entity";
 
 @Entity()
 export class User {
@@ -20,4 +21,8 @@ export class User {
 
     @Column({default: 'tenant'})
     role: UserRole;
+    @OneToMany(() => AccomReview, (review) => review.reviewer) //add here
+    accomReviews: AccomReview[];
+
+
 }

@@ -11,15 +11,15 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Get('/:email')
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles('admin')
+    // @UseGuards(AuthGuard, RolesGuard)
+    // @Roles('admin')
     async findUserByEmail(@Param('email') email: string) {
         return this.userService.findUserByEmail(email);
     }
 
     @Get('/')
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles('admin')
+    // @UseGuards(AuthGuard, RolesGuard)
+    // @Roles('admin')
     async findOrGetAllUsers(@Query('name') name?: string): Promise<User[]> {
         if (name?.trim()) {
             return this.userService.findUserByName(name.trim());
