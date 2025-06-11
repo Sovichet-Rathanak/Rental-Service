@@ -8,6 +8,7 @@ import { RegionModule } from './region/region.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AccomReviewModule } from './accom-review/accom-review.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -25,7 +26,8 @@ import { AuthModule } from './auth/auth.module';
     PictureModule,
     RegionModule,
     UserModule,
-    AuthModule],
+    AuthModule,
+    AccomReviewModule],
   controllers: [AppController],
   providers: [AppService],
 })

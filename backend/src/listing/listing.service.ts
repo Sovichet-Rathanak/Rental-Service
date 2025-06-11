@@ -5,7 +5,7 @@ import { In, Repository } from 'typeorm';
 import { createListingDTO } from './dto/create-listing.dto';
 import { updateListingDTO } from './dto/update-listing.dto';
 import { Amenity } from 'src/amenity/amenity.entity';
-
+import { RegionService } from 'src/region/region.service';
 
 @Injectable()
 export class ListingService {
@@ -15,6 +15,8 @@ export class ListingService {
         
         @InjectRepository(Amenity)
         private amenityRepo: Repository<Amenity>,
+
+        private regionService: RegionService,
     ) { };
 
     async getAllListing(): Promise<Listing[]> {
@@ -31,6 +33,9 @@ export class ListingService {
             listing.amenities = amenities; //attach it to the listing
             console.log(amenities)
         }
+
+        const region = await this.regionService.findOne(dto.region_id);
+        listing.region = region;
 
         return this.listingRepo.save(listing);
     }
