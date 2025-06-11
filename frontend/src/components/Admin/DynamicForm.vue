@@ -90,7 +90,7 @@ export default {
 .inputRow {
   display: grid;
   grid-template-columns: repeat(2, auto);
-  gap: 10px;
+  gap: 30px;
   margin-bottom: 20px;
 }
 
@@ -106,7 +106,7 @@ label {
 }
 
 input {
-  width: 42vw;
+  width: 95%;
   border-radius: 15px;
   border: 1px solid #D3D3D3;
   box-shadow: 0 12px 10px 0 rgba(0, 0, 0, 0.05);

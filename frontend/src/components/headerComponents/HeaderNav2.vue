@@ -34,13 +34,11 @@ export default {
 
 <style scoped>
 .nav-container {
-    margin: 30px 0px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 25px 200px 20px 200px;
-    margin-bottom: 20px;
     box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.1);
     background-color: white;
     z-index: 10;

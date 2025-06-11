@@ -35,9 +35,9 @@ export default {
 <style scoped>
 .custom-button {
     box-sizing: border-box;
-    width: 1fr;
-    height: fit-content;
-    padding: 15px;
+    width: 100%;
+    height: 120px;
+    padding:  12px 24px;
     border-radius: 12px;
     cursor: pointer;
     border: 2px solid transparent;

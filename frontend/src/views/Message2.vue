@@ -14,7 +14,7 @@
 import { ref } from 'vue';
 import EmptyMessage from '@/components/message/EmptyMessage.vue';   
 import MessageHeader from '@/components/message/MessageHeader.vue';
-import Notification from '@/components/message/Notification.vue';
+import Notification from '@/components/message/NotificationPopUp.vue';
 
 export default {
     components: {

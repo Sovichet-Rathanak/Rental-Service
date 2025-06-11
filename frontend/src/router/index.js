@@ -4,7 +4,7 @@ import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/AccountSetting/PersonalInfoPage.vue'
-import NotificationPage from '@/views/AccountSetting/NotificationPage.vue'
+import NotificationPageTenant from '@/views/AccountSetting/NotificationPageTenant.vue'
 import InvoicePage from '@/views/AccountSetting/InvoicePage.vue'
 import RentingList from '@/views/AccountSetting/RentingList.vue'
 import PaymentPage from '@/views/AccountSetting/PaymentRelated/PaymentPage.vue'
@@ -14,17 +14,14 @@ import AuthDisplay from '@/views/AuthScreen/AuthDisaply.vue'
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
 import EarningChartPage from '@/views/Landlord/EarningChartPage.vue'
 import Calendar from '@/views/Landlord/Calendar.vue'
-import Message from '@/views/Message.vue'
-import Message1 from '@/views/Message1.vue'
-import Message2 from '@/views/Message2.vue'
 import Message3 from '@/views/Message3.vue'
-import Message4 from '@/views/Message4.vue'
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
 import LandlordPage from '@/views/Landlord/LandlordPage.vue'
 import ListingPage from '@/components/Landlord/LisitngPage.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
 import LoginAndSecurity from '@/views/AccountSetting/LoginAndSecurity.vue'
 import hostings_route from './hostings_route'
+import NotificationPageLandlord from '@/views/Landlord/NotificationPageLandlord.vue'
 
 // Admin related imports
 import AdminDashboard from '@/views/Admin/AdminDashboard.vue' 
@@ -40,6 +37,8 @@ import EditTenant from '@/views/Admin/EditTenant.vue'
 import EditRoom from '@/views/Admin/EditRoom.vue'
 import EditLandlord from '@/views/Admin/EditLandlord.vue'
 import EditHouse from '@/views/Admin/EditHouse.vue'
+
+import Message4 from '@/views/Message4.vue'
 
 const routes = [
   ...hostings_route,
@@ -96,7 +95,7 @@ const routes = [
   {
     path: '/notification',
     name: 'Notification',
-    component: NotificationPage,
+    component: NotificationPageTenant,
   },
   {
     path: '/personal-info',
@@ -109,29 +108,9 @@ const routes = [
     component: HelpCenterPage,
   },
   {
-    path: '/message1',
-    name: 'Message1',
-    component: Message1,
-  },
-  {
-    path: '/message2',
-    name: 'Message2',
-    component: Message2,
-  },
-  {
-    path: '/message3',
-    name: 'Message3',
-    component: Message3,
-  },
-  {
     path: '/message4',
-    name: 'Message4',
-    component: Message4,
-  },
-  {
-    path: '/message',
-    name: 'Message',
-    component: Message,
+    name: 'Message and pop up',
+    component: Message4
   },
   {
     path: '/landlord',
@@ -160,9 +139,14 @@ const routes = [
         component: Calendar
       },
       {
-        path: 'message4',
-        name: 'Message4',
-        component: Message4,
+        path: 'message3',
+        name: 'Landlord Message',
+        component: Message3,
+      },
+      {
+        path: 'notification',
+        name: 'Landlord notification',
+        component: NotificationPageLandlord,
       }
     ]
   },
@@ -192,6 +176,11 @@ const routes = [
         path: 'house',
         name: 'Admin Dashboard House',
         component: House
+      },
+      {
+        path: 'message3',
+        name: 'Admin Message',
+        component: Message3,
       },
       {
         path: 'room/create-house',

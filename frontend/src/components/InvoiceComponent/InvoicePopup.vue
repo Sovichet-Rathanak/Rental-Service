@@ -2,12 +2,12 @@
   <div class="popupOverlay">
     <div class="popupWrap">
       <div class="header">
-        <Icon icon="ep:arrow-left-bold" width="30" height="30" @click="$emit('close')" />
+        <Icon class="close" icon="ep:arrow-left-bold" width="30" height="30" @click="$emit('close')" />
         <div class="propertyContainer">
-          <property-card />
+          <img src="@/assets/images/property_images/property1.jpeg" alt="property img">
         </div>
       </div>
-
+      
       <div class="content">
         <div class="landlord">
           <Icon :icon="invoiceData.iconID" width="31" height="31" />
@@ -102,6 +102,9 @@ export default {
 
 
 <style scoped>
+.close{
+  cursor: pointer;
+}
 .popupOverlay{
     position: fixed;
     display: flex; 
@@ -113,7 +116,6 @@ export default {
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100vh;
-    overflow-y: auto
 }
 .popupWrap{
     background-color: #fff;
@@ -122,16 +124,20 @@ export default {
     max-width: 690px;
     padding-bottom: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    height: auto;
-    overflow-y: auto
+    height: 105vh;
+    transform: scale(0.90);
 }
 .header{
     display: flex;
     gap: 8.5rem;
     margin: 40px 0 35px 35px ;
 }
-.propertyContainer{
-    width: 300px;
+.propertyContainer img{
+    width: 100%;
+    height: fit-content;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-left: -90px;
 }
 .content{
     display: flex;
@@ -156,11 +162,11 @@ export default {
   color: #00B00F;
   font-weight: 600;
 }
-.status.unpaid {
+.status.pending {
   color: #FFBB00;
   font-weight: 600;
 }
-.status.expired {
+.status.overdue {
   color: #FF2121;
   font-weight: 600;
 }

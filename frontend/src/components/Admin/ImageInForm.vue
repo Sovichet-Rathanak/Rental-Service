@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div style="display: flex; align-items: center; gap: 20px; color: black">
-      <router-link :to="backRoute">
+      <router-link :to="backRoute" class="back">
         <Icon icon="material-symbols:arrow-back-rounded" width="33" height="33" />
       </router-link>
       <h2>{{ title }}</h2>
@@ -33,7 +33,7 @@ export default {
     text: { type: String, required: true },
     title: { type: String, required: true },
     imageUrl: String, 
-    backRoute: String,
+    backRoute: { type: String, default: () => '/landlord'},
   },
   data() {
     return {
@@ -82,6 +82,10 @@ export default {
 
 .addImage img.uploaded {
   filter: brightness(100%);
+}
+.back{
+  all: unset;
+  cursor: pointer;
 }
 .buttonOverlay {
   position: absolute;
