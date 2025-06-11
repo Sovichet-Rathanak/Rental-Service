@@ -1,0 +1,19 @@
+meta {
+  name: upload pictures
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/api/picture/upload/c2d2f4db-6736-4a6f-9a93-2e71800e228c
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  file: @file(/home/nak/Pictures/rental figma/property1.jpeg) @contentType(file)
+}
+
+body:file {
+  ~file: @file()
+}

@@ -43,39 +43,36 @@ export default {
         },
 
         nextPage() {
-            const childRoutes = this.getAllChildRoutes("Hosting Steps");
-            console.log(this.percent);
-
-            if (this.currentRoute < childRoutes.length) {
-                this.currentRoute++;
-                this.progressPercent = (100 / childRoutes.length) * this.currentRoute;
-
-                let childRouteName = childRoutes[this.currentRoute - 1].name;
-                this.$router.push({ name: `${childRouteName}` });
-            } else {
-                return;
+            const nextIndex = this.currentRouteIndex + 1;
+            if (nextIndex < this.childRoutes.length) {
+                this.$router.push({ name: this.childRoutes[nextIndex].name });
             }
         },
 
         prevPage() {
-            const childRoutes = this.getAllChildRoutes("Hosting Steps");
-            if (this.currentRoute > 1 && childRoutes.length > 0) {
-                this.currentRoute--;
-
-                console.log(this.currentRoute)
-                this.progressPercent = (100 / childRoutes.length) * this.currentRoute;
-
-                let childRouteName = childRoutes[this.currentRoute - 1].name;
-                this.$router.push({ name: `${childRouteName}` });
+            const prevIndex = this.currentRouteIndex - 1;
+            if (prevIndex >= 0) {
+                this.$router.push({ name: this.childRoutes[prevIndex].name });
             }
-        },
+        }
     },
     computed: {
         percent() {
-            let childRoutes = this.getAllChildRoutes("Hosting Steps");
-            return (100 / childRoutes.length) * this.currentRoute;
+            const childRoutes = this.getAllChildRoutes("Hosting Steps");
+            const index = childRoutes.findIndex(r => r.name === this.$route.name);
+            return ((index + 1) / childRoutes.length) * 100;
+        },
+
+        currentRouteIndex() {
+            const childRoutes = this.getAllChildRoutes("Hosting Steps");
+            return childRoutes.findIndex(r => r.name === this.$route.name);
+        },
+        
+        childRoutes() {
+            return this.getAllChildRoutes("Hosting Steps");
         }
     }
+
 };
 </script>
 
