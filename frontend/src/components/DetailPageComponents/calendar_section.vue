@@ -223,7 +223,7 @@ p{
     border-radius: 20px;
     box-shadow: 1px 1px 5px 5px lightgray;
     margin-top: 20px;
-    width: 35%;
+    width: 30%;
     height: 70%;
 }
 .filter{

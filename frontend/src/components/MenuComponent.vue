@@ -2,7 +2,7 @@
     <div class="menu-popup">
         <div class="menu-items">
             <button @click="navigate('Account Setting')" class="menu-item">
-                <Icon icon="ion:person-circle-outline" width="24" height="24" />
+                <Icon icon="proicons:person-circle" width="24" height="24" />
                 <span>Account</span>
             </button>
             
@@ -12,7 +12,7 @@
             </button>
             
             <button @click="navigate('Notification')" class="menu-item">
-                <Icon icon="basil:notification-outline" width="24" height="24" />
+                <Icon icon="carbon:notification" width="24" height="24" />
                 <span>Notifications</span>
             </button>
             
