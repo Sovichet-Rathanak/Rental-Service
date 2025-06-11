@@ -16,10 +16,13 @@
             <h3>The space</h3>
             <p>Big yard</p>
             <h3>What this place offer</h3>
-            <div class="fave-amen-container">
-                <StepButton v-for="(amenity, index) in guestFavorites" :key="'fave-' + index" :label="amenity.label"
-                    :icon="amenity.icon" :active="selectedAmenities.includes(amenity)"
-                    @setActive="toggleAmenity(amenity)"></StepButton>
+            <div class="amenContainer">
+                <div class="amenities"><Icon icon="material-symbols:wifi" width="25" height="25"/><p>Wifi</p></div>
+                <div class="amenities"><Icon icon="material-symbols-light:tv-outline-rounded" width="25" height="25"/><p>TV</p></div>
+                <div class="amenities"><Icon icon="fluent:oven-48-regular" width="25" height="25"/><p>Kitchen</p></div>
+                <div class="amenities"><Icon icon="fluent:washer-32-regular" width="25" height="25"/><p>Washer</p></div>
+                <div class="amenities"><Icon icon="icon-park-outline:coffee-machine" width="25" height="25"/><p>Coffee machine</p></div>
+                <div class="amenities"><Icon icon="tabler:alarm-smoke" width="25" height="25"/><p>Smoke Alarm</p></div>
             </div>
             <button class="showAmen" @click="toggleAmenities = true">Show all amenities</button>
         </div>
@@ -29,13 +32,6 @@
                 <div class="filter-detail-row" @click="toggleDate = true">
                     <h3>Move-in date</h3>
                     <p class="filter-choice" @click="toggleDate = true"> {{ isDateSelected ? formatDate(selectedMoveInDate) : 'Add date' }} </p>
-                </div>
-                <div class="filter-detail-row-tenant" @click="toggleTenant = true">
-                    <div>
-                        <h3>Tenants</h3>
-                        <p class="filter-choice">{{ totalTenant }} Tenants</p>
-                    </div>
-                    <div><Icon icon="iconoir:nav-arrow-down" width="35" height="35" style="color: #000; cursor: pointer"/></div>
                 </div>
                 <div class="filter-detail-last-row">
                     <h3>Rental Duration</h3>
@@ -48,7 +44,6 @@
             <button class="check-availability" @click="toggleTour = true">Check availability </button>
         </div>
         <Date_pop_up :show="toggleDate" @close="handleCloseDatePopup" @update-date="handleSelectedDate"/>
-        <Tenants_pop_up :show-tenant="toggleTenant" @close="toggleTenant = false" @update-total="handleUpdateTotal"></Tenants_pop_up>
         <Request_tour :showTour="toggleTour" @close="handleTourPopup"></Request_tour>
         <Amenities_pop_up :showAmenities="toggleAmenities" @close="handleAmenPopUp"></Amenities_pop_up>
     </main>
@@ -58,14 +53,12 @@
 import Amenities_pop_up from './amenities_pop_up.vue';
 import Date_pop_up from './date_pop_up.vue';
 import Request_tour from './request_tour.vue';
-import Tenants_pop_up from './tenants_pop_up.vue';
 import StepButton from '@/components/StepButton.vue';
 
 export default {
     name: "calendar-section",
     components:{
         Date_pop_up,
-        Tenants_pop_up,
         Request_tour,
         Amenities_pop_up,
         StepButton
@@ -74,41 +67,11 @@ export default {
         return{
             selectedMoveInDate: null,
             toggleDate: false,
-            toggleTenant: false,
-            totalTenant: 0,
             furnitureType: '',     
             rentalDuration: '', 
             isDateSelected: false,
             toggleTour: false,
             toggleAmenities: false,
-
-            selectedAmenities: [],
-            guestFavorites: [
-                {
-                    label: "Wifi",
-                    icon: 'material-symbols:wifi'
-                },
-                {
-                    label: "TV",
-                    icon: 'material-symbols-light:tv-outline-rounded'
-                },
-                {
-                    label: "Kitchen",
-                    icon: 'fluent:oven-48-regular'
-                },
-                {
-                    label: "Washer",
-                    icon: 'fluent:washer-32-regular'
-                },
-                {
-                    label: "Free parking",
-                    icon: 'iconoir:parking'
-                },
-                {
-                    label: "Paid parking",
-                    icon: 'maki:parking-paid'
-                }
-            ]
         }
     },
     methods:{
@@ -117,9 +80,6 @@ export default {
         },
         handleAmenPopUp(){
             this.toggleAmenities = false
-        },
-        setFurniture(type) {
-            this.furnitureType = type;
         },
         setRentalDuration(duration) {
             this.rentalDuration = duration;
@@ -170,7 +130,7 @@ main{
     border-radius: 10px;
     border: 1px solid black;
     font-weight: bold;
-    margin-top: 20px
+    margin-top: 30px
 
 }
 .active-btn{
@@ -194,16 +154,22 @@ p{
     margin-bottom: 0px;
 }
 
-.fave-amen-container {
+.amenContainer{
+    margin-top: 20px;
     display: grid;
-    align-self: center;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 40px 5px 20px 5px;
+    grid-template-columns: auto auto;
+    column-gap: 100px;
+    row-gap: 15px;
 }
-
+.amenities{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 20px;
+}
+.amenities p{
+    margin: 0px;
+}
 .desContainer{
     display: flex;
     flex-direction: column;
@@ -249,10 +215,6 @@ p{
     display: flex;
     gap: 15px;
 }
-.filter-choice{
-    color: gray;
-    cursor: pointer;
-}
 .check-availability{
     width: 100%;
     border-radius: 25px;
@@ -263,14 +225,5 @@ p{
     color: white;
     font-weight:900;
     margin-top: 20px;
-}
-.filter-detail-row-tenant{
-    border-bottom: 1px solid lightgray;
-    padding-left: 20px;
-    padding-bottom: 10px;
-    padding-right: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 </style>
