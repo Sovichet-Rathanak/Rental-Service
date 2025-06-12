@@ -14,7 +14,7 @@
       <router-link to="/landlord/calendar" class="nav-item" active-class="active">
         <span>Calendar</span>
       </router-link>
-      <router-link to="/landlord/message3" class="nav-item" active-class="active">
+      <router-link to="/landlord/message" class="nav-item" active-class="active">
         <span>Message</span>
       </router-link>
       <router-link to="/landlord/notification" class="nav-item" active-class="active">
@@ -57,6 +57,7 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 20px 60px;
+  padding-inline: 200px;
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15);
   z-index: 10;
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
@@ -87,7 +88,7 @@ export default {
 .item-middle {
   margin: 0 auto;
   justify-content: space-evenly;
-  width: 35%;
+  width: 60%;
   display: flex;
   gap: 40px;
 }

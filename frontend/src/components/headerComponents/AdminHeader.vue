@@ -14,7 +14,7 @@
       <router-link to="/admin/room" class="nav-item" active-class="active">Rooms</router-link>
       <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
       <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>
-      <router-link to="/admin/message3" class="nav-item" active-class="active">Messages</router-link>
+      <router-link to="/admin/message" class="nav-item" active-class="active">Messages</router-link>
       <router-link to="/admin/invoice" class="nav-item" active-class="active">Invoices</router-link>
     </nav>
 

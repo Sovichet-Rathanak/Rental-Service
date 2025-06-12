@@ -72,6 +72,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin: 3% 0px;
+    padding-inline: 200px;
 }
 ::v-deep(.vc-day-content){
     font-size: 25px !important;

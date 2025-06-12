@@ -1,42 +1,44 @@
 <template>
-  <div class="title" >
-            <h1>Your Listing</h1>
-            <div class="icons">
-                <div class="search">
-                    <Icon icon="ic:baseline-search" width="35" height="35"></Icon>
-                </div>
+  <div class="container">
+    <div class="title" >
+      <h1>Your Listing</h1>
+      <div class="icons">
+          <div class="search">
+              <Icon icon="ic:baseline-search" width="35" height="35"></Icon>
+          </div>
 
-                <div class="list">
-                    <Icon icon="tabler:layout-list" width="35" height="35"></Icon>
-                </div>
+          <div class="list">
+              <Icon icon="tabler:layout-list" width="35" height="35"></Icon>
+          </div>
 
-                <div class="addNew">
-                    <Icon icon="material-symbols:add" width="35" height="35"></Icon>
-                </div>
-            </div>
-  </div>
-  
-  <div class="item">
-    <div class="image" @click="showTenantHistory = true">
-      <img src="/src/assets/images/property_images/property1.jpeg" alt="">
-      <div class="box">
-        <div class="circle"></div>
-        Pending
+          <div class="addNew">
+              <Icon icon="material-symbols:add" width="35" height="35"></Icon>
+          </div>
       </div>
-      <router-link :to="{ name: 'Listing Editor'}" class="edit">
-        <Icon icon="solar:pen-bold" width="35" height="35" style="color: white"></Icon>
-      </router-link>
-      <div class="text">
-      BKK1, Cambodia
-      <span>Phnom Penh, Phnom Penh</span>
     </div>
+    
+    <div class="item">
+      <div class="image" @click="showTenantHistory = true">
+        <img src="/src/assets/images/property_images/property1.jpeg" alt="">
+        <div class="box">
+          <div class="circle"></div>
+          Pending
+        </div>
+        <router-link :to="{ name: 'Listing Editor'}" class="edit">
+          <Icon icon="solar:pen-bold" width="35" height="35" style="color: white"></Icon>
+        </router-link>
+        <div class="text">
+        BKK1, Cambodia
+        <span>Phnom Penh, Phnom Penh</span>
+      </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Tenant History Popup -->
-  <div class="popUpPage" v-if="showTenantHistory" @click.self="closePopup">
-    <div class="overview">
-      <TenantHistoryPage @close="closePopup"/>
+    <!-- Tenant History Popup -->
+    <div class="popUpPage" v-if="showTenantHistory" @click.self="closePopup">
+      <div class="overview">
+        <TenantHistoryPage @close="closePopup"/>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  padding-inline: 200px;
+}
 .title{
     display: flex;
     align-items: center;

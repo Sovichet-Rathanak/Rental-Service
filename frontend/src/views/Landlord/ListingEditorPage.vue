@@ -112,6 +112,7 @@ export default {
 .container{
   display: flex;
   flex-direction: column;
+  padding-inline: 200px;
 }
 .texT {
   font-size: 22px;

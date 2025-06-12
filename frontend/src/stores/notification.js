@@ -71,7 +71,7 @@ export const useNotificationStore = defineStore('notification', {
         this.filterType = type;
         },
         addNotification(notification) {
-        this.notifications.unshift(notification); // Add to top of list
+        this.notifications.unshift(notification); 
     }
     }
 });

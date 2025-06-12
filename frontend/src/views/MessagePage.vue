@@ -129,6 +129,7 @@ export default {
 <style scoped>
 .message-page {
     background: #ffffff;
+    margin: 0 auto;
 }
 
 .message-wrapper {
@@ -136,12 +137,14 @@ export default {
     min-height: calc(100vh - 100px);
     max-height: min-content;
     width: 100%;
+    margin: 0 auto;
 }
 
 .left-side {
-    width: 32%;
+    width: 35%;
     border-right: 1px solid black;
     background-color: rgb(255, 255, 255);
+    margin: 0 auto;
 }
 
 .right-side {    
@@ -275,7 +278,7 @@ export default {
     gap: 0;
     margin-top: 45px;
     position: relative;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     justify-content: space-between; /* Space between image and text */
 }
 
@@ -321,7 +324,7 @@ export default {
     position: absolute;
     font-size: 15px;
     margin-left: 90px;
-    margin-top: 60px;
+    margin-top: 60px;   
     color: rgb(86, 85, 85);
 }
 
@@ -332,7 +335,7 @@ export default {
 .profile1 p1, .profile2 p1 {
     position: absolute;
     font-size: 15px;
-    margin-left: 450px;
+    margin-left: 550px;
     margin-top: 40px;
     color: rgb(86, 85, 85);
 }
@@ -345,7 +348,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 97%;
     /* gap: 1050px;  */
     background-color: white;
     height: 10%;

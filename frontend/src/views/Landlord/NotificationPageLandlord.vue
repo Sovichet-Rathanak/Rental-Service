@@ -1,5 +1,5 @@
 <template>
-  <div class="breadContainer">
+  <div class="container">
     <h1>Notifications</h1>
     <NotificationList></NotificationList>
   </div>
@@ -52,41 +52,7 @@ export default {
 };
 </script>
 <style scoped>
-main {
-  padding-inline: 300px;
-}
-
-.notification-filter {
-  display: flex;
-  gap: 10px;
-}
-
-.notification-filter button {
-  border: none;
-  color: lightgray;
-  background-color: transparent;
-  font-size: 20px;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.notification-filter button.active {
-  color: black;
-}
-
-.breadContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.notiList {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.container{
+  padding-inline: 200px;
 }
 </style>

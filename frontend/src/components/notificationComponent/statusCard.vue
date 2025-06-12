@@ -62,10 +62,6 @@
 
       </div>
     </div>
-
-    <!-- test role & status -->
-    <p style="color:black">Debug Role: {{ role }}</p>
-    <p>StatusCard status: {{ notification.status }}</p>
   </div>
 </template>
 
