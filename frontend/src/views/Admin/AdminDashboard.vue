@@ -23,7 +23,7 @@ import TotalPropertyChart from '@/components/Admin/TotalPropertyChart.vue'
 import LocationChart from '@/components/Admin/LocationChart.vue'
 
 const stats = [
-  { label: 'Total Properties', value: 369, icon: 'solar:home-bold', route: 'Admin Dashboard House' },
+  { label: 'Total Properties', value: 369, icon: 'solar:home-bold', route: 'Admin Dashboard' },
   { label: 'Total Landlords', value: 320, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Landlord' },
   { label: 'Total Tenants', value: 500, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Tenant' },
 ]
