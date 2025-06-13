@@ -1,0 +1,15 @@
+meta {
+  name: upload pfp
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:3000/api/user/5a67ca58-41f3-451b-84e8-3261e664515d/profile-picture
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  file: @file(/home/nak/Pictures/sophia-kao.jpg) @contentType(file)
+}

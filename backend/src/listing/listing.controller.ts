@@ -21,4 +21,9 @@ export class ListingController {
         await this.listingService.deleteListingByID(id);
         return { message: 'Lisiting deleted successfuly'}
     }
+
+    @Get('/:id')
+    async findOneById(@Param('id') id: string): Promise<Listing>{
+        return this.listingService.findOne(id);
+    }
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./user_role.enum";
 import { AccomReview } from "src/accom-review/accom-review.entity";
 
@@ -21,8 +21,13 @@ export class User {
 
     @Column({default: 'tenant'})
     role: UserRole;
-    @OneToMany(() => AccomReview, (review) => review.reviewer) //add here
+
+    @OneToMany(() => AccomReview, (review) => review.reviewer) 
     accomReviews: AccomReview[];
 
+    @Column({nullable: true})
+    pfp_original_url: string;
 
+    @Column({nullable: true})
+    pfp_thumbnail_url: string;
 }

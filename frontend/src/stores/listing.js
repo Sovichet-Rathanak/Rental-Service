@@ -20,7 +20,7 @@ export const useListingStore = defineStore('listing', {
             price_yearly: 0,
         },
         regionOptions: [],
-        amenitiesOptions: [],
+        amenitiesOptions: [],   
         listings: [],
         listingImages: []
     }),

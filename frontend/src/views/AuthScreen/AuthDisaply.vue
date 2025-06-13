@@ -49,7 +49,7 @@
                                 placeholder="Confirm your password" required />
                         </div>
 
-                        <button type="submit" class="auth-btn">
+                        <button @click="submit" type="submit" class="auth-btn">
                             {{ isSignUp ? 'Create Account' : 'Sign In' }}
                         </button>
 
@@ -74,22 +74,18 @@
 </template>
 
 <script>
+import { useUserStore } from '@/stores/user';
+import { mapStores } from 'pinia';
+
 export default {
     name: 'LoginScreen',
     data() {
         return {
             isSignUp: false,
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            confirmPassword: ''
         }
     },
     computed: {
-        fullName() {
-            return `${this.firstName} ${this.lastName}`.trim();
-        }
+        ...mapStores(useUserStore)
     },
     methods: {
         toggleMode() {
@@ -99,6 +95,10 @@ export default {
             this.firstName = '';
             this.lastName = '';
             this.confirmPassword = '';
+        },
+
+        submit(){
+            console.log()
         }
     }
 }

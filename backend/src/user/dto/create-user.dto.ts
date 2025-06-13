@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsString, IsStrongPassword } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, IsString, IsStrongPassword } from "class-validator";
 import { MatchPassword } from "../decorator/match_password.decorator";
 import { UserRole } from "../user_role.enum";
 
@@ -22,4 +22,12 @@ export class createUserDTO {
     @IsString()
     @MatchPassword('password', {message: 'Password does not match'})
     confirm_password: string;
+
+    @IsOptional()
+    @IsString()
+    pfp_original_url?: string;
+
+    @IsOptional()
+    @IsString()
+    pfp_thumbnail_url?: string;
 }
