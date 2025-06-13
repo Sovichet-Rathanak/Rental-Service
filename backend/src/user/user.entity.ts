@@ -21,7 +21,7 @@ export class User {
 
     @Column({default: 'tenant'})
     role: UserRole;
-    @OneToMany(() => AccomReview, (review) => review.reviewer) //add here
+    @OneToMany(() => AccomReview, (review) => review.user) //add here
     accomReviews: AccomReview[];
 
 
