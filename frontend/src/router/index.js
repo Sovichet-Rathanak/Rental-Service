@@ -4,7 +4,7 @@ import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
 import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/AccountSetting/PersonalInfoPage.vue'
-import NotificationPage from '@/views/AccountSetting/NotificationPage.vue'
+import NotificationPageTenant from '@/views/AccountSetting/NotificationPageTenant.vue'
 import InvoicePage from '@/views/AccountSetting/InvoicePage.vue'
 import RentingList from '@/views/AccountSetting/RentingList.vue'
 import PaymentPage from '@/views/AccountSetting/PaymentRelated/PaymentPage.vue'
@@ -12,37 +12,18 @@ import ManagePayment from '@/views/AccountSetting/PaymentRelated/ManagePayment.v
 import AuthDisplay from '@/views/AuthScreen/AuthDisaply.vue'
 
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
-import EarningChartPage from '@/views/Landlord/EarningChartPage.vue'
-import Calendar from '@/views/Landlord/Calendar.vue'
-import Message from '@/views/Message.vue'
-import Message1 from '@/views/Message1.vue'
-import Message2 from '@/views/Message2.vue'
-import Message3 from '@/views/Message3.vue'
-import Message4 from '@/views/Message4.vue'
-import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
-import LandlordPage from '@/views/Landlord/LandlordPage.vue'
-import ListingPage from '@/components/Landlord/LisitngPage.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
 import LoginAndSecurity from '@/views/AccountSetting/LoginAndSecurity.vue'
-import hostings_route from './hostings_route'
 
-// Admin related imports
-import AdminDashboard from '@/views/Admin/AdminDashboard.vue' 
-import AdminPage from '@/views/Admin/AdminPage.vue'
-import AdminInvoice from '@/views/Admin/AdminInvoice.vue'
-import House from '@/views/Admin/House.vue'
-import Room from '@/views/Admin/Room.vue'
-import Tenant from '@/views/Admin/Tenant.vue'
-import ManageLandlord from '@/views/Admin/ManageLandlord.vue'
-import CreateRoom from '@/views/Admin/CreateRoom.vue'
-import CreateHouse from '@/views/Admin/CreateHouse.vue'
-import EditTenant from '@/views/Admin/EditTenant.vue'
-import EditRoom from '@/views/Admin/EditRoom.vue'
-import EditLandlord from '@/views/Admin/EditLandlord.vue'
-import EditHouse from '@/views/Admin/EditHouse.vue'
+import hostings_route from './hostings_route'
+import admin_route from './admin_route'
+import landlord_route from './landlord_route'
+
 
 const routes = [
   ...hostings_route,
+  ...admin_route,
+  ...landlord_route,
   {
     path: '/',
     name: 'Home',
@@ -96,7 +77,7 @@ const routes = [
   {
     path: '/notification',
     name: 'Notification',
-    component: NotificationPage,
+    component: NotificationPageTenant,
   },
   {
     path: '/personal-info',
@@ -109,137 +90,9 @@ const routes = [
     component: HelpCenterPage,
   },
   {
-    path: '/message1',
-    name: 'Message1',
-    component: Message1,
-  },
-  {
-    path: '/message2',
-    name: 'Message2',
-    component: Message2,
-  },
-  {
-    path: '/message3',
-    name: 'Message3',
-    component: Message3,
-  },
-  {
-    path: '/message4',
-    name: 'Message4',
-    component: Message4,
-  },
-  {
-    path: '/message',
-    name: 'Message',
-    component: Message,
-  },
-  {
-    path: '/landlord',
-    name: 'Landlord Page',
-    component: LandlordPage,
-    redirect: { name: 'Listing Page' },
-    children: [
-      {
-        path: 'listing',
-        name: 'Listing Page',
-        component: ListingPage
-      },
-      {
-        path: 'listing/listing-editor',
-        name: 'Listing Editor',
-        component: ListingEditorPage
-      },
-      {
-        path: 'earning',
-        name: 'Earning',
-        component: EarningChartPage,
-      },
-      {
-        path: 'calendar',
-        name: 'Calendar',
-        component: Calendar
-      },
-      {
-        path: 'message4',
-        name: 'Message4',
-        component: Message4,
-      }
-    ]
-  },
-  {
     path: '/wishlist',
     name: 'Wishlist Page',
     component: WishlistPage,
-  },
-  {
-    path: '/admin',
-    name: 'Admin Page',
-    component: AdminPage,
-    redirect: { name: 'Admin Dashboard'},
-    children: [
-      { 
-        path: 'dashboard',
-        name: 'Admin Dashboard',
-        component: AdminDashboard
-      },
-
-      {
-        path: 'invoice',
-        name: 'Admin Invoice',
-        component: AdminInvoice
-      },
-      {
-        path: 'house',
-        name: 'Admin Dashboard House',
-        component: House
-      },
-      {
-        path: 'room/create-house',
-        name: 'Admin Create House',
-        component: CreateHouse
-      },
-      {
-        path: 'house/edit-house/:id',
-        name: 'Admin Edit House',
-        component: EditHouse
-      },
-      {
-        path: 'room',
-        name: 'Admin Dashboard Room',
-        component: Room
-      },
-      {
-        path: 'room/create-room',
-        name: 'Admin Create Room',
-        component: CreateRoom
-      },
-      {
-        path: 'room/edit-room/:id',
-        name: 'Admin Edit Room',
-        component: EditRoom
-      },
-      {
-        path: 'tenant',
-        name: 'Admin Dashboard Tenant',
-        component: Tenant
-      },
-      {
-        path: 'tenant/edit-tenant/:id',
-        name: 'Admin Edit Tenant',
-        component: EditTenant
-      },
-      {
-        path: 'manage-landlord',
-        name: 'Admin Dashboard Landlord',
-        component: ManageLandlord
-      },
-      {
-        path: 'landlord/edit-landlord/:id',
-        name: 'Admin Edit Landlord',
-        component: EditLandlord
-      },
-    ]
-    
   }
 ]
 

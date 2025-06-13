@@ -1,6 +1,6 @@
 <template>
+  <HeaderNav3></HeaderNav3>
   <div class="container">
-
     <ImageInForm 
       title="Create House"
       imageUrl="/src/assets/images/property_images/property1.jpeg"
@@ -63,8 +63,7 @@
                 <MapComponent></MapComponent>
             </div>
         </div>
-   
-
+        <FooterComponent></FooterComponent>
   </div>
 </template>
 
@@ -73,6 +72,8 @@ import DynamicForm from "@/components/Admin/DynamicForm.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import ImageInForm from "@/components/Admin/ImageInForm.vue";
 import StepButton from "@/components/StepButton.vue";
+import HeaderNav3 from "@/components/Landlord/HeaderNav3.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 export default {
   components: { DynamicForm, MapComponent, ImageInForm, StepButton },
@@ -111,6 +112,7 @@ export default {
 .container{
   display: flex;
   flex-direction: column;
+  padding-inline: 200px;
 }
 .texT {
   font-size: 22px;
@@ -167,13 +169,14 @@ export default {
     border-radius: 20px;
     background-color: grey;
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 30px
+    margin-top: 30px;
+    margin-bottom: 70px;
 }
 .buttons-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     gap: 20px;
-    width: 89vw;
+    width: 100%;
     box-sizing: border-box;
     padding: 15px;
 }

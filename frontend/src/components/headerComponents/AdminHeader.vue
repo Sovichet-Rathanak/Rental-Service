@@ -14,16 +14,15 @@
       <router-link to="/admin/room" class="nav-item" active-class="active">Rooms</router-link>
       <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
       <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>
-      <router-link to="/admin/message4" class="nav-item" active-class="active">Messages</router-link>
-      <!-- <router-link to="/admin/promotion" class="nav-item" active-class="active">Promotion</router-link> -->
+      <router-link to="/admin/message" class="nav-item" active-class="active">Messages</router-link>
       <router-link to="/admin/invoice" class="nav-item" active-class="active">Invoices</router-link>
     </nav>
 
     <div class="nav-right">
-      <div class="circle notification-btn">
+      <!-- <div class="circle notification-btn">
         <Icon icon="iconamoon:notification-light" width="30" height="30"></Icon>
         <div class="notification-dot"></div>
-      </div>
+      </div> -->
       <div class="admin-dropdown">
         <Icon icon="material-symbols:menu" width="20" height="20" />
         <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />

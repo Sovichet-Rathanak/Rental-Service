@@ -1,6 +1,6 @@
 <template>
+  
   <h1 class="title">Your Listing</h1>
-
   <div class="item">
     <PropertyCard v-for="(listing, index) in listings" :key="listing.id" :data="{
       id: listing.id,
@@ -14,7 +14,7 @@
     }" />
   </div>
 
-  <!-- Tenant History Popup -->
+  <!-- Missing this popup !!! -->
   <div class="popUpPage" v-if="showTenantHistory" @click.self="closePopup">
     <div class="overview">
       <TenantHistoryPage @close="closePopup" />
@@ -56,7 +56,7 @@ export default {
 
 <style scoped>
 .title {
-  margin-top: 50px;
+  margin: 50px 0px 70px 200px;
 }
 
 .icons {
@@ -80,58 +80,11 @@ export default {
 
 .item {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
+  align-items: center;
   gap: 30px;
-  align-items: center;
-}
-
-.box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  width: 100px;
-  border-radius: 30px;
-  background-color: white;
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  padding: 3px 13px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.circle {
-  width: 10px;
-  height: 10px;
-  border-radius: 50px;
-  background-color: #EC0000;
-}
-
-.image {
-  width: 350px;
-  height: 350px;
-  position: relative;
-}
-
-.image>img {
-  border-radius: 30px;
-  width: 100%;
-  height: 100%;
-}
-
-.edit {
-  width: 75px;
-  height: 75px;
-  border-radius: 50px;
-  background-color: #345FCC;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid white;
-  position: absolute;
-  bottom: -4%;
-  right: -6.5%
+  padding: 0px 200px 200px 200px;
 }
 
 .text {

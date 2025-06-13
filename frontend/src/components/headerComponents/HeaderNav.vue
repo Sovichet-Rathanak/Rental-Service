@@ -10,7 +10,7 @@
             </hgroup>
         </div>
         <!-- accommodation type button -->
-        <div class="accomtype-btn"> 
+        <!-- <div class="accomtype-btn"> 
             <button class="house-btn">
                 <Icon icon="clarity:house-solid" width="30" height="30" style="color: white;"/>
                 <span class="hBtn-label">House</span>
@@ -19,7 +19,7 @@
                 <Icon icon="fa6-solid:bed" width="37.5" height="30" style="color: white;"/>
                 <span class="rBtn-label">Room</span>
             </button>
-        </div>
+        </div> -->
         <button @click="goToAuth()" class="sigin-btn">
             <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
             <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>

@@ -1,4 +1,3 @@
-//Hosting Steps
 import HostingSteps from '@/views/Landlord/HostingSteps/HostingSteps.vue'
 import StepOverview from '@/views/Landlord/HostingSteps/StepOverview.vue'
 import AboutPlace from '@/views/Landlord/HostingSteps/AboutPlace.vue'
