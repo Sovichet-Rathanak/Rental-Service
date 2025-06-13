@@ -40,30 +40,39 @@ export class AccomReviewService {
         });
     }
 
+    
     async getOverall(listing: string) {
-        const reviews = await this.reviewRepo.find({ where: { listing: { id: listing } } });
+        const reviews = await this.reviewRepo.find({
+            where: { listing: { id: listing } },
+        });
 
         const count = reviews.length;
-        const ratingBar = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-        // refactor use enum instead
+        const ratingBar: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         const categories = Object.values(ReviewCategory);
-        const sums = categories.reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
 
+        // Initialize sums with 0
+        const sums: Record<ReviewCategory, number> = categories.reduce((acc, key) => {
+            acc[key] = 0;
+            return acc;
+        }, {} as Record<ReviewCategory, number>);
+
+        // Calculate totals
         for (const review of reviews) {
-            const avg = Math.round(
-                (review.priceRating + review.comfortRating + review.locationRating + review.cleanlinessRating + review.communicationRating) / 5
-            );
+            const ratings = categories.map((cat) => review[cat]);
+            const avg = Math.round(ratings.reduce((sum, val) => sum + val, 0) / categories.length);
             ratingBar[avg]++;
-            categories.forEach(cat => sums[cat] += review[cat]);
+            categories.forEach((cat) => {
+                sums[cat] += review[cat];
+            });
         }
 
-        const perCategory = {};
-        categories.forEach(cat => {
-            perCategory[cat.replace('Rating', '')] = count > 0 ? +(sums[cat] / count).toFixed(1) : 0;
+        // Calculate average per category
+        const perCategory: Record<string, number> = {};
+        categories.forEach((cat) => {
+            const label = cat.replace('Rating', '').toLowerCase(); //calculate each category
+            perCategory[label] = count > 0 ? +(sums[cat] / count).toFixed(1) : 0;
         });
 
         return { ratingBar, perCategory };
     }
 }
-
-
