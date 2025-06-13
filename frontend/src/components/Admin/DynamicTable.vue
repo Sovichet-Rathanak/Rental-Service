@@ -11,20 +11,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(row, index) in rows"
-          :key="row.id || index"
-          class="tableRow"
-          @click="handleRowClick(row)"
-        >
+        <tr v-for="(row, index) in rows" :key="row.id || index" class="tableRow" @click="handleRowClick(row)">
           <!-- Render row data -->
           <td v-for="column in columns" :key="column.key">
             <template v-if="column.type === 'image'">
-              <img
-                :src="row[column.key]"
-                alt="Image"
-                style="width: 70px; height: 70px; border-radius: 8px;"
-              />
+              <img :src="row[column.key]" alt="Image" style="width: 70px; height: 70px; border-radius: 8px;" />
             </template>
             <template v-else>
               {{ row[column.key] }}
@@ -34,21 +25,11 @@
           <!-- Status column -->
           <td v-if="showStatus">
             <template v-if="!row.status">
-              <button
-                class="icon-btn"
-                @click.stop="setStatus(index, 'Approved')"
-              >
-                <Icon
-                  icon="akar-icons:check-box-fill"width="35" height="35" style="color: #0014ff"
-                />
+              <button class="icon-btn" @click.stop="setStatus(index, 'Approved')">
+                <Icon icon="akar-icons:check-box-fill" width="35" height="35" style="color: #0014ff" />
               </button>
-              <button
-                class="icon-btn"
-                @click.stop="setStatus(index, 'Rejected')"
-              >
-                <Icon
-                  icon="solar:close-square-bold" width="35" height="35" style="color: #f00"
-                />
+              <button class="icon-btn" @click.stop="setStatus(index, 'Rejected')">
+                <Icon icon="solar:close-square-bold" width="35" height="35" style="color: #f00" />
               </button>
             </template>
             <template v-else>
@@ -58,11 +39,7 @@
 
           <!-- Action column -->
           <td>
-            <ActionButton
-              :index="index"
-              @edit-item="editItem"
-              @delete-item="deleteItem"
-            />
+            <ActionButton :index="index" @edit-item="editItem" @delete-item="deleteItem" />
           </td>
         </tr>
       </tbody>

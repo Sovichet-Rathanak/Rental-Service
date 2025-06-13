@@ -1,4 +1,8 @@
 <template>
+    <header>
+        <!-- conditionally render different navigation based on user role -->
+        <HeaderNav3></HeaderNav3>
+    </header>
     <div class="message-page">
         <div class="message-wrapper">
             <div class="left-side">

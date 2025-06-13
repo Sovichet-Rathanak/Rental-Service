@@ -1,6 +1,5 @@
 import EarningChartPage from '@/views/Landlord/EarningChartPage.vue'
 import Calendar from '@/views/Landlord/Calendar.vue'
-import Message3 from '@/views/MessagePage.vue'
 import ListingEditorPage from '@/views/Landlord/ListingEditorPage.vue'
 import LandlordPage from '@/views/Landlord/LandlordPage.vue'
 import ListingPage from '@/components/Landlord/LisitngPage.vue'
@@ -33,11 +32,6 @@ export default [
             path: 'calendar',
             name: 'Calendar',
             component: Calendar
-          },
-          {
-            path: 'message',
-            name: 'Landlord Message',
-            component: MessagePage,
           },
           {
             path: 'notification',

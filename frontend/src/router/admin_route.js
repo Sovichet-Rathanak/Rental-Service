@@ -9,6 +9,7 @@ import EditTenant from '@/views/Admin/EditTenant.vue'
 import EditLandlord from '@/views/Admin/EditLandlord.vue'
 import MessagePage from '@/views/MessagePage.vue'
 import Property from '@/views/Admin/Property.vue'
+import EditProperty from '@/views/Admin/EditProperty.vue'
 
 export default [
     {
@@ -24,18 +25,13 @@ export default [
             },
             {
                 path: 'property',
-                name: 'property',
+                name: 'Admin Dashboard Property',
                 component: Property
             },
             {
                 path: 'invoice',
                 name: 'Admin Invoice',
                 component: AdminInvoice
-            },
-            {
-                path: 'message',
-                name: 'Admin Message',
-                component: MessagePage,
             },
             {
                 path: 'room/create-house',
@@ -67,6 +63,11 @@ export default [
                 name: 'Admin Edit Landlord',
                 component: EditLandlord
             },
+            {
+                path: "property/edit-property/:id",
+                name: "Admin Edit Property",
+                component: EditProperty
+            }
         ]
 
     }

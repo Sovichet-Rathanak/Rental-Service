@@ -18,6 +18,7 @@ import LoginAndSecurity from '@/views/AccountSetting/LoginAndSecurity.vue'
 import hostings_route from './hostings_route'
 import admin_route from './admin_route'
 import landlord_route from './landlord_route'
+import MessagePage from '@/views/MessagePage.vue'
 
 
 const routes = [
@@ -93,7 +94,12 @@ const routes = [
     path: '/wishlist',
     name: 'Wishlist Page',
     component: WishlistPage,
-  }
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: MessagePage,
+  },
 ]
 
 const router = createRouter({

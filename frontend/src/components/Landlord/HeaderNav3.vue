@@ -14,7 +14,7 @@
       <router-link to="/landlord/calendar" class="nav-item" active-class="active">
         <span>Calendar</span>
       </router-link>
-      <router-link to="/landlord/message" class="nav-item" active-class="active">
+      <router-link to="/message" class="nav-item" active-class="active">
         <span>Message</span>
       </router-link>
       <router-link to="/landlord/notification" class="nav-item" active-class="active">
@@ -25,10 +25,6 @@
       </router-link>
     </div>
     <div class="item-end">
-      <!-- <div class="circle notification-btn">
-        <Icon icon="iconamoon:notification-light" width="35" height="35"></Icon>
-        <div class="notification-dot"></div>
-      </div> -->
       <div class="profile">
         <img src="/src/assets/images/comment/_.jpeg" alt="Profile">
         <div class="verified">
