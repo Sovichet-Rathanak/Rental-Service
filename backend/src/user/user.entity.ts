@@ -21,10 +21,10 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'tenant' })
-  role: UserRole;
-  @OneToMany(() => AccomReview, (review) => review.reviewer) //add here
-  accomReviews: AccomReview[];
+    @Column({default: 'tenant'})
+    role: UserRole;
+    @OneToMany(() => AccomReview, (review) => review.user) //add here
+    accomReviews: AccomReview[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.tenant)
   wishlist: Wishlist[];
