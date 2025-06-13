@@ -9,6 +9,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AccomReviewModule } from './accom-review/accom-review.module';
+import { BookingModule } from './booking/booking.module';
+import { WishlistModule } from './wishlist/wishlist.module';
+import { RentalDecisionModule } from './rental-decision/rental-decision.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -19,7 +22,7 @@ import { AccomReviewModule } from './accom-review/accom-review.module';
       password: 'admin',
       database: 'romdoul_database',
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
     }),
     ListingsModule,
     AmenityModule,
@@ -27,8 +30,12 @@ import { AccomReviewModule } from './accom-review/accom-review.module';
     RegionModule,
     UserModule,
     AuthModule,
-    AccomReviewModule],
+    AccomReviewModule,
+    BookingModule,
+    WishlistModule,
+    RentalDecisionModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
