@@ -1,9 +1,9 @@
 <template>
   <!-- Total Rating Summary -->
   <div class="totalRating">
-    <Icon icon="material-symbols:star-rounded" width="50" height="50" />
+    <Icon icon="material-symbols:star-rounded" width="40" height="40" />
     <h1>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</h1>
-    <Icon icon="mdi:dot" width="40" height="40" />
+    <Icon icon="mdi:dot" width="35" height="35" />
     <h1>{{ ratings.length === 0
       ? 'No rating yet'
       : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</h1>
@@ -30,7 +30,7 @@
           <span>{{ item.title }}</span>
           <span>{{ item.rating.toFixed(1) }}</span>
         </div>
-        <Icon :icon="item.icon" width="40" height="40" />
+        <Icon :icon="item.icon" width="30" height="30" />
       </div>
     </div>
   </div>
@@ -232,6 +232,11 @@ export default {
   margin: 100px 0px 20px 0px;
 }
 
+.totalRating>h1 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
 .totalRating>span {
   font-size: 35px;
   font-weight: bold;
@@ -317,7 +322,7 @@ export default {
 }
 
 .text>span {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 

@@ -36,7 +36,8 @@ export class AccomReview {
     createdAt: Date;
 
     @ManyToOne(() => User, (user) => user.accomReviews, { onDelete: 'CASCADE' })
-    reviewer: User;
+    user: User;
+    
 
     @ManyToOne(() => Listing, (listing) => listing.accomReviews, { onDelete: 'CASCADE' })
     listing: Listing;

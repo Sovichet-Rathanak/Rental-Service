@@ -17,10 +17,6 @@
                 <Icon icon="material-symbols:search-rounded" width="24" height="24" class="searchIcon"></Icon>
                 <input type="text" placeholder="Search">
             </div>
-             <div class="create">
-                <Icon icon="ic:round-plus" width="30" height="30"></Icon>
-                Create
-            </div>
         </div>
 
     </div>

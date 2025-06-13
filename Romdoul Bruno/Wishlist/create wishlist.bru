@@ -1,0 +1,18 @@
+meta {
+  name: create wishlist
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/wishlist
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "tenantId": "be31efbe-80a9-4b85-88b0-52b5bb48aeac",
+    "listingId": "522780eb-71ea-429f-a12c-cbd6945b3b40"
+  }
+}

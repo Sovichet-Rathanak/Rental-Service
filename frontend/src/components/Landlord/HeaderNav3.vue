@@ -1,5 +1,12 @@
 <template>
   <div class="container">
+    <div class="nav-left" @click="goToHomePage">
+      <img src="/src/assets/logo.png" alt="romdoul_logo" class="logo-img" />
+      <div class="title">
+        <h1>Romdoul</h1>
+        <h2>Rental Service</h2>
+      </div>
+    </div>
     <div class="item-middle">
       <router-link to="/landlord/listing" class="nav-item" active-class="active">
         <span>Listings</span>
@@ -7,18 +14,21 @@
       <router-link to="/landlord/calendar" class="nav-item" active-class="active">
         <span>Calendar</span>
       </router-link>
-      <router-link to="landlord/message4" class="nav-item" active-class="active">
+      <router-link to="/landlord/message" class="nav-item" active-class="active">
         <span>Message</span>
+      </router-link>
+      <router-link to="/landlord/notification" class="nav-item" active-class="active">
+        <span>Notification</span>
       </router-link>
       <router-link to="/landlord/earning" class="nav-item" active-class="active">
         <span>Earning</span>
       </router-link>
     </div>
     <div class="item-end">
-      <div class="circle notification-btn">
+      <!-- <div class="circle notification-btn">
         <Icon icon="iconamoon:notification-light" width="35" height="35"></Icon>
         <div class="notification-dot"></div>
-      </div>
+      </div> -->
       <div class="profile">
         <img src="/src/assets/images/comment/_.jpeg" alt="Profile">
         <div class="verified">
@@ -31,7 +41,12 @@
 
 <script>
 export default {
-  name: 'HeaderNav3'
+  name: 'HeaderNav3',
+    methods: {
+    goToHomePage() {
+      this.$router.push({ name: 'Home' });
+    }
+  }
 }
 </script>
 
@@ -41,16 +56,39 @@ export default {
   position: relative;
   justify-content: center;
   align-items: center;
-  padding: 30px 200px;
+  padding: 20px 60px;
+  padding-inline: 200px;
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15);
   z-index: 10;
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+}
+.logo-img {
+  width: 50px;
+  height: 50px;
+}
+.title h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.title h2 {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
 
 .item-middle {
   margin: 0 auto;
-  justify-content: space-between;
-  width: 35%;
+  justify-content: space-evenly;
+  width: 60%;
   display: flex;
   gap: 40px;
 }
@@ -160,8 +198,8 @@ export default {
 }
 
 .profile {
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 2px solid #e5e7eb;
   display: flex;

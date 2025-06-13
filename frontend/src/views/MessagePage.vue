@@ -1,7 +1,5 @@
 <template>
     <div class="message-page">
-        <MessageHeader></MessageHeader>
-
         <div class="message-wrapper">
             <div class="left-side">
                 <div class="message-header">
@@ -9,9 +7,6 @@
                     <div class="icon">
                         <button class="search-btn">
                             <Icon icon="ic:baseline-search" width="25" height="25" />
-                        </button>
-                        <button class="filter-btn">
-                            <Icon icon="mage:filter" width="25" height="25"  style="color: #000" />
                         </button>
                     </div>
                 </div>
@@ -70,13 +65,17 @@
 </template>
 
 <script>
-import MessageHeader from '@/components/message/MessageHeader.vue';
+import Notification from '@/components/message/NotificationPopUp.vue';
+import AdminHeader from '@/components/headerComponents/AdminHeader.vue';
+import HeaderNav3 from '@/components/Landlord/HeaderNav3.vue';
 import linaImage from '@/assets/images/message/lina.jpg'; // Import Lina's image
 import saSyninImage from '@/assets/images/message/sa-synin.jpg'; // Import Sa Synin's image
 
 export default {
     components: {
-        MessageHeader
+        AdminHeader,
+        HeaderNav3,
+        Notification
     },
     name: 'Message',
     data() {
@@ -129,24 +128,28 @@ export default {
 
 <style scoped>
 .message-page {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #ffffff;
+    margin: 0 auto;
 }
 
 .message-wrapper {
     display: flex;
-    min-height: calc(100vh - 135px);
+    min-height: calc(100vh - 100px);
+    max-height: min-content;
     width: 100%;
+    margin: 0 auto;
 }
 
 .left-side {
-    width: 30%;
-    border-right: 1px solid gray;
+    width: 35%;
+    border-right: 1px solid black;
     background-color: rgb(255, 255, 255);
+    margin: 0 auto;
 }
 
 .right-side {    
-    width: 70%; 
+    width: 65%; 
+    min-height: calc(100vh - 100px);
     position: relative; 
 }
 
@@ -156,11 +159,11 @@ export default {
 }
 
 .chat-conversation {
-    border-top: 1px solid gray; 
+    border-top: 1px solid black; 
     width: 100%;
-    height: 80%;
+    height: 670px;
     background-color: rgb(255, 255, 255);
-    overflow-y: auto;
+    overflow-y:scroll;
     display: flex;
     flex-direction: column;
 }
@@ -275,7 +278,7 @@ export default {
     gap: 0;
     margin-top: 45px;
     position: relative;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     justify-content: space-between; /* Space between image and text */
 }
 
@@ -321,7 +324,7 @@ export default {
     position: absolute;
     font-size: 15px;
     margin-left: 90px;
-    margin-top: 60px;
+    margin-top: 60px;   
     color: rgb(86, 85, 85);
 }
 
@@ -332,7 +335,7 @@ export default {
 .profile1 p1, .profile2 p1 {
     position: absolute;
     font-size: 15px;
-    margin-left: 450px;
+    margin-left: 550px;
     margin-top: 40px;
     color: rgb(86, 85, 85);
 }
@@ -344,9 +347,10 @@ export default {
 .chat-header {
     display: flex;
     align-items: center;
-    width: 100%;
-    gap: 1050px; 
-    background-color: rgb(242, 242, 234);
+    justify-content: space-between;
+    width: 97%;
+    /* gap: 1050px;  */
+    background-color: white;
     height: 10%;
 }
 
@@ -356,7 +360,7 @@ export default {
     align-items: center;
     width: 100%;
     height: 10%;
-    background-color: rgb(242, 242, 234); 
+    background-color: white; 
     border-radius: 0; 
     gap: 10px;
 }
@@ -365,6 +369,7 @@ export default {
     display: flex;
     gap: 15px;
     align-items: center;
+    justify-content: end;
     margin-top: 15px;
 }
 

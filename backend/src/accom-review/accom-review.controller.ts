@@ -18,9 +18,9 @@ export class AccomReviewController {
     return this.reviewService.findAll();
   }
 
-@Get('summary/:listingId')
-getSummary(@Param('listingId') id: string) {
-  return this.reviewService.getSummary(id);
+@Get('summary/:listing')
+getSummary(@Param('listing') id: string) {
+  return this.reviewService.getOverall(id);
 }
 
 }

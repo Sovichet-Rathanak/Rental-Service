@@ -1,11 +1,11 @@
-import { IsInt, IsString, Min, Max, IsUUID, IsOptional } from 'class-validator';
+import { IsInt, IsString, Min, Max, IsOptional } from 'class-validator';
 
 export class CreateAccomReviewDto {
     @IsString()
-    listingId: string;
+    listing: string;
 
     @IsString()
-    reviewerId: string; 
+    user: string; 
 
     @IsInt()
     @IsOptional()

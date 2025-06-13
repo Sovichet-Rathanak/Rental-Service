@@ -27,9 +27,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import EarningChart from '@/components/landlordChart/EarningChart.vue'
-import YearToDateSummary from '@/components/landlordChart/YearToDateSummary.vue'
-
+import EarningChart from '@/components/Landlord/Landlord-Dashboard/EarningChart.vue'
+import YearToDateSummary from '@/components/Landlord/Landlord-Dashboard/YearToDateSummary.vue'
 const monthEarning = ref(5.00)
 </script>
 
