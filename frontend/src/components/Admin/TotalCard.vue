@@ -10,7 +10,9 @@
             <router-link :to="goToPage"><div class="link" >View</div></router-link>
         </div>
         <hr class="hr" />
-        <div class="value">{{ value }}</div>
+        <div class="value-wrapper">
+            <div class="value">{{ value }}</div>
+        </div>
     </div>
 </template>
 
@@ -72,6 +74,14 @@ export default {
 
 .link:hover {
     text-decoration: underline;
+}
+
+.value-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    padding: 10px;
 }
 
 .value {

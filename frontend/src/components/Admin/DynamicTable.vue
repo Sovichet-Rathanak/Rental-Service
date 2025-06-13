@@ -11,20 +11,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(row, index) in rows"
-          :key="row.id || index"
-          class="tableRow"
-          @click="handleRowClick(row)"
-        >
+        <tr v-for="(row, index) in rows" :key="row.id || index" class="tableRow" @click="handleRowClick(row)">
           <!-- Render row data -->
           <td v-for="column in columns" :key="column.key">
             <template v-if="column.type === 'image'">
-              <img
-                :src="row[column.key]"
-                alt="Image"
-                style="width: 70px; height: 70px; border-radius: 8px;"
-              />
+              <img :src="row[column.key]" alt="Image" style="width: 70px; height: 70px; border-radius: 8px;" />
             </template>
             <template v-else>
               {{ row[column.key] }}
@@ -33,16 +24,22 @@
 
           <!-- Status column -->
           <td v-if="showStatus">
-            <StatusLabel :status="row.status" />
+            <template v-if="!row.status">
+              <button class="icon-btn" @click.stop="setStatus(index, 'Approved')">
+                <Icon icon="akar-icons:check-box-fill" width="35" height="35" style="color: #0014ff" />
+              </button>
+              <button class="icon-btn" @click.stop="setStatus(index, 'Rejected')">
+                <Icon icon="solar:close-square-bold" width="35" height="35" style="color: #f00" />
+              </button>
+            </template>
+            <template v-else>
+              <StatusLabel :status="row.status" />
+            </template>
           </td>
 
           <!-- Action column -->
           <td>
-            <ActionButton
-              :index="index"
-              @edit-item="editItem"
-              @delete-item="deleteItem"
-            />
+            <ActionButton :index="index" @edit-item="editItem" @delete-item="deleteItem" />
           </td>
         </tr>
       </tbody>
@@ -53,11 +50,13 @@
 <script>
 import ActionButton from './ActionButton.vue';
 import StatusLabel from './statusLabel.vue';
+import { Icon } from '@iconify/vue';
 
 export default {
   components: {
     ActionButton,
-    StatusLabel
+    StatusLabel,
+    Icon,
   },
   props: {
     columns: {
@@ -83,6 +82,9 @@ export default {
     },
     deleteItem(index) {
       this.$emit('delete-item', index);
+    },
+    setStatus(index, newStatus) {
+      this.rows[index].status = newStatus;
     },
   },
 };
@@ -147,5 +149,13 @@ td {
 
 .actionBtn:active {
   background-color: #aac0ff;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  margin: 0 4px;
+  cursor: pointer;
 }
 </style>

@@ -10,24 +10,17 @@
 
     <nav class="item-middle">
       <router-link to="/admin/dashboard" class="nav-item" active-class="active">Dashboard</router-link>
-      <router-link to="/admin/house" class="nav-item" active-class="active">Houses</router-link>
-      <router-link to="/admin/room" class="nav-item" active-class="active">Rooms</router-link>
+      <router-link to="/admin/property" class="nav-item" active-class="active">Properties</router-link>
       <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
       <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>
-      <router-link to="/admin/message4" class="nav-item" active-class="active">Messages</router-link>
-      <!-- <router-link to="/admin/promotion" class="nav-item" active-class="active">Promotion</router-link> -->
+      <router-link to="/message" class="nav-item" active-class="active">Messages</router-link>
       <router-link to="/admin/invoice" class="nav-item" active-class="active">Invoices</router-link>
     </nav>
 
     <div class="nav-right">
-      <div class="circle notification-btn">
-        <Icon icon="iconamoon:notification-light" width="30" height="30"></Icon>
-        <div class="notification-dot"></div>
-      </div>
       <div class="admin-dropdown">
         <Icon icon="material-symbols:menu" width="20" height="20" />
         <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
-        <!-- <span class="admin-name">Admin</span> -->
       </div>
     </div>
   </header>
@@ -209,7 +202,7 @@ export default {
   background-color: #f3f4f6;
 }
 
-.admin-name {
+.admin-title {
   font-size: 16px;
   font-weight: 500;
   color: #374151;

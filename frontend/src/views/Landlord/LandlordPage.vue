@@ -15,9 +15,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.container{
-    padding-inline: 200px;
-}
-</style>

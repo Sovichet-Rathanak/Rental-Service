@@ -1,0 +1,23 @@
+meta {
+  name: create booking
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/booking
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "tenantId": "be31efbe-80a9-4b85-88b0-52b5bb48aeac",
+    "listingId": "730c79ec-ea8c-413f-ada4-682321933de7",
+    "tourDate": "2025-06-17T10:00:00Z",
+    "moveInDate": "2025-07-01",
+    "rentalDuration": "monthly",
+    "numbTenant": 2
+  }
+  
+}

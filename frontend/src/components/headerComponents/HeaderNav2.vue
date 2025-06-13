@@ -14,19 +14,44 @@
             <button class="applyLandlord" @click="this.$router.push({ name: 'Hosting Steps' })">Applying for Landlord
                 <Icon icon="tabler:world" width="40" height="40" />
             </button>
-            <button class="sigin-btn">
-                <Icon icon="material-symbols:menu-rounded" width="24" height="24" />
-                <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
-            </button>
+            <div class="sigin">
+                <button @click="toggleMenu" class="menu-btn">
+                    <Icon icon="material-symbols:menu-rounded" width="24" height="24"/>
+                </button>
+                <MenuComponent 
+                    v-if="showMenu" 
+                    @close="showMenu = false"
+                    @navigate="handleNavigation"
+                />
+                <button class="sigin-btn">
+                    <Icon icon="fluent:person-circle-32-filled" width="36" height="36" />
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import MenuComponent from '@/components/MenuComponent.vue';
 export default {
+    components: {
+        MenuComponent
+    },
+    data() {
+        return {
+        showMenu: false
+        }
+    },
     methods: {
         goToHomePage() {
             this.$router.push({ name: 'Home' })
+        },
+        toggleMenu() {
+        this.showMenu = !this.showMenu;
+        },
+        handleNavigation(routeName) {
+            this.$router.push({ name: routeName });
+            this.showMenu = false; // Close the menu after navigation
         }
     }
 }
@@ -34,13 +59,11 @@ export default {
 
 <style scoped>
 .nav-container {
-    margin: 30px 0px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 25px 200px 20px 200px;
-    margin-bottom: 20px;
     box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.1);
     background-color: white;
     z-index: 10;
@@ -83,7 +106,7 @@ hgroup>h2 {
     font-size: 22px;
 }
 
-.sigin-btn {
+.sigin {
     display: flex;
     gap: 12px;
     flex-direction: row;
@@ -94,6 +117,19 @@ hgroup>h2 {
     border: 1.5px solid gray;
     padding: 12px 15px;
     border-radius: 50px;
+    position: relative;
+    cursor: pointer; 
+}
+
+.menu-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.sigin-btn {
+    background-color: transparent;
+    border: none;
     cursor: pointer;
 }
 

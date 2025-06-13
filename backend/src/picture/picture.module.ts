@@ -14,8 +14,8 @@ import { Picture } from './picture.entity';
       endPoint: 'localhost',
       port: 9000,
       useSSL: false,
-      accessKey: 'XD8pQxduorLDY81wKHKe',
-      secretKey: 'QKjVtGDOfYJfc3YPLqObEwiBS27iP5jpgxhQfvXJ'
+      accessKey: 'nDhG98VuA9V7TXXDp7LY',
+      secretKey: 'tbv1Cmg5VwpiQt5iTXYlFdGDZkDNMvm7OPIicKEp'
     })
   ],
   providers: [PictureService, Listing],

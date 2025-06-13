@@ -140,12 +140,12 @@ export default {
 <style scoped>
 .filternav-container {
     width: 100%;
-    margin-top: 145px;
+    margin-top: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    z-index: 200;
+    z-index: 50;
 }
 
 .filter-container {

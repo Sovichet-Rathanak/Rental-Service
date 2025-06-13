@@ -7,7 +7,6 @@ export class CreateAccomReviewDto {
     @IsString()
     user: string; 
 
-
     @IsInt()
     @IsOptional()
     @Min(1)
