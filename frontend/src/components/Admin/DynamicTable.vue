@@ -33,7 +33,27 @@
 
           <!-- Status column -->
           <td v-if="showStatus">
-            <StatusLabel :status="row.status" />
+            <template v-if="!row.status">
+              <button
+                class="icon-btn"
+                @click.stop="setStatus(index, 'Approved')"
+              >
+                <Icon
+                  icon="akar-icons:check-box-fill"width="35" height="35" style="color: #0014ff"
+                />
+              </button>
+              <button
+                class="icon-btn"
+                @click.stop="setStatus(index, 'Rejected')"
+              >
+                <Icon
+                  icon="solar:close-square-bold" width="35" height="35" style="color: #f00"
+                />
+              </button>
+            </template>
+            <template v-else>
+              <StatusLabel :status="row.status" />
+            </template>
           </td>
 
           <!-- Action column -->
@@ -53,11 +73,13 @@
 <script>
 import ActionButton from './ActionButton.vue';
 import StatusLabel from './statusLabel.vue';
+import { Icon } from '@iconify/vue';
 
 export default {
   components: {
     ActionButton,
-    StatusLabel
+    StatusLabel,
+    Icon,
   },
   props: {
     columns: {
@@ -83,6 +105,9 @@ export default {
     },
     deleteItem(index) {
       this.$emit('delete-item', index);
+    },
+    setStatus(index, newStatus) {
+      this.rows[index].status = newStatus;
     },
   },
 };
@@ -147,5 +172,13 @@ td {
 
 .actionBtn:active {
   background-color: #aac0ff;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  margin: 0 4px;
+  cursor: pointer;
 }
 </style>

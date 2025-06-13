@@ -3,7 +3,7 @@
         <div class="chart-header">
             <span class="chart-title">
                 <Icon icon="mdi:credit-card-outline" class="chart-icon" />
-                Total Payment
+                Total Payments
             </span>
         </div>
         <div class="totals-row">

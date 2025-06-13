@@ -9,34 +9,62 @@
                 <h2>Rental Service</h2>
             </hgroup>
         </div>
+<<<<<<< HEAD
         <!-- accommodation type button -->
         <!-- <div class="accomtype-btn"> 
             <button class="house-btn">
                 <Icon icon="clarity:house-solid" width="30" height="30" style="color: white;"/>
                 <span class="hBtn-label">House</span>
+=======
+        <div class="account-actions">
+            <button @click="toggleMenu" class="menu-btn">
+                <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
+>>>>>>> origin/rompheu/admin
             </button>
-            <button class="room-btn">
-                <Icon icon="fa6-solid:bed" width="37.5" height="30" style="color: white;"/>
-                <span class="rBtn-label">Room</span>
+            <button @click="goToAuth()" class="sigin-btn">
+                <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
             </button>
+<<<<<<< HEAD
         </div> -->
         <button @click="goToAuth()" class="sigin-btn">
             <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;"/>
             <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;"/>
         </button>
+=======
+            <MenuComponent 
+                v-if="showMenu" 
+                @close="showMenu = false"
+                @navigate="handleNavigation"
+            />
+        </div>
+>>>>>>> origin/rompheu/admin
     </div>
 </template>
 
 <script>
 import { Icon } from '@iconify/vue';
+import MenuComponent from '@/components/MenuComponent.vue';
 
 export default {
   components: {
-    Icon
+    Icon,
+    MenuComponent
+  },
+  data() {
+    return {
+      showMenu: false
+    }
   },
   methods: {
     goToAuth(){
         this.$router.push({ name: 'Login' })
+    },
+    toggleMenu() {
+        this.showMenu = !this.showMenu;
+    },
+    handleNavigation(routeName) {
+        this.$router.push({ name: routeName });
+        this.showMenu = false; // Close the menu after navigation
     }
   }
 }
@@ -78,31 +106,19 @@ export default {
         color: white;
     }
 
-    .accomtype-btn{
-        display: flex;
-        flex-direction: row;
-        gap: 50px;
-    }
-
-    .house-btn, .room-btn{
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        align-items: center ;
+    .sigin-btn{
         background-color: transparent;
         border: none;
         cursor: pointer;
-        box-sizing: border-box;
-        padding: 10px;
     }
 
-    .hBtn-label, .rBtn-label{
-        font-weight:500;
-        font-size: 18px;
-        color: white;
+    .menu-btn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
     }
 
-    .sigin-btn{
+    .account-actions {
         display: flex;
         gap: 12px;
         flex-direction: row;
@@ -113,6 +129,7 @@ export default {
         border: 1.5px solid white;
         padding: 12px 15px;
         border-radius: 50px;
+        position: relative;
         cursor: pointer;
     }
 </style>

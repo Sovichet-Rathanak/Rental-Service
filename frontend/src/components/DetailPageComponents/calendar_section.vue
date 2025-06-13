@@ -17,12 +17,12 @@
             <p>Big yard</p>
             <h3>What this place offer</h3>
             <div class="amenContainer">
-                <div class="amenities"><Icon icon="mdi:flower-outline" width="25" height="25"/><p>Courtyard view</p></div>
-                <div class="amenities"><Icon icon="hugeicons:shampoo" width="25" height="25"/><p>Shampoo</p></div>
-                <div class="amenities"><Icon icon="material-symbols:bath-private-outline-rounded" width="25" height="25"/><p>Hot water</p></div>
-                <div class="amenities"><Icon icon="lucide-lab:wardrobe" width="25" height="25"/><p>Wardrobe</p></div>
-                <div class="amenities"><Icon icon="material-symbols:wifi-rounded" width="25" height="25"/><p>Wifi</p></div>
-                <div class="amenities"><Icon icon="material-symbols:microwave" width="25" height="25"/><p>Microwave</p></div>
+                <div class="amenities"><Icon icon="material-symbols:wifi" width="25" height="25"/><p>Wifi</p></div>
+                <div class="amenities"><Icon icon="material-symbols-light:tv-outline-rounded" width="25" height="25"/><p>TV</p></div>
+                <div class="amenities"><Icon icon="fluent:oven-48-regular" width="25" height="25"/><p>Kitchen</p></div>
+                <div class="amenities"><Icon icon="fluent:washer-32-regular" width="25" height="25"/><p>Washer</p></div>
+                <div class="amenities"><Icon icon="icon-park-outline:coffee-machine" width="25" height="25"/><p>Coffee machine</p></div>
+                <div class="amenities"><Icon icon="tabler:alarm-smoke" width="25" height="25"/><p>Smoke Alarm</p></div>
             </div>
             <button class="showAmen" @click="toggleAmenities = true">Show all amenities</button>
         </div>
@@ -32,20 +32,6 @@
                 <div class="filter-detail-row" @click="toggleDate = true">
                     <h3>Move-in date</h3>
                     <p class="filter-choice" @click="toggleDate = true"> {{ isDateSelected ? formatDate(selectedMoveInDate) : 'Add date' }} </p>
-                </div>
-                <div class="filter-detail-row-tenant" @click="toggleTenant = true">
-                    <div>
-                        <h3>Tenants</h3>
-                        <p class="filter-choice">{{ totalTenant }} Tenants</p>
-                    </div>
-                    <div><Icon icon="iconoir:nav-arrow-down" width="35" height="35" style="color: #000; cursor: pointer"/></div>
-                </div>
-                <div class="filter-detail-row">
-                    <h3>Furniture</h3>
-                    <div class="filter-btn-group">
-                        <button class="select-status-btn"  :class="{ 'active-btn': furnitureType === 'furnished'}" @click="setFurniture('furnished')">Fully Furnished</button>
-                        <button class="select-status-btn"  :class="{ 'active-btn': furnitureType === 'empty' }" @click="setFurniture('empty')">Empty Room</button>
-                    </div>
                 </div>
                 <div class="filter-detail-last-row">
                     <h3>Rental Duration</h3>
@@ -58,7 +44,6 @@
             <button class="check-availability" @click="toggleTour = true">Check availability </button>
         </div>
         <Date_pop_up :show="toggleDate" @close="handleCloseDatePopup" @update-date="handleSelectedDate"/>
-        <Tenants_pop_up :show-tenant="toggleTenant" @close="toggleTenant = false" @update-total="handleUpdateTotal"></Tenants_pop_up>
         <Request_tour :showTour="toggleTour" @close="handleTourPopup"></Request_tour>
         <Amenities_pop_up :showAmenities="toggleAmenities" @close="handleAmenPopUp"></Amenities_pop_up>
     </main>
@@ -68,27 +53,25 @@
 import Amenities_pop_up from './amenities_pop_up.vue';
 import Date_pop_up from './date_pop_up.vue';
 import Request_tour from './request_tour.vue';
-import Tenants_pop_up from './tenants_pop_up.vue';
+import StepButton from '@/components/StepButton.vue';
 
 export default {
     name: "calendar-section",
     components:{
         Date_pop_up,
-        Tenants_pop_up,
         Request_tour,
-        Amenities_pop_up
+        Amenities_pop_up,
+        StepButton
     },
     data(){
         return{
             selectedMoveInDate: null,
             toggleDate: false,
-            toggleTenant: false,
-            totalTenant: 0,
             furnitureType: '',     
             rentalDuration: '', 
             isDateSelected: false,
             toggleTour: false,
-            toggleAmenities: false
+            toggleAmenities: false,
         }
     },
     methods:{
@@ -97,9 +80,6 @@ export default {
         },
         handleAmenPopUp(){
             this.toggleAmenities = false
-        },
-        setFurniture(type) {
-            this.furnitureType = type;
         },
         setRentalDuration(duration) {
             this.rentalDuration = duration;
@@ -123,6 +103,13 @@ export default {
                 day: 'numeric'
             }).format(date);
         },
+        toggleAmenity(amenity) {
+            if (this.selectedAmenities.includes(amenity)) {
+                this.selectedAmenities = this.selectedAmenities.filter(a => a !== amenity);
+            } else {
+                this.selectedAmenities.push(amenity);
+            }
+        }
     }
 }
 
@@ -143,14 +130,14 @@ main{
     border-radius: 10px;
     border: 1px solid black;
     font-weight: bold;
-    margin-top: 20px
+    margin-top: 30px
 
 }
 .active-btn{
     background-color: rgb(55, 120, 240);
     color: white;
 }
-h2,h3{
+h2, h3{
     margin-top: 20px;
     margin-bottom: -10px ;
 }
@@ -166,17 +153,7 @@ p{
     font-size: 18px;
     margin-bottom: 0px;
 }
-.desContainer{
-    display: flex;
-    flex-direction: column;
-}
 
-.host_pfp{
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-top: 20px;
-}
 .amenContainer{
     margin-top: 20px;
     display: grid;
@@ -193,6 +170,17 @@ p{
 .amenities p{
     margin: 0px;
 }
+.desContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.host_pfp{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
 .calContainer{
     padding-top: 20px;
     padding-left: 50px;
@@ -201,7 +189,7 @@ p{
     border-radius: 20px;
     box-shadow: 1px 1px 5px 5px lightgray;
     margin-top: 20px;
-    width: 35%;
+    width: 30%;
     height: 70%;
 }
 .filter{
@@ -227,10 +215,6 @@ p{
     display: flex;
     gap: 15px;
 }
-.filter-choice{
-    color: gray;
-    cursor: pointer;
-}
 .check-availability{
     width: 100%;
     border-radius: 25px;
@@ -241,14 +225,5 @@ p{
     color: white;
     font-weight:900;
     margin-top: 20px;
-}
-.filter-detail-row-tenant{
-    border-bottom: 1px solid lightgray;
-    padding-left: 20px;
-    padding-bottom: 10px;
-    padding-right: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 </style>
