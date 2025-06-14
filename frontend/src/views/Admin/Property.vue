@@ -93,7 +93,7 @@ export default {
     },
     handleEditItem(row) {
       this.$router.push({ 
-        name: "Admin Edit House", 
+        name: "Admin Edit Property", 
         params: { id: row.id},
     });
     },

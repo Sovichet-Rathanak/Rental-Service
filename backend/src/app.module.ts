@@ -12,8 +12,12 @@ import { AccomReviewModule } from './accom-review/accom-review.module';
 import { BookingModule } from './booking/booking.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { RentalDecisionModule } from './rental-decision/rental-decision.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

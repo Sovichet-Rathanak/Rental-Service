@@ -83,18 +83,6 @@ hgroup>h2 {
 }
 
 .sigin-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.menu-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.account-actions {
     display: flex;
     gap: 12px;
     flex-direction: row;
@@ -105,7 +93,6 @@ hgroup>h2 {
     border: 1.5px solid white;
     padding: 12px 15px;
     border-radius: 50px;
-    position: relative;
     cursor: pointer;
 }
 </style>

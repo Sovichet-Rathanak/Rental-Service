@@ -14,8 +14,8 @@ import { Picture } from './picture.entity';
       endPoint: 'localhost',
       port: 9000,
       useSSL: false,
-      accessKey: 'nDhG98VuA9V7TXXDp7LY',
-      secretKey: 'tbv1Cmg5VwpiQt5iTXYlFdGDZkDNMvm7OPIicKEp'
+      accessKey: process.env.MINIO_ACCESS_KEY!,
+      secretKey: process.env.MINIO_SECRET_KEY!
     })
   ],
   providers: [PictureService, Listing],
