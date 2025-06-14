@@ -49,7 +49,7 @@
                                 placeholder="Confirm your password" required />
                         </div>
 
-                        <button @click="submit" type="submit" class="auth-btn">
+                        <button type="submit" class="auth-btn">
                             {{ isSignUp ? 'Create Account' : 'Sign In' }}
                         </button>
 
@@ -82,6 +82,11 @@ export default {
     data() {
         return {
             isSignUp: false,
+            firstName: '',
+            lastName: '',
+            email:'',
+            password: '',
+            confirmPassword: ''
         }
     },
     computed: {
@@ -97,8 +102,47 @@ export default {
             this.confirmPassword = '';
         },
 
-        submit(){
-            console.log()
+        async handleSignUp(){
+            if(this.password !== this.confirmPassword){
+                alert("Make Sure Password and Confrim Password Match")
+                return;
+            }
+
+            const newUser = {
+                firstname: this.firstName,
+                lastname: this.lastName,
+                email: this.email,
+                password: this.password,
+                confirm_password: this.confirmPassword,
+                role: 'tenant'
+            }
+
+            try{
+                console.log(newUser)
+                await this.userStore.createUser(newUser);
+                this.userStore.isLoggedIn = true;
+                console.log("User Created Succesfuly: ", newUser);
+                console.log("Login: ", this.userStore.isLoggedIn);
+                this.$router.push({name: 'Home'})
+            }catch(error){
+                console.error(error);
+            }
+        },
+
+        async handleLogin(){
+            if(!this.email || !this.password){
+                console.log("Empty password and email")
+                return;
+            }
+
+            try{
+                await this.userStore.handleLogIn({
+                    email: this.email,
+                    password: this.password
+                })
+            }catch(error){
+                console.error("Login error");
+            }
         }
     }
 }

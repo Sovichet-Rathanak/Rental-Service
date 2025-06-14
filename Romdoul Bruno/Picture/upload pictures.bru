@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/picture/upload/2c73bd4d-7976-48da-8f95-d25167d53721
+  url: http://localhost:3000/api/picture/upload/
   body: multipartForm
   auth: inherit
 }
 
 body:multipart-form {
-  file: @file()
+  file: @file(/home/nak/Pictures/sophia-kao.jpg)
 }
 
 body:file {

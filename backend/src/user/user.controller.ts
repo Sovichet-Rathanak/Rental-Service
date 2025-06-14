@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { createUserDTO } from './dto/create-user.dto';
@@ -45,6 +45,11 @@ export class UserController {
     // @Roles('UserRole.ADMIN')
     async updateRole(@Param('id') userId: string, @Body('role') newRole: UserRole) {
         return this.userService.switchUserRole(userId, newRole);
+    }
+
+    @Delete('/:id')
+    async deleteUser(@Param('id') userId: string){
+        return this.userService.deleteUser(userId);
     }
 
 }

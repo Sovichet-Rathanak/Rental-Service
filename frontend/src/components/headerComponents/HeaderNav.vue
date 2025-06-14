@@ -9,9 +9,13 @@
                 <h2>Rental Service</h2>
             </hgroup>
         </div>
-        <button @click="goToAuth()" class="sigin-btn">
+        <button @click="isLoggedIn? toggleMenu() : goTo('Login')" class="sigin-btn">
             <Icon icon="material-symbols:menu-rounded" width="24" height="24" style="color: white;" />
-            <Icon icon="fluent:person-circle-32-filled" width="36" height="36" style="color: white;" />
+
+            <Icon v-if="!isLoggedIn || !user.pfp_thumbnail_url" icon="fluent:person-circle-32-filled" width="36"
+                height="36" style="color: white;" />
+            <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_thumbnail_url}`" alt="PFP" class="profile-pic"
+                style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
         </button>
         <MenuComponent v-if="showMenu" @close="showMenu = false" @navigate="handleNavigation" />
     </div>
@@ -20,6 +24,8 @@
 <script>
 import { Icon } from '@iconify/vue';
 import MenuComponent from '@/components/MenuComponent.vue';
+import { mapActions, mapState } from 'pinia';
+import { useUserStore } from '@/stores/user';
 
 export default {
     components: {
@@ -28,12 +34,24 @@ export default {
     },
     data() {
         return {
-            showMenu: false
+            showMenu: false,
         }
     },
+    async mounted() {
+        try{
+            await this.fetchUser();
+            console.log(this.user)
+        }catch(error){
+            console.log(error)
+        }
+    },
+    computed: {
+        ...mapState(useUserStore, ['user', 'isLoggedIn']),
+    },
     methods: {
-        goToAuth() {
-            this.$router.push({ name: 'Login' })
+        ...mapActions(useUserStore, ['fetchUser', 'clearUser']),
+        goTo(route_name) {
+            this.$router.push({ name: route_name })
         },
         toggleMenu() {
             this.showMenu = !this.showMenu;

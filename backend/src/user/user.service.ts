@@ -93,22 +93,38 @@ export class UserService {
             }
         )
 
+        // If user already have a pfp, clean it from minio
+        if (user.pfp_original_url) {
+            await this.minioClient.client.removeObject(bucket, user.pfp_original_url);
+        }
+        if (user.pfp_thumbnail_url) {
+            await this.minioClient.client.removeObject(bucket, user.pfp_thumbnail_url);
+        }
+
         user.pfp_original_url = ogFile;
         user.pfp_thumbnail_url = thumbnailFile;
         await this.userRepo.save(user);
 
-        return{
+        return {
             pfp_original_url: ogFile,
             pfp_thumbnail_url: thumbnailFile
         }
     }
 
-    async switchUserRole(userId: string, newRole: UserRole): Promise<User>{
-        const user = await this.userRepo.findOne({where: {id: userId}});
-        if(!user) throw new NotFoundException('User not found');
+    async switchUserRole(userId: string, newRole: UserRole): Promise<User> {
+        const user = await this.userRepo.findOne({ where: { id: userId } });
+        if (!user) throw new NotFoundException('User not found');
 
         user.role = newRole
         return await this.userRepo.save(user);
+    }
+
+    async deleteUser(userId: string): Promise<string> {
+        const user = await this.userRepo.findOne({ where: { id: userId } });
+        if (!user) throw new NotFoundException('User not found');
+
+        await this.userRepo.remove(user);
+        return "User Deleted Successfuly";
     }
 }
 
