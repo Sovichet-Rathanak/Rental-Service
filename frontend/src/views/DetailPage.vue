@@ -5,9 +5,9 @@
     <div class="main-container">
         <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
         <AccommadationImg></AccommadationImg>
-        <Calendar_section></Calendar_section>
+        <Calendar_section :listingId="listingId" :tenantId="tenantId" />
         <Rating></Rating>
-        <h1 style="font-weight: bold; margin: 100px 0px 30px 0px;">Where you'll be</h1>
+        <h1 style="font-weight: bold; margin: 50px 0px 30px 0px;">Where you'll be</h1>
         <div class="map-container">
             <MapComponent></MapComponent>
         </div>
@@ -26,6 +26,9 @@ import HostInfoSection from '@/components/HostInfoSection.vue';
 import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 import MapComponent from '@/components/MapComponent.vue';
 import Calendar_section from '@/components/DetailPageComponents/calendar_section.vue';
+import { useBookingStore } from "@/stores/booking";
+import { mapActions, mapState } from "pinia";
+
 export default {
     components: {
         HeaderNav2,
@@ -35,7 +38,24 @@ export default {
         Rating,
         MapComponent,
         Calendar_section
-    }
+    },
+    
+    data() {
+    return {
+      tenantId: 'be31efbe-80a9-4b85-88b0-52b5bb48aeac' ,
+      listingId: '2f285e02-48ae-4782-be51-15d1c02c7cc3'
+    //   listingId: route.params.id
+    };
+  },
+  computed: {
+    ...mapState(useBookingStore, ["bookings"])
+  },
+  methods: {
+    ...mapActions(useBookingStore, [
+      "updateBookingField"
+    ]),
+  }
+  
 }
 </script>
 

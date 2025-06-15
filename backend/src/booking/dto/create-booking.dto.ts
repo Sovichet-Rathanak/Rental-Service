@@ -1,23 +1,30 @@
-import { IsDateString, IsEnum, IsInt, IsUUID, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  // IsUUID,
+} from 'class-validator';
 import { RentalDuration } from '../enum/rental-duration.enum';
 
 export class CreateBookingDto {
-  @IsUUID()
+  // @IsUUID()
   tenantId: string;
 
-  @IsUUID()
+  // @IsUUID()
   listingId: string;
 
   @IsDateString()
+  @IsNotEmpty()
   tourDate: string;
+
+  @IsString()
+  @IsNotEmpty()
+  tourTime: string;
 
   @IsDateString()
   moveInDate: string;
 
   @IsEnum(RentalDuration)
   rentalDuration: RentalDuration;
-
-  @IsInt()
-  @Min(1)
-  numbTenant: number;
 }

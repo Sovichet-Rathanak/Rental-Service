@@ -30,6 +30,9 @@ export class Booking {
   @Column({ type: 'timestamptz' })
   tourDate: Date;
 
+  @Column({ type: 'time', nullable: true })
+  tourTime: string;
+
   @Column({ type: 'date' })
   moveInDate: string;
 
@@ -38,9 +41,6 @@ export class Booking {
 
   @Column()
   rentalDuration: RentalDuration;
-
-  @Column()
-  numbTenant: number;
 
   @Column({ default: 'pending' })
   status: BookingStatus;

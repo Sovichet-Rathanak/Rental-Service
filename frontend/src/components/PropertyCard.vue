@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     goToDetailPage() {
-      this.$router.push({ name: 'Accommodation' })
+      this.$router.push({ name: 'Accommodation'}) // params: { id: this.data.id} 
     },
 
     // ...mapActions(useWishlistStore, ['toggleWishlist']),

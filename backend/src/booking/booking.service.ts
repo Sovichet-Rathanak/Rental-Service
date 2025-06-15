@@ -10,8 +10,11 @@ import { Listing } from 'src/listing/listing.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { BookingStatus } from './enum/booking-status.enum';
 import { RentalDuration } from './enum/rental-duration.enum';
+
 @Injectable()
 export class BookingService {
+  private readonly CAMBODIA_OFFSET = 7 * 60 * 60 * 1000; // UTC+7 in milliseconds
+
   constructor(
     @InjectRepository(Booking)
     private readonly bookingRepo: Repository<Booking>,
@@ -20,32 +23,42 @@ export class BookingService {
     private readonly listingRepo: Repository<Listing>,
   ) {}
 
-  //Get all listing
   async getAll(): Promise<Booking[]> {
     return this.bookingRepo.find({});
   }
 
-  //create booking
   async createBooking(dto: CreateBookingDto) {
+    console.log('Recieve booking data:', dto);
     const listing = await this.listingRepo.findOne({
       where: { id: dto.listingId },
     });
-    if (!listing) throw new NotFoundException('Listing not found');
+    if (!listing) {
+      console.log('Listing not found:', dto.listingId);
+      throw new NotFoundException('Listing not found');
+    }
+
+    // Combine date and time (treat as local Cambodia time)
+    const tourDateTime = this.combineDateAndTime(dto.tourDate, dto.tourTime);
+    const tourTime = this.formatTime(tourDateTime);
+
+    // For storage and comparison, use UTC date at midnight
+    const tourDate = new Date(tourDateTime);
+    tourDate.setUTCHours(0, 0, 0, 0);
 
     const existing = await this.bookingRepo.findOne({
       where: {
         listing: { id: dto.listingId },
-        tourDate: new Date(dto.tourDate),
+        tourDate: tourDate,
+        tourTime: tourTime,
       },
     });
 
     if (existing) {
-      throw new BadRequestException(
-        'Only one tour per day for a listing is allowed',
-      );
+      throw new BadRequestException('This time slot is already booked');
     }
 
-    const moveInDate = new Date(dto.moveInDate);
+    // Handle move-in dates (convert to Cambodia time)
+    const moveInDate = this.convertToCambodiaTime(new Date(dto.moveInDate));
     let moveOutDate: Date;
 
     if (dto.rentalDuration === RentalDuration.MONTHLY) {
@@ -59,16 +72,15 @@ export class BookingService {
     const booking = this.bookingRepo.create({
       listing: { id: dto.listingId },
       tenant: { id: dto.tenantId },
-      tourDate: new Date(dto.tourDate).toISOString(),
-      moveInDate: new Date(dto.moveInDate).toISOString().split('T')[0],
-      moveOutDate: moveOutDate.toISOString().split('T')[0],
+      tourDate: this.formatDateOnly(tourDate),
+      tourTime: tourTime, // Store the exact entered time
+      moveInDate: this.formatDateOnly(moveInDate),
+      moveOutDate: this.formatDateOnly(moveOutDate),
       rentalDuration: dto.rentalDuration,
-      numbTenant: dto.numbTenant,
     });
     return this.bookingRepo.save(booking);
   }
 
-  //cancel booking
   async cancelBooking(id: string) {
     const booking = await this.bookingRepo.findOne({
       where: { id },
@@ -77,19 +89,15 @@ export class BookingService {
 
     if (!booking) throw new NotFoundException('Booking not found');
 
-    // if (booking.tenant.id !== user.id)
-    //   throw new ForbiddenException('Access denial');
-
     if (booking.status !== BookingStatus.PENDING)
       throw new BadRequestException(
-        'Cannot cancel after dicision from landlord',
+        'Cannot cancel after decision from landlord',
       );
 
     booking.status = BookingStatus.CANCEL;
     return this.bookingRepo.save(booking);
   }
 
-  //landlord accept request
   async acceptBooking(id: string) {
     const booking = await this.bookingRepo.findOne({
       where: { id },
@@ -99,23 +107,77 @@ export class BookingService {
     if (!booking) throw new NotFoundException('Booking not found');
 
     booking.status = BookingStatus.ACCEPT;
-    booking.decisionAt = new Date();
+    booking.decisionAt = this.getCurrentCambodiaTime();
     return this.bookingRepo.save(booking);
   }
 
-  //landlord reject request
   async rejectBooking(id: string) {
     const booking = await this.bookingRepo.findOne({
       where: { id },
       relations: ['listing'],
     });
     if (!booking) throw new NotFoundException('Booking not found');
-    // if (booking.listing.ownerId !== landlord.id)
-    //   throw new ForbiddenException('Not your listing');
 
     booking.status = BookingStatus.REJECT;
-    booking.decisionAt = new Date();
+    booking.decisionAt = this.getCurrentCambodiaTime();
     return this.bookingRepo.save(booking);
+  }
+
+  async getBookedDates(listingId: string) {
+    const bookings = await this.bookingRepo.find({
+      where: { listing: { id: listingId } },
+      select: ['tourDate', 'tourTime'],
+    });
+
+    return {
+      bookedDates: bookings.map((b) => this.formatDateOnly(b.tourDate)),
+      bookedTimes: bookings.map((b) => ({
+        date: this.formatDateOnly(b.tourDate),
+        time: b.tourTime, // Use stored time directly
+      })),
+    };
+  }
+
+  private getCurrentCambodiaTime(): Date {
+    return new Date(Date.now() + this.CAMBODIA_OFFSET);
+  }
+
+  private convertToCambodiaTime(date: Date): Date {
+    return new Date(date.getTime() + this.CAMBODIA_OFFSET);
+  }
+
+  private formatTime(date: Date): string {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  }
+
+  private formatDateOnly(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+
+  private combineDateAndTime(dateStr: string, timeStr: string): Date {
+    const date = new Date(dateStr);
+    // eslint-disable-next-line prefer-const
+    let [time, period] = timeStr.split(' ');
+    // eslint-disable-next-line prefer-const
+    let [hours, minutes] = time.split(':').map(Number);
+
+    // Convert 12-hour format to 24-hour
+    if (period) {
+      period = period.toUpperCase();
+      if (period === 'PM' && hours !== 12) {
+        hours += 12;
+      } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+      }
+    }
+
+    // Set local time components (no UTC conversion)
+    date.setHours(hours, minutes, 0, 0);
+    return date;
   }
 
   private addMonths(date: Date, months: number): Date {
