@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { defineStore } from 'pinia';
 
 export const useImageStore = defineStore('image', {
@@ -91,13 +92,17 @@ export const useImageStore = defineStore('image', {
                 const formData = new FormData();
                 formData.append('file', file);
                 try {
-                    const response = await fetch(`http://localhost:3000/api/picture/upload/${listingId}`, {
-                        method: 'POST',
-                        body: formData,
-                    });
-                    if (!response.ok) throw new Error(`Failed to upload image ${image.name}`);
-                    const uploadedImage = await response.json();
-                    uploadedImages.push(uploadedImage);
+                    const response = await axios.post(`http://localhost:3000/api/picture/upload/${listingId}`, formData, {
+                        headers: {
+                            'Content-Type': 'multi/form-data'
+                        }
+                    })
+
+                    if (response.status < 200 || response.status >= 300) {
+                        throw new Error(`Failed to upload image ${image.name}`);
+                    }
+
+                    uploadedImages.push(response.data);
                 } catch (error) {
                     console.error('Upload error:', error);
                 }
@@ -105,5 +110,5 @@ export const useImageStore = defineStore('image', {
             this.images = uploadedImages;
             this.saveToLocalStorage();
         }
-    }   
+    }
 });

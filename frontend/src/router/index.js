@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
-import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/AccountSetting/PersonalInfoPage.vue'
 import NotificationPageTenant from '@/views/AccountSetting/NotificationPageTenant.vue'
 import InvoicePage from '@/views/AccountSetting/InvoicePage.vue'
 import RentingList from '@/views/AccountSetting/RentingList.vue'
 import PaymentPage from '@/views/AccountSetting/PaymentRelated/PaymentPage.vue'
 import ManagePayment from '@/views/AccountSetting/PaymentRelated/ManagePayment.vue'
-import AuthDisplay from '@/views/AuthScreen/AuthDisaply.vue'
+import AuthDisplay from '@/views/AuthScreen/AuthDisplay.vue'
 
 import HelpCenterPage from '@/views/HelpCenterPage.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
@@ -45,9 +44,10 @@ const routes = [
     component: AccountSetting,
   },
   {
-    path: '/accommodation',
+    path: '/accommodation/:id',
     name: 'Accommodation',
-    component: DetailPage,
+    component: () => import('@/views/DetailPage.vue'), //lazy loading for better performance
+    props: true
   },
   {
     path: '/rent-list',

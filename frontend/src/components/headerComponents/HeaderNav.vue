@@ -24,8 +24,8 @@
 <script>
 import { Icon } from '@iconify/vue';
 import MenuComponent from '@/components/MenuComponent.vue';
-import { mapActions, mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
+import { mapActions, mapState } from 'pinia';
 
 export default {
     components: {
@@ -41,7 +41,7 @@ export default {
         ...mapState(useUserStore, ['user', 'isLoggedIn']),
     },
     methods: {
-        ...mapActions(useUserStore, ['fetchUser', 'clearUser']),
+        ...mapActions(useUserStore, ['fetchCurrentUser', 'clearUser']),
         goTo(route_name) {
             this.$router.push({ name: route_name })
         },

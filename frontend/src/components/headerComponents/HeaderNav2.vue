@@ -18,7 +18,7 @@
                 <Icon icon="material-symbols:menu-rounded" width="24" height="24" />
                 <MenuComponent v-if="showMenu" @close="showMenu = false" @navigate="handleNavigation" />
                 <Icon v-if="!isLoggedIn || !user.pfp_thumbnail_url" icon="fluent:person-circle-32-filled" width="36"
-                    height="36" style="color: white;" />
+                    height="36" style="color: black;" />
                 <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_thumbnail_url}`" alt="PFP"
                     class="profile-pic" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
             </div>

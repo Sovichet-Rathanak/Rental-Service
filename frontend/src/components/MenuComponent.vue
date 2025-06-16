@@ -40,22 +40,25 @@
 </template>
 
 <script>
+import { useUserStore } from '@/stores/user';
 import { Icon } from '@iconify/vue';
+import { mapActions } from 'pinia';
 
 export default {
     components: {
         Icon
     },
     methods: {
+        ...mapActions(useUserStore, ['handleLogOut']),
         navigate(routeName) {
             this.$emit('navigate', routeName);
         },
         logout() {
-            //implement logout logic here
+            this.handleLogOut();
             this.$emit('close');
             this.$router.push({ name: 'Home' });
         }
-    }
+    },
 }
 </script>
 

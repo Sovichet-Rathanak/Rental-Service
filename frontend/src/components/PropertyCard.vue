@@ -1,5 +1,5 @@
 <template>
-  <div class="property-card" @click="goToDetailPage">
+  <div class="property-card" @click="goToDetailPage(data.id)">
     <div class="image-container">
       <img :src="data.image" alt="property image" />
       <button class="fave-btn" @click.stop="handleWishlist">
@@ -44,8 +44,8 @@ export default {
     // }
   },
   methods: {
-    goToDetailPage() {
-      this.$router.push({ name: 'Accommodation' })
+    goToDetailPage(id) {
+      this.$router.push(`/accommodation/${id}`);
     },
 
     // ...mapActions(useWishlistStore, ['toggleWishlist']),

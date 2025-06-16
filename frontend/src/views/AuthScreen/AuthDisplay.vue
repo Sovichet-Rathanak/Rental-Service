@@ -123,7 +123,7 @@ export default {
                 this.userStore.isLoggedIn = true;
                 console.log("User Created Succesfuly: ", newUser);
                 console.log("Login: ", this.userStore.isLoggedIn);
-                this.$router.push({name: 'Home'})
+                this.$router.push({name: 'Account Setting'})
             }catch(error){
                 console.error(error);
             }
@@ -140,6 +140,7 @@ export default {
                     email: this.email,
                     password: this.password
                 })
+                this.$router.push({name: "Home"})
             }catch(error){
                 console.error("Login error");
             }

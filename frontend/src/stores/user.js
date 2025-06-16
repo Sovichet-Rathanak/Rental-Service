@@ -66,6 +66,11 @@ export const useUserStore = defineStore('user', {
             }
         },
 
+        handleLogOut() {
+            this.clearUser();
+            localStorage.removeItem('token'); 
+        },
+
         async handlePfp(event) {
             console.log(event.target.files[0])
             const pfp = event.target.files[0];
@@ -81,14 +86,10 @@ export const useUserStore = defineStore('user', {
 
                 this.user.pfp_original_url = pfpRsp.data.pfp_original_url;
                 this.user.pfp_thumbnail_url = pfpRsp.data.pfp_thumbnail_url;
-            }catch(error){
+            } catch (error) {
                 console.error("Error: ", error)
             }
         },
-
-        // async handleLogOut(){
-
-        // },
 
         async fetchCurrentUser() {
             if (!this.authToken && !this.user.email) {
