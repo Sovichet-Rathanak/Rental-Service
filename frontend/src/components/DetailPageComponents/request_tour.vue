@@ -13,7 +13,7 @@
           <VDatePicker
             expanded
             borderless
-            view="weekly"
+            
             v-model="tourDateTime"
             mode="dateTime"
             is12hr

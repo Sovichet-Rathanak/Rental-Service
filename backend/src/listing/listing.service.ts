@@ -35,8 +35,8 @@ export class ListingService {
       console.log(amenities);
     }
 
-    // const region = await this.regionService.findOne(dto.region_id);
-    // listing.region = region;
+    const region = await this.regionService.findOne(dto.region_id);
+    listing.region = region;
 
     return this.listingRepo.save(listing);
   }

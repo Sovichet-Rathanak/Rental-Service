@@ -9,6 +9,6 @@ export class Region {
   @Column({ unique: true })
   region_name: string;
 
-  // @OneToMany(() => Listing, (listing) => listing.region)
-  // listings: Listing[];
+  @OneToMany(() => Listing, (listing) => listing.region)
+  listings: Listing[];
 }

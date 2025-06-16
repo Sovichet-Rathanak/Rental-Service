@@ -27,12 +27,12 @@ export class Listing {
   @Column({ nullable: true })
   property_type: PropertyType;
 
-  // @ManyToOne(() => Region, (region) => region.listings, {
-  //   eager: true,
-  //   nullable: false,
-  // })
-  // @JoinColumn({ name: 'region_id' })
-  // region: Region;
+  @ManyToOne(() => Region, (region) => region.listings, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'region_id' })
+  region: Region;
 
   @Column({ nullable: true })
   street_address: string;
