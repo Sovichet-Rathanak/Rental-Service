@@ -5,32 +5,30 @@
       <Icon icon="weui:back-filled" class="icon-spacing" />
       <span>Back</span>
     </button>
-
     <!-- Save Button -->
     <button class="action-btn save-btn" @click="saveImage">
       <Icon icon="solar:heart-linear" class="icon-spacing-right" />
       <span>Save</span>
     </button>
   </div>
-  <!-- Accommadation image -->
-  <div class="gallery-layout">
+
+  <div class="gallery-layout" v-if="images.length > 0">
     <div class="main-photo" @click="openModal(0)">
-      <img :src="images[0].thumb" alt="Main Room" />
+      <img :src="images[0]" alt="Main Room" />
     </div>
     <div class="side-photos">
-      <div
-        v-for="(image, index) in images.slice(1, 5)"
-        :key="index"
-        class="small-photo"
-        @click="openModal(index + 1)"
-      >
-        <img :src="image.thumb" :alt="`Room ${index + 2}`" />
+      <div v-for="(image, index) in images.slice(1, 5)" :key="index" class="small-photo" @click="openModal(index + 1)">
+        <img :src="image" :alt="`Room ${index + 2}`" />
       </div>
     </div>
   </div>
 
+  <div v-else>
+    <Icon icon="eos-icons:bubble-loading" width="100" height="100" style="color: #000" />
+  </div>
+
   <!-- Modal -->
-  <div v-if="currentIndex !== null" class="modal" @click="closeModal">
+  <div v-if="currentIndex !== null && images.length > 0" class="modal" @click="closeModal">
     <span class="close-btn" @click="closeModal">
       <Icon icon="charm:cross" />
     </span>
@@ -38,7 +36,7 @@
       <div class="image-counter">
         {{ currentIndex + 1 }} / {{ images.length }}
       </div>
-      <img :src="images[currentIndex].full" class="enlarged-image" />
+      <img :src="images[currentIndex]" class="enlarged-image" />
       <!-- Navigation buttons -->
       <button class="nav-btn left" @click="prevImage">
         <i class="arrow left"></i>
@@ -50,45 +48,53 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+<script>
+import { useListingStore } from '@/stores/listing'
+import { mapActions, mapState } from 'pinia'
 
-const images = [
-  { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom2.jpeg', full: '/src/assets/images/accommadationImg/bedroom2.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom3.jpeg', full: '/src/assets/images/accommadationImg/bedroom3.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom4.jpeg', full: '/src/assets/images/accommadationImg/bedroom4.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom5.jpeg', full: '/src/assets/images/accommadationImg/bedroom5.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom1.jpeg', full: '/src/assets/images/accommadationImg/bedroom1.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom4.jpeg', full: '/src/assets/images/accommadationImg/bedroom4.jpeg' },
-  { thumb: '/src/assets/images/accommadationImg/bedroom5.jpeg', full: '/src/assets/images/accommadationImg/bedroom5.jpeg' },
+export default {
+  data() {
+    return {
+      images: [],
+      currentIndex: null,
+    }
+  },
+  async mounted() {
+    try {
+      const imageData = await this.fetchListingImagesById(this.$route.params.id);
+      console.log(imageData);
 
+      this.images = imageData.map(img => ('http://localhost:9000/romdoul/original/' + img.original_url)); //thumbnail too blurry use original for now
 
-]
-
-const currentIndex = ref(null)
-const router = useRouter()
-
-const openModal = (index) => {
-  currentIndex.value = index
-}
-
-const closeModal = () => {
-  currentIndex.value = null
-}
-
-const prevImage = () => {
-  currentIndex.value = currentIndex.value > 0 ? currentIndex.value - 1 : images.length - 1
-}
-
-const nextImage = () => {
-  currentIndex.value = currentIndex.value < images.length - 1 ? currentIndex.value + 1 : 0
-}
-
-const goBack = () => {
-  router.back()
+      console.log(this.images);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  computed: {
+    ...mapState(useListingStore, ['listings'])
+  },
+  methods: {
+    ...mapActions(useListingStore, ['fetchListingImagesById']),
+    openModal(index) {
+      this.currentIndex = index
+    },
+    closeModal() {
+      this.currentIndex = null
+    },
+    prevImage() {
+      this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.images.length - 1
+    },
+    nextImage() {
+      this.currentIndex = this.currentIndex < this.images.length - 1 ? this.currentIndex + 1 : 0
+    },
+    goBack() {
+      this.$router.push({ name: "Home" })
+    },
+    saveImage() {
+      console.log('Image saved!')
+    }
+  }
 }
 </script>
 
@@ -99,8 +105,107 @@ const goBack = () => {
   gap: 10px;
   width: 100%;
   height: 600px;
-  border-radius: 18px;      
-  overflow: hidden;         
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.main-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 18px 0 0 18px;
+  overflow: hidden;
+}
+
+.main-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.main-photo:hover img {
+  transform: scale(1.05);
+}
+
+.side-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  height: 100%;
+}
+
+.small-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.small-photo:nth-child(1) {
+  border-radius: 0 18px 0 0;
+}
+
+.small-photo:nth-child(4) {
+  border-radius: 0 0 18px 0;
+}
+
+.small-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.small-photo:hover img {
+  transform: scale(1.05);
+}
+
+/* Fixed Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.enlarged-image {
+  max-width: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #000;
+}
+
+.nav-btn.left {
+  left: -80px;
+}
+
+.nav-btn.right {
+  right: -80px;
 }
 
 .main-photo,
@@ -129,7 +234,7 @@ const goBack = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0; 
+  border-radius: 0;
 }
 
 
@@ -270,6 +375,7 @@ const goBack = () => {
 .icon-spacing-right {
   margin-left: 8px;
 }
+
 .image-counter {
   position: absolute;
   top: 15px;
@@ -285,5 +391,4 @@ const goBack = () => {
   pointer-events: none;
   user-select: none;
 }
-
 </style>
