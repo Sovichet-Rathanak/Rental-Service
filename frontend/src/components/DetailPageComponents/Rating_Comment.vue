@@ -229,7 +229,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin: 100px 0px 20px 0px;
+  margin: 50px 0px 20px 0px;
 }
 
 .totalRating>h1 {

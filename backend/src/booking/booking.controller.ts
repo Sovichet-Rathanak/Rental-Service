@@ -1,21 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   Param,
   Patch,
   Post,
-  // UseGuards,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
-// import { AuthGuard } from 'src/auth/guards/auth.guard';
-// import { RolesGuard } from 'src/auth/guards/role.guard';
-// import { Roles } from 'src/auth/decorator/roles.decorator';
-// import { UserDecorator } from 'src/user/user.decorator';
-
 @Controller('booking')
-// @UseGuards(AuthGuard, RolesGuard)
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
@@ -25,26 +20,32 @@ export class BookingController {
   }
 
   @Post()
-  // @Roles('tenant')
   async create(@Body() dto: CreateBookingDto) {
-    return this.bookingService.createBooking(dto);
+    try {
+      return await this.bookingService.createBooking(dto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @Patch(':id/cancel')
-  // @Roles('tenant')
   async cancel(@Param('id') id: string) {
     return this.bookingService.cancelBooking(id);
   }
 
   @Patch(':id/accept')
-  // @Roles('landlord')
   async accept(@Param('id') id: string) {
     return this.bookingService.acceptBooking(id);
   }
 
   @Patch(':id/reject')
-  // @Roles('landlord')
   async reject(@Param('id') id: string) {
     return this.bookingService.rejectBooking(id);
+  }
+
+  // booking.controller.ts
+  @Get('availability/:listingId')
+  async getBookedDates(@Param('listingId') listingId: string) {
+    return this.bookingService.getBookedDates(listingId);
   }
 }
