@@ -66,7 +66,27 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        // async logOut(){
+        async handlePfp(event) {
+            console.log(event.target.files[0])
+            const pfp = event.target.files[0];
+            if (!pfp) return;
+            const formData = new FormData();
+            formData.append('file', pfp);
+            try {
+                const pfpRsp = await axios.post(`http://localhost:3000/api/user/${this.user.id}/profile-picture`, formData, {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${this.authToken}`
+                })
+                console.log(pfpRsp);
+
+                this.user.pfp_original_url = pfpRsp.data.pfp_original_url;
+                this.user.pfp_thumbnail_url = pfpRsp.data.pfp_thumbnail_url;
+            }catch(error){
+                console.error("Error: ", error)
+            }
+        },
+
+        // async handleLogOut(){
 
         // },
 
@@ -122,3 +142,10 @@ export const useUserStore = defineStore('user', {
     },
     persist: true
 })
+
+//Account settings (TBD) (3h)
+//Unique listing details (3h)
+//Filtering (3h - 12h (in case of geolocation filtering))
+//Add coord to each listing  (4h update listing steps as well)
+//Show more function on the homepage
+

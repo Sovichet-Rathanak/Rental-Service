@@ -3,6 +3,7 @@
         <combined-header></combined-header>
     </header>
     <main>
+    <button @click="console.log(listings.region_id)">CHECK</button>
         <div class="homescreen-container">
             <banner-animate></banner-animate>
             <div class="property-container">

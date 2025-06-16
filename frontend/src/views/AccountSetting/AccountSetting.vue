@@ -7,9 +7,8 @@
         <div class="headerText">
             <h1 style="margin: 0;">Account</h1>
             <div class="profileInfo">
-                <h2>Lin Van, </h2>
-                <h3>linavan2509@gmail.com</h3>
-                <router-link class="go-to" :to="{ name: 'Show User' }">Go to profile</router-link>
+                <h2>{{ user.firstname }} {{ user.lastname }}, </h2>
+                <h3>{{ user.email }}</h3>
             </div>
         </div>
 
@@ -60,6 +59,8 @@
 <script>
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
+import { useUserStore } from '@/stores/user';
+import { mapState } from 'pinia';
 
 export default {
     components: {
@@ -70,12 +71,15 @@ export default {
         goToPage(routeName) {
             this.$router.push({ name: routeName })
         }
+    },
+    computed: {
+        ...mapState(useUserStore, ['user', 'isLoggedIn'])
     }
 }
 </script>
 
 <style scoped>
-main{
+main {
     padding-inline: 100px;
 }
 

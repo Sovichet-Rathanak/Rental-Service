@@ -8,6 +8,18 @@
 
         <div class="info-container">
             <div class="info-section">
+                <!-- Profile Picture Upload -->
+                <div class="pfp-container">
+                    <label for="pfp-upload" class="pfp-wrapper">
+                        <Icon v-if="!user.pfp_original_url"  icon="ion:person" width="120" height="120"  style="color: black" />
+                        <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`" alt="Profile Picture" class="pfp-img" @error="onImageError" />
+                        <div class="overlay">Change</div>
+                        <input type="file" id="pfp-upload" accept="image/*" @change="handlePfp" />
+                    </label>
+                    <p class="pfp-name">{{ user.firstname }} {{ user.lastname }}</p>
+                </div>
+
+                <!-- Info List -->
                 <div v-for="(item, index) in personalInfo" :key="index" class="info-item">
                     <div>
                         <strong>{{ item.label }}</strong>
@@ -20,6 +32,7 @@
                 </div>
             </div>
 
+            <!-- Sidebar Info -->
             <aside class="info-sidebar">
                 <div v-for="(box, index) in sidebarItems" :key="index" class="info-box">
                     <Icon :icon="box.icon" class="icon" />
@@ -39,6 +52,8 @@
 import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue';
+import { useUserStore } from '@/stores/user';
+import { mapActions, mapState } from 'pinia';
 
 export default {
     components: {
@@ -46,17 +61,18 @@ export default {
         FooterComponent,
         BreadCrumbs,
     },
+    computed: {
+        ...mapState(useUserStore, ['user']),
+        personalInfo() {
+            return [
+                { label: 'Fist name', value: `${this.user.firstname}`, editing: false },
+                { label: 'Last name', value: `${this.user.lastname}`, editing: false },
+                { label: 'Email address', value: this.user.email || '', editing: false },
+            ];
+        },
+    },
     data() {
         return {
-            personalInfo: [
-                { label: 'Legal name', value: 'Lina Van', editing: false },
-                { label: 'Preferred first name', value: '', editing: false },
-                { label: 'Email address', value: 'linavan2509@gmail.com', editing: false },
-                { label: 'Phone numbers', value: '', editing: false },
-                { label: 'Identity verification', value: 'Not started', editing: false },
-                { label: 'Address', value: '', editing: false },
-                { label: 'Emergency contact', value: '', editing: false },
-            ],
             sidebarItems: [
                 {
                     title: 'Why isn’t my info shown here?',
@@ -77,12 +93,11 @@ export default {
         };
     },
     methods: {
-        enableEdit(index) {
-            this.personalInfo[index].editing = true;
-        },
+        ...mapActions(useUserStore, ['handlePfp']),
     },
 };
 </script>
+
 
 <style scoped>
 .header {
@@ -183,5 +198,65 @@ export default {
 .info-box p {
     font-size: 16px;
     color: #666;
+}
+
+.pfp-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.pfp-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.pfp-wrapper:hover {
+    border-color: #007bff;
+}
+
+.pfp-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.pfp-wrapper input[type="file"] {
+    display: none;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 123, 255, 0.6);
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pfp-wrapper:hover .overlay {
+    opacity: 1;
+}
+
+.pfp-name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 10px;
+    color: #333;
 }
 </style>

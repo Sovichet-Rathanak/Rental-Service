@@ -37,14 +37,6 @@ export default {
             showMenu: false,
         }
     },
-    async mounted() {
-        try{
-            await this.fetchUser();
-            console.log(this.user)
-        }catch(error){
-            console.log(error)
-        }
-    },
     computed: {
         ...mapState(useUserStore, ['user', 'isLoggedIn']),
     },

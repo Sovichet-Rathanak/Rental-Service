@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import AccountSetting from '@/views/AccountSetting/AccountSetting.vue'
-import ShowUser from '@/views/ShowUser.vue'
 import DetailPage from '@/views/DetailPage.vue'
 import PersonalInfoPage from '@/views/AccountSetting/PersonalInfoPage.vue'
 import NotificationPageTenant from '@/views/AccountSetting/NotificationPageTenant.vue'
@@ -44,11 +43,6 @@ const routes = [
     path: '/account-setting',
     name: 'Account Setting',
     component: AccountSetting,
-  },
-  {
-    path: '/show-user',
-    name: 'Show User',
-    component: ShowUser,
   },
   {
     path: '/accommodation',

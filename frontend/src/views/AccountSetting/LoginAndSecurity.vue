@@ -26,15 +26,6 @@
           <div class="security-item">
             <div class="item-details">
               <div class="info-line">
-                <h4 style="margin: 0; font-weight: 500;">Phone Number</h4>
-              </div>
-            </div>
-            <span class="action-text update">Update</span>
-          </div>
-
-          <div class="security-item">
-            <div class="item-details">
-              <div class="info-line">
                 <h4 style="margin: 0; font-weight: 500;">Facebook</h4>
                 <span class="status">Not connected</span>
               </div>
@@ -49,7 +40,7 @@
                 <span class="status">Connected</span>
               </div>
             </div>
-            <span class="action-text disconnect">Disconnect</span>
+            <span class="action-text disconnect">Connect</span>
           </div>
 
           <div class="account-section">
@@ -189,7 +180,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 40px 0;
-  border-bottom: 1px solid #767676;
   margin-top: 50px;
 }
 

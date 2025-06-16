@@ -13,6 +13,7 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) { }
 
+    //find user
     async validateUser(loginDto: loginDTO) {
         return this.userRepo.findOne(
             {
@@ -25,6 +26,7 @@ export class AuthService {
         )
     }
 
+    //login
     async authenticateUser(loginDto: loginDTO) {
         const user = await this.validateUser(loginDto)
 
@@ -35,7 +37,7 @@ export class AuthService {
         const payload = { sub: user.id, email: user.email };
         const accessToken = await this.jwtService.signAsync(payload);
 
-        const { password, ...userData } = user; //take everything excep the password
+        const { password,...userData } = user; //take everything except the password
         return { accessToken, user: { ...userData } };
     }
 }
