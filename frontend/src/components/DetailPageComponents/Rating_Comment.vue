@@ -7,6 +7,9 @@
     <h1>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</h1>
     <!-- Dot Icon -->
     <Icon icon="mdi:dot" width="35" height="35" />
+        <h1>{{ ratings.length === 0
+      ? 'No rating yet'
+      : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</h1>
   </div>
 
   <!-- Rating Section -->
