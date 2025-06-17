@@ -9,7 +9,7 @@ export class AccomReviewController {
   constructor(private readonly reviewService: AccomReviewService) {}
 
   @Post()
-  create(@Body() dto: CreateAccomReviewDto): Promise<AccomReview>{
+  create(@Body() dto: CreateAccomReviewDto): Promise<AccomReview> {
     return this.reviewService.createReview(dto);
   }
 
@@ -18,9 +18,13 @@ export class AccomReviewController {
     return this.reviewService.findAll();
   }
 
-@Get('summary/:listing')
-getSummary(@Param('listing') id: string) {
-  return this.reviewService.getOverall(id);
-}
+  @Get('overall/:listing')
+  getOverall(@Param('listing') id: string) {
+    return this.reviewService.getOverall(id);
+  }
 
+  @Get('listing/:listingId')
+  findByListing(@Param('listing') listing: string): Promise<AccomReview[]> {
+    return this.reviewService.findByListing(listing);
+  }
 }

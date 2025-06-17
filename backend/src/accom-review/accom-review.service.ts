@@ -19,10 +19,15 @@ export class AccomReviewService {
     ) { }
 
     async createReview(dto: CreateAccomReviewDto) {
+        console.log('Received DTO:', dto);
+
         const user = await this.userRepo.findOneBy({ id: dto.user });
         const listing = await this.listingRepo.findOneBy({ id: dto.listing });
 
-        if (!user || !listing) throw new NotFoundException('Reviewer or listing not found');
+        if (!user || !listing) {
+            console.log('User or listing not found:', { user, listing });
+            throw new NotFoundException('Reviewer or listing not found');
+        }
 
         const review = this.reviewRepo.create({
             ...dto,
@@ -30,8 +35,11 @@ export class AccomReviewService {
             listing,
         });
 
+        console.log('Created review entity:', review);
+
         return this.reviewRepo.save(review);
     }
+
 
     async findAll() {
         return this.reviewRepo.find({
@@ -40,7 +48,14 @@ export class AccomReviewService {
         });
     }
 
-    
+    async findByListing(listingId: string): Promise<AccomReview[]> {
+        return this.reviewRepo.find({
+            where: { listing: { id: listingId } },
+            relations: ['user'],
+            order: { createdAt: 'DESC' },
+        });
+    }
+
     async getOverall(listing: string) {
         const reviews = await this.reviewRepo.find({
             where: { listing: { id: listing } },
@@ -56,11 +71,17 @@ export class AccomReviewService {
             return acc;
         }, {} as Record<ReviewCategory, number>);
 
-        // Calculate totals
+        // Calculate totals and rating bar for overallRating
+        let overallSum = 0;
+        let overallCount = 0;
         for (const review of reviews) {
-            const ratings = categories.map((cat) => review[cat]);
-            const avg = Math.round(ratings.reduce((sum, val) => sum + val, 0) / categories.length);
-            ratingBar[avg]++;
+            // For the rating bar, use the user-inputted overallRating
+            if (typeof review.overallRating === 'number' && review.overallRating >= 1 && review.overallRating <= 5) {
+                ratingBar[review.overallRating] = (ratingBar[review.overallRating] || 0) + 1;
+                overallSum += review.overallRating;
+                overallCount++;
+            }
+            // For category ratings, sum them up
             categories.forEach((cat) => {
                 sums[cat] += review[cat];
             });
@@ -69,10 +90,14 @@ export class AccomReviewService {
         // Calculate average per category
         const perCategory: Record<string, number> = {};
         categories.forEach((cat) => {
-            const label = cat.replace('Rating', '').toLowerCase(); //calculate each category
+            const label = cat.replace('Rating', '').toLowerCase();
             perCategory[label] = count > 0 ? +(sums[cat] / count).toFixed(1) : 0;
         });
 
-        return { ratingBar, perCategory };
+        // Calculate overall average from user input
+        const overallAvg = overallCount > 0 ? +(overallSum / overallCount).toFixed(1) : 0;
+
+        return { ratingBar, perCategory, overallAvg };
     }
 }
+
