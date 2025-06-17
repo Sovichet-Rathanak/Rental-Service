@@ -41,7 +41,7 @@ export default {
         ...mapState(useUserStore, ['user', 'isLoggedIn']),
     },
     methods: {
-        ...mapActions(useUserStore, ['fetchCurrentUser', 'clearUser']),
+        ...mapActions(useUserStore, ['clearUser']),
         goTo(route_name) {
             this.$router.push({ name: route_name })
         },

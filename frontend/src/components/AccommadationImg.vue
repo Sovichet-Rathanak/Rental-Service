@@ -49,33 +49,19 @@
 </template>
 
 <script>
-import { useListingStore } from '@/stores/listing'
-import { mapActions, mapState } from 'pinia'
-
 export default {
   data() {
     return {
-      images: [],
       currentIndex: null,
     }
   },
-  async mounted() {
-    try {
-      const imageData = await this.fetchListingImagesById(this.$route.params.id);
-      console.log(imageData);
-
-      this.images = imageData.map(img => ('http://localhost:9000/romdoul/original/' + img.original_url)); //thumbnail too blurry use original for now
-
-      console.log(this.images);
-    } catch (error) {
-      console.error(error);
+  props: {
+    images: {
+      type: Array,
+      required: true,
     }
   },
-  computed: {
-    ...mapState(useListingStore, ['listings'])
-  },
   methods: {
-    ...mapActions(useListingStore, ['fetchListingImagesById']),
     openModal(index) {
       this.currentIndex = index
     },

@@ -102,6 +102,16 @@ export const useListingStore = defineStore('listing', {
 
             const key = imageToUse.isThumbnail ? imageToUse.thumbnail_url : `original/${imageToUse.original_url}`;
             return `http://localhost:9000/romdoul/${key}`;
+        },
+
+        async getListingById(id){
+            try{
+                const foundLisitng = await axios.get(`http://localhost:3000/api/listing/${id}`);
+                const foundListingData = foundLisitng.data;
+                return foundListingData;
+            }catch(error){
+                console.error(error)
+            }
         }
 
     },

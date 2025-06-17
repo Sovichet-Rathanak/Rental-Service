@@ -1,21 +1,26 @@
 <template>
-    <header>
-        <HeaderNav2></HeaderNav2>
-    </header>
-    <div class="main-container">
-        <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
-        <AccommadationImg></AccommadationImg>
-        <Calendar_section :listingId="listingId" :tenantId="tenantId" />
-        <Rating></Rating>
-        <h1 style="font-weight: bold; margin: 50px 0px 30px 0px;">Where you'll be</h1>
-        <div class="map-container">
-            <MapComponent></MapComponent>
-        </div>
-        <HostInfoSection></HostInfoSection>
+  <header>
+    <HeaderNav2></HeaderNav2>
+  </header>
+  <div class="main-container">
+    <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
+    <AccommadationImg :images="images"/>
+    <Calendar_section 
+      v-if="listing && userId" 
+      :listingId="listingId" 
+      :userId="userId" 
+      :listing="listing" 
+      :amenities="listing.amenities" />
+    <Rating></Rating>
+    <h1 style="font-weight: bold; margin: 50px 0px 30px 0px;">Where you'll be</h1>
+    <div class="map-container">
+      <MapComponent></MapComponent>
     </div>
-    <footer>
-        <FooterComponent></FooterComponent>
-    </footer>
+    <HostInfoSection></HostInfoSection>
+  </div>
+  <footer>
+    <FooterComponent></FooterComponent>
+  </footer>
 </template>
 
 <script>
@@ -28,49 +33,70 @@ import MapComponent from '@/components/MapComponent.vue';
 import Calendar_section from '@/components/DetailPageComponents/calendar_section.vue';
 import { useBookingStore } from "@/stores/booking";
 import { mapActions, mapState } from "pinia";
+import { useListingStore } from '@/stores/listing';
+import { useUserStore } from '@/stores/user';
 
 export default {
-    components: {
-        HeaderNav2,
-        FooterComponent,
-        AccommadationImg,
-        HostInfoSection,
-        Rating,
-        MapComponent,
-        Calendar_section
-    },
-    
-    data() {
+  components: {
+    HeaderNav2,
+    FooterComponent,
+    AccommadationImg,
+    HostInfoSection,
+    Rating,
+    MapComponent,
+    Calendar_section
+  },
+  data() {
     return {
-      tenantId: 'be31efbe-80a9-4b85-88b0-52b5bb48aeac' ,
-      listingId: '2f285e02-48ae-4782-be51-15d1c02c7cc3'
-    //   listingId: route.params.id
+      images: [],
+      listingId: '',
+      userId: '',
+      listing: null,
     };
   },
+  async mounted() {
+    try {
+      const imageData = await this.fetchListingImagesById(this.$route.params.id);
+      console.log(imageData);
+
+      this.images = imageData.map(img => ('http://localhost:9000/romdoul/original/' + img.original_url)); //thumbnail too blurry use original for now
+
+      console.log(this.images);
+    } catch (error) {
+      console.error(error);
+    }
+
+    const listingData = await this.getListingById(this.$route.params.id);
+    console.log(listingData);
+    this.listing = listingData;
+    this.listingId = listingData.id;
+    this.userId = this.user.id;
+  },
   computed: {
-    ...mapState(useBookingStore, ["bookings"])
+    ...mapState(useListingStore, ['listings']),
+    ...mapState(useBookingStore, ["bookings"]),
+    ...mapState(useUserStore, ['user']),
   },
   methods: {
-    ...mapActions(useBookingStore, [
-      "updateBookingField"
-    ]),
+    ...mapActions(useListingStore, ['fetchListingImagesById', 'getListingById']),
+    ...mapActions(useBookingStore, ["updateBookingField"]),
   }
-  
+
 }
 </script>
 
 <style scoped>
 .main-container {
-    padding-inline: 250px;
-    min-height: 100vh;
+  padding-inline: 250px;
+  min-height: 100vh;
 }
 
 .map-container {
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    border-radius: 20px;
-    background-color: grey;
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: grey;
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

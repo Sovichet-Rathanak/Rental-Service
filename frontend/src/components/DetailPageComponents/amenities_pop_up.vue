@@ -1,48 +1,68 @@
 <template>
     <div class="amenities-container-overlay" v-if="showAmenities">
-        <div class="amenities-container">          
-             <button @click="$emit('close')" class="close-button">
+        <div class="amenities-container">
+            <button @click="$emit('close')" class="close-button">
                 <Icon icon="charm:cross" width="30" height="30" />
             </button>
             <h2>What this place offers</h2>
-            <div class="aminties-section-row">
-                <h3>Poppular Amenities</h3>
-                <p><Icon icon="material-symbols:wifi" width="20" height="20"/> Wifi</p>
-                <p><Icon icon="material-symbols-light:tv-outline-rounded" width="20" height="20"/> TV</p>
-                <p><Icon icon="fluent:oven-48-regular" width="20" height="20"/> Kitchen</p>
-                <p><Icon icon="fluent:washer-32-regular" width="20" height="20"/> Washer</p>
+
+            <div class="aminties-section-row" v-if="guestFavorites.length">
+                <h3>Popular Amenities</h3>
+                <p v-for="(amenity, index) in guestFavorites" :key="'gf-' + index">
+                    <Icon :icon="amenity.icon_name" width="24" height="24" />
+                    {{ amenity.name }}
+                </p>
             </div>
-            <div class="aminties-section-row">
+
+            <div class="aminties-section-row" v-if="standoutAmenities.length">
                 <h3>Stand-Out Amenities</h3>
-                <p><Icon icon="cil:pool" width="20" height="20"/> Pool</p>
-                <p><Icon icon="icon-park-outline:coffee-machine" width="20" height="20"/> Coffee machine</p>
+                <p v-for="(amenity, index) in standoutAmenities" :key="'so-' + index">
+                    <Icon :icon="amenity.icon_name" width="24" height="24" />
+                    {{ amenity.name }}
+                </p>
             </div>
-            <div class="aminties-section-row">
+
+            <div class="aminties-section-row" v-if="safetyItems.length">
                 <h3>Safety Item Amenities</h3>
-                <p><Icon icon="tabler:alarm-smoke" width="20" height="20"/> Smoke Alarm</p>
-                <p><Icon icon="hugeicons:first-aid-kit" width="20" height="20"/> First aid kit</p>
-                <p><Icon icon="streamline:fire-extinguisher-sign" width="20" height="20"/> Fire extinguisher</p>
+                <p v-for="(amenity, index) in safetyItems" :key="'si-' + index">
+                    <Icon :icon="amenity.icon_name" width="24" height="24" />
+                    {{ amenity.name }}
+                </p>
             </div>
         </div>
     </div>
-
 </template>
 
+
 <script>
-export default{
+export default {
     name: 'amenities-pop-up',
-    props:{
-        showAmenities:{
+    props: {
+        showAmenities: {
             type: Boolean,
             require: true
+        },
+        amenities: {
+            type: Array,
+            require: true
+        }
+    },
+    computed: {
+        guestFavorites() {
+            return this.amenities.filter(a => a.type === 'guest_favorite');
+        },
+        standoutAmenities() {
+            return this.amenities.filter(a => a.type === 'standout');
+        },
+        safetyItems() {
+            return this.amenities.filter(a => a.type === 'safety_items');
         }
     }
 }
-
 </script>
 
 <style scoped>
-.amenities-container-overlay{
+.amenities-container-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -55,7 +75,7 @@ export default{
     z-index: 999;
 }
 
-.amenities-container{
+.amenities-container {
     background-color: white;
     padding: 50px;
     border-radius: 20px;
@@ -66,15 +86,15 @@ export default{
 }
 
 .close-button {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
-.aminties-section-row p{
+.aminties-section-row p {
     padding-bottom: 25px;
     gap: 20px;
     border-bottom: 1px solid lightgray;
@@ -82,7 +102,7 @@ export default{
 
 }
 
-.aminties-section-row h3{
+.aminties-section-row h3 {
     padding-bottom: 15px;
     padding-top: 15px;
 }
