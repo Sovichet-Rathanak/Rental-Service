@@ -1,22 +1,18 @@
 <template>
-
-    <body>
+    <div class="container">
         <header>
             <HeaderNav2></HeaderNav2>
         </header>
         <main>
             <BreadCrumbs></BreadCrumbs>
             <hgroup style="width: 100%;">
-                <h1>Your Payment Methods</h1>
-                <!-- <h3 style="color:  grey; margin-top: 40px;">Once you have added a payment method, this is where you can
-                    come to track and manage it.</h3> -->
-                
-                <div>
+                <h1>Your Payment Methods</h1>               
+                <div class="payment-table">
                     <DynamicTable
                       class="payment"
                       :columns="columnsSet1"
                       :rows="dataSet1"
-                      :show-status="true"
+                      :show-status="false"
                       :show-edit="false"
                       @delete-item="handleDeleteItem"
                     />
@@ -26,7 +22,7 @@
         <footer>
             <FooterComponent></FooterComponent>
         </footer>
-    </body>
+    </div>
 </template>
 
 <script>
@@ -46,51 +42,55 @@ export default {
     return {
       columnsSet1: [
         { key: "id", label: "ID" },
-        { key: "cardNumber", label: "Card Number", type: "" },
+        { key: "cardNumber", label: "Card Number" },
         { key: "firstName", label: "First Name" },
         { key: "lastName", label: "Last Name" },
-        { key: "address", label: "Address" },
-        { key: "expiryDate", label: "Date" },
-        { key: "cvv", label: "CVV" },
       ],
       dataSet1: [], 
     };
   },
   methods: {
+    formatCardNumberMasked(cardNumber) {
+      if (!cardNumber || cardNumber.length < 4) return "**** **** **** ****";
+      const last4 = cardNumber.slice(-4);
+      return "**** **** **** " + last4;
+    },
     async fetchPayments() {
       try {
         const response = await fetch("http://localhost:3000/api/payments");
+        if (!response.ok) throw new Error('Network response was not ok');
         const payments = await response.json();
 
-        // Map backend data to match columns
-        this.dataSet1 = payments.map((payment, index) => ({
-          id: index + 1,
-          cardNumber: formatCardNumberMasked(payment.cardNumber),
-          firstName: payment.firstName,
-          lastName: payment.lastName,
-          address: payment.streetAddress, // or concatenate other fields if needed
-          expiryDate: payment.expiryDate,
-          cvv: payment.cvv,
-          status: payment.status || "Pending",
+        this.dataSet1 = payments.map((payment) => ({
+          id: payment.id,
+          cardNumber: this.formatCardNumberMasked(payment.cardNumber),
+          firstName: payment.firstName || '',
+          lastName: payment.lastName || '',
           tableName: 'payment'
         }));
       } catch (error) {
         console.error("Failed to fetch payments:", error);
       }
     },
-
-    handleDeleteItem(index) {
-      this.dataSet1.splice(index, 1);
-    },
+    async handleDeleteItem(index) {
+      const itemToDelete = this.dataSet1[index];
+      try {
+        const response = await fetch(`http://localhost:3000/api/payments/${itemToDelete.id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete from backend');
+        }
+        this.dataSet1.splice(index, 1); // frontend update
+      } catch (error) {
+        console.error("Delete failed:", error);
+        alert("Failed to delete payment. Please try again.");
+      }
+    },  
   },
   mounted() {
     this.fetchPayments();
   }
-}
-function formatCardNumberMasked(cardNumber) {
-  if (!cardNumber || cardNumber.length < 4) return "**** **** **** ****";
-  const last4 = cardNumber.slice(-4);
-  return "**** **** **** " + last4;
 }
 </script>
 
@@ -104,5 +104,9 @@ main {
     display: flex;
     flex-direction: column;
     align-items: start;
+}
+
+.payment-table {
+    margin-top: 40px;
 }
 </style>

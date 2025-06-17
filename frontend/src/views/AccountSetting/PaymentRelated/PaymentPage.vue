@@ -13,7 +13,6 @@
                         planning your next living. </h4>
                 </hgroup>
                 <button class="add-paymentbtn" @click="showPopup = true"> Add payment method </button>
-
                 <hgroup style="width: 80%;">
                     <h2 style="font-weight: bold;">Manage Your Payments</h2>
                     <h4>Keep track of all your payment methods.</h4>
@@ -35,7 +34,6 @@
                 </div>
             </div>
         </div>
-
         <div class="popup-overlay" v-if="showPopup">
             <div class="popup-content">
                 <div class="content-header">
@@ -60,7 +58,6 @@
                                 @input="formatCVV">
                         </div>
                     </div>
-
                     <div class="wrapper" style="padding-inline: 30px;">
                         <div class="section-title">Billing Address</div>
                         <div class="bill-address">
@@ -73,7 +70,6 @@
                             <input type="text" placeholder="ZIP code" v-model="zipCode">
                         </div>
                     </div>
-
                     <div class="wrapper" style="padding-inline: 30px;">
                         <div class="card-holder">
                             <div class="section-title">Card Holder</div>
@@ -124,7 +120,6 @@ export default {
         goToPage(route) {
             this.$router.push({ name: route });
         },
-
         formatCardNumber() {
             let value = this.cardNumber.replace(/\D/g, ''); //get rid of the everything except number
 
@@ -137,7 +132,6 @@ export default {
             }
             this.cardNumber = formattedValue;
         },
-
         formatMonthYear() { //still buggy
             let value = this.expDate.replace(/\D/g, '');
 
@@ -166,7 +160,6 @@ export default {
                 this.expDate += '/';
             }
         },
-
         formatCVV() {
             this.cvv = this.cvv.replace(/\D/g, '');
             if (this.cvv.length > 3) {
@@ -186,9 +179,8 @@ export default {
                 zipCode: this.zipCode,
                 firstName: this.firstName,
                 lastName: this.lastName,
-                status: 'pending'
+                status: 'completed'
             };
-
             fetch('http://localhost:3000/api/payments', {
                 method: 'POST',
                 headers: {
@@ -206,7 +198,6 @@ export default {
                 console.error('Error saving payment:', error);
             });
         },
-
     },
     watch: {
         showPopup(newVal) {
@@ -224,19 +215,16 @@ main {
     align-items: start;
     position: relative;
 }
-
 hgroup>h2,
 hgroup>h4 {
     margin: 10px 0px;
 }
-
 .content-container {
     display: grid;
     grid-template-columns: 50% 50%;
     gap: 30px;
     width: 100%;
 }
-
 .add-paymentbtn {
     background-color: black;
     color: white;
@@ -249,7 +237,6 @@ hgroup>h4 {
     cursor: pointer;
     margin: 20px 0px 70px 0px;
 }
-
 .manage-paymentbtn {
     background-color: black;
     color: white;
@@ -262,7 +249,6 @@ hgroup>h4 {
     cursor: pointer;
     margin: 20px 0px 0px 0px;
 }
-
 .right-content {
     display: flex;
     width: 70%;
@@ -273,7 +259,6 @@ hgroup>h4 {
     padding: 30px;
     border-radius: 25px;
 }
-
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -287,7 +272,6 @@ hgroup>h4 {
     align-items: center;
     overflow: hidden;
 }
-
 .popup-content {
     width: 35%;
     max-height: 90vh;
@@ -300,11 +284,9 @@ hgroup>h4 {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
 .popup-content::-webkit-scrollbar{
     display: none;
 }
-
 .content-header {
     display: flex;
     flex-direction: row;
@@ -315,26 +297,22 @@ hgroup>h4 {
     margin-bottom: 20px;
     padding: 30px;
 }
-
 .content-header h2 {
     font-weight: bold;
     margin: 0;
 }
-
 .content-main {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-
 .section-title {
     font-weight: bold;
     font-size: 18px;
     margin-bottom: 10px;
     color: #333;
 }
-
 .card-info {
     width: 100%;
     display: grid;
@@ -346,7 +324,6 @@ hgroup>h4 {
     border-radius: 12px;
     overflow: hidden;
 }
-
 .card-num {
     grid-column: span 2;
     border-radius: 12px 12px 0px 0px;
@@ -356,7 +333,6 @@ hgroup>h4 {
     padding: 0 15px;
     font-size: 16px;
 }
-
 .cvv {
     border-radius: 0px 0px 12px 0px;
     height: 60px;
@@ -364,7 +340,6 @@ hgroup>h4 {
     padding: 0 15px;
     font-size: 16px;
 }
-
 .exp {
     border-radius: 0px 0px 0px 12px;
     height: 60px;
@@ -373,7 +348,6 @@ hgroup>h4 {
     padding: 0 15px;
     font-size: 16px;
 }
-
 .bill-address {
     width: 100%;
     display: flex;
@@ -381,7 +355,6 @@ hgroup>h4 {
     gap: 15px;
     margin-bottom: 20px;
 }
-
 .bill-address input {
     height: 55px;
     border-radius: 12px;
@@ -390,18 +363,15 @@ hgroup>h4 {
     font-size: 16px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-
 .address-row {
     display: grid;
     grid-template-columns: 60% 38%;
     gap: 2%;
 }
-
 .card-holder {
     width: 100%;
     margin-bottom: 20px;
 }
-
 .name-input {
     width: 100%;
     height: 60px;
@@ -413,7 +383,6 @@ hgroup>h4 {
     box-sizing: border-box;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-
 .content-footer {
     display: flex;
     justify-content: space-between;
@@ -421,7 +390,6 @@ hgroup>h4 {
     border-top: 1px solid black;
     padding: 15px 30px;
 }
-
 .cancel-btn {
     height: 50px;
     background-color: white;
@@ -433,11 +401,9 @@ hgroup>h4 {
     padding-inline: 10px;
     transition: all 0.2s ease;
 }
-
 .cancel-btn:hover {
     background-color: #f5f5f5;
 }
-
 .save-btn {
     height: 50px;
     background-color: black;
@@ -449,17 +415,14 @@ hgroup>h4 {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
 .save-btn:hover {
     background-color: #333;
 }
-
 input:focus {
     outline: none;
     border: 2px solid #0026FF;
     box-shadow: 0 0 0 2px rgba(0, 38, 255, 0.1);
 }
-
 .card-num {
     background-position: 98% center;
     background-repeat: no-repeat;
