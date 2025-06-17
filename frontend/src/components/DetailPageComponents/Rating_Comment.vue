@@ -3,13 +3,23 @@
   <div class="totalRating">
     <!-- Star Icon -->
     <Icon icon="material-symbols:star-rounded" width="40" height="40" />
-    <!-- Average overall rating value -->
-    <h1>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</h1>
+    <!-- overall average rating -->
+    <h1>
+      {{
+        reviewStore.overall && typeof reviewStore.overall.overallAvg === 'number'
+          ? reviewStore.overall.overallAvg.toFixed(1)
+          : '0.0'
+      }}
+    </h1>
     <!-- Dot Icon -->
     <Icon icon="mdi:dot" width="35" height="35" />
-        <h1>{{ ratings.length === 0
-      ? 'No rating yet'
-      : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</h1>
+    <h1>
+      {{
+        ratings.length === 0
+          ? 'No rating yet'
+          : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '')
+      }}
+    </h1>
   </div>
 
   <!-- Rating Section -->
@@ -26,7 +36,7 @@
         </div>
       </div>
     </div>
-    <!-- Per-Category Ratings (average for each) -->
+    <!-- Per-Category Ratings (from backend perCategory) -->
     <div class="column_rating" v-for="(item, index) in ratingBox" :key="index">
       <hr class="customHr1" />
       <div class="box">
@@ -34,27 +44,17 @@
           <span>{{ item.title }}</span>
           <span>
             {{
-              reviewStore.reviews.length > 0
-                ? (
-                    reviewStore.reviews
-                      .map(r => {
-                        // Map category to review field
-                        if (item.title === 'Value') return r.priceRating
-                        if (item.title === 'Comfort') return r.comfortRating
-                        if (item.title === 'Location') return r.locationRating
-                        if (item.title === 'Cleanliness') return r.cleanlinessRating
-                        if (item.title === 'Communication') return r.communicationRating
-                        return 0
-                      })
-                      .filter(v => typeof v === 'number')
-                      .reduce((a, b) => a + b, 0) /
-                    reviewStore.reviews.length
-                  ).toFixed(1)
+              reviewStore.overall &&
+              reviewStore.overall.perCategory &&
+              Object.prototype.hasOwnProperty.call(
+                reviewStore.overall.perCategory,
+                item.title.toLowerCase()
+              )
+                ? Number(reviewStore.overall.perCategory[item.title.toLowerCase()]).toFixed(1)
                 : '0.0'
             }}
           </span>
         </div>
-        <!-- Category Icon -->
         <Icon :icon="item.icon" width="30" height="30" />
       </div>
     </div>
@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useReviewStore } from '@/stores/review'
 import { useUserStore } from '@/stores/user'
@@ -183,27 +183,20 @@ const ratingBox = ref([
   { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' }
 ])
 
-const ratings = computed(() => reviewStore.reviews.flatMap(r => r.overallRating ? [r.overallRating] : []))
-const overallRating = computed(() => ratings.value.length === 0 ? 0 : ratings.value.reduce((a, b) => a + b, 0) / ratings.value.length)
-const ratingBar = computed(() => {
-  const counts = [0, 0, 0, 0, 0];
-  ratings.value.forEach(r => {
-    const index = 5 - Math.round(r);
-    if (index >= 0 && index < 5) counts[index]++;
-  });
-  return counts;
-})
+// Use backend summary for all overall and per-category ratings
+
+// Use backend's ratingBar for star counts
+const ratings = computed(() =>
+  reviewStore.overall && reviewStore.overall.ratingBar
+    ? Object.entries(reviewStore.overall.ratingBar)
+        .flatMap(([star, count]) => Array(count).fill(Number(star)))
+    : []
+);
 
 // Computed: Only reviews with non-empty comment
 const filteredReviews = computed(() =>
   (reviewStore.reviews || []).filter(r => r.comment && r.comment.trim() !== '')
 )
-
-function getBarWidth(count) {
-  const totalVotes = ratings.value.length;
-  if (totalVotes === 0) return '0%';
-  return `${((count / totalVotes) * 100).toFixed(1)}%`;
-}
 
 function closePopup() {
   showPopup.value = false;
@@ -256,40 +249,6 @@ async function submitFeedback() {
     alert('Failed to submit review, please try again.');
   }
 }
-
-watch(
-  () => reviewStore.reviews,
-  (newReviews) => {
-    const categories = ['Location', 'Value', 'Comfort', 'Cleanliness', 'Communication'];
-    if (!newReviews || newReviews.length === 0) {
-      ratingBox.value.forEach(box => box.rating = 0);
-      return;
-    }
-    const categorySums = {}
-    const categoryCounts = {}
-
-    for (const c of categories) {
-      categorySums[c] = 0
-      categoryCounts[c] = 0
-    }
-
-    newReviews.forEach(r => {
-      r.ratings?.forEach(rate => {
-        if (categories.includes(rate.category)) {
-          categorySums[rate.category] += rate.rating
-          categoryCounts[rate.category] += 1
-        }
-      });
-    })
-
-    ratingBox.value.forEach(box => {
-      const count = categoryCounts[box.title];
-      const sum = categorySums[box.title];
-      box.rating = count > 0 ? sum / count : 0;
-    });
-  },
-  { immediate: true }
-)
 
 onMounted(() => {
   if (listingId) {
