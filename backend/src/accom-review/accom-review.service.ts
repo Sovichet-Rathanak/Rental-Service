@@ -19,15 +19,10 @@ export class AccomReviewService {
     ) { }
 
     async createReview(dto: CreateAccomReviewDto) {
-        console.log('Received DTO:', dto);
-
         const user = await this.userRepo.findOneBy({ id: dto.user });
         const listing = await this.listingRepo.findOneBy({ id: dto.listing });
 
-        if (!user || !listing) {
-            console.log('User or listing not found:', { user, listing });
-            throw new NotFoundException('Reviewer or listing not found');
-        }
+        if (!user || !listing) throw new NotFoundException('Reviewer or listing not found');
 
         const review = this.reviewRepo.create({
             ...dto,
@@ -35,11 +30,8 @@ export class AccomReviewService {
             listing,
         });
 
-        console.log('Created review entity:', review);
-
         return this.reviewRepo.save(review);
     }
-
 
     async findAll() {
         return this.reviewRepo.find({
@@ -71,26 +63,30 @@ export class AccomReviewService {
             return acc;
         }, {} as Record<ReviewCategory, number>);
 
-        // Calculate totals and rating bar for overallRating
+        // Calculate totals and overall sum for average
         let overallSum = 0;
         let overallCount = 0;
         for (const review of reviews) {
-            // For the rating bar, use the user-inputted overallRating
+            categories.forEach((cat) => {
+                if (typeof review[cat] !== 'number') {
+                    console.warn(`Review ${review.id} missing value for ${cat}:`, review[cat]);
+                }
+                sums[cat] += typeof review[cat] === 'number' ? review[cat] : 0;
+            });
+
+            // Use overallRating for overall average and rating bar
             if (typeof review.overallRating === 'number' && review.overallRating >= 1 && review.overallRating <= 5) {
                 ratingBar[review.overallRating] = (ratingBar[review.overallRating] || 0) + 1;
                 overallSum += review.overallRating;
                 overallCount++;
             }
-            // For category ratings, sum them up
-            categories.forEach((cat) => {
-                sums[cat] += review[cat];
-            });
         }
 
         // Calculate average per category
         const perCategory: Record<string, number> = {};
         categories.forEach((cat) => {
-            const label = cat.replace('Rating', '').toLowerCase();
+            let label = cat.replace('Rating', '').toLowerCase();
+            if (cat === 'priceRating') label = 'value';
             perCategory[label] = count > 0 ? +(sums[cat] / count).toFixed(1) : 0;
         });
 
@@ -100,4 +96,3 @@ export class AccomReviewService {
         return { ratingBar, perCategory, overallAvg };
     }
 }
-

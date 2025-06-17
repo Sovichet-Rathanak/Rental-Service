@@ -1,8 +1,8 @@
-export enum ReviewCategory{
-PRICE = "priceRating",
-COMFORT = "confortRating",
-LOCATION = "LocationRating",
-CLEANLINESS = "cleanlinessRating",
-COMMUNICATION = "communicationRating",
-OVERALL = "overallRating",
+export enum ReviewCategory {
+  PRICE = "priceRating",
+  COMFORT = "comfortRating",
+  LOCATION = "locationRating",
+  CLEANLINESS = "cleanlinessRating",
+  COMMUNICATION = "communicationRating",
+  OVERALL = "overallRating",
 }
