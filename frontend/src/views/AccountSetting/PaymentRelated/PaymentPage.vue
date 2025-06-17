@@ -64,27 +64,27 @@
                     <div class="wrapper" style="padding-inline: 30px;">
                         <div class="section-title">Billing Address</div>
                         <div class="bill-address">
-                            <input type="text" placeholder="Street address">
-                            <input type="text" placeholder="Apt, suite, unit, etc. (optional)">
+                            <input type="text" placeholder="Street address" v-model="streetAddress">
+                            <input type="text" placeholder="Apt, suite, unit, etc. (optional)" v-model="aptSuiteUnit">
                             <div class="address-row">
-                                <input type="text" placeholder="City">
-                                <input type="text" placeholder="State">
+                                <input type="text" placeholder="City" v-model="city">
+                                <input type="text" placeholder="State" v-model="state">
                             </div>
-                            <input type="text" placeholder="ZIP code">
+                            <input type="text" placeholder="ZIP code" v-model="zipCode">
                         </div>
                     </div>
 
                     <div class="wrapper" style="padding-inline: 30px;">
                         <div class="card-holder">
                             <div class="section-title">Card Holder</div>
-                            <input type="text" placeholder="First name" class="name-input">
-                            <input type="text" placeholder="Last name" class="name-input">
+                            <input type="text" placeholder="First name" class="name-input" v-model="firstName">
+                            <input type="text" placeholder="Last name" class="name-input" v-model="lastName">
                         </div>
                     </div>
                 </div>
                 <div class="content-footer">
                     <button class="cancel-btn" @click="showPopup = false">Cancel</button>
-                    <button class="save-btn">Save payment method</button>
+                    <button class="save-btn" @click="submitPayment">Save payment method</button>
                 </div>
             </div>
         </div>
@@ -105,7 +105,14 @@ export default {
             showPopup: false,
             cardNumber: '',
             expDate: '',
-            cvv: ''
+            cvv: '',
+            streetAddress: '',
+            aptSuiteUnit: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            firstName: '',
+            lastName: ''
         }
     },
     components: {
@@ -165,7 +172,41 @@ export default {
             if (this.cvv.length > 3) {
                 this.cvv = '';
             }
-        }
+        },
+        submitPayment() {
+            const payload = {
+                userId: '6c41ed7f-4877-4b3b-aaf0-a7ab71bcd921', // Or get this from auth/session
+                cardNumber: this.cardNumber.replace(/\s/g, ''),
+                expiryDate: this.expDate,
+                cvv: this.cvv,
+                streetAddress: this.streetAddress,
+                aptSuiteUnit: this.aptSuiteUnit,
+                city: this.city,
+                state: this.state,
+                zipCode: this.zipCode,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                status: 'pending'
+            };
+
+            fetch('http://localhost:3000/api/payments', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Payment saved:', data);
+                this.showPopup = false;
+                // Optional: Show toast or redirect
+            })
+            .catch(error => {
+                console.error('Error saving payment:', error);
+            });
+        },
+
     },
     watch: {
         showPopup(newVal) {

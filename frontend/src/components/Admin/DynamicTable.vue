@@ -39,7 +39,12 @@
 
           <!-- Action column -->
           <td>
-            <ActionButton :index="index" @edit-item="editItem" @delete-item="deleteItem" />
+            <ActionButton 
+              :index="index" 
+              :show-edit="showEdit"
+              @edit-item="editItem" 
+              @delete-item="deleteItem" 
+            />
           </td>
         </tr>
       </tbody>
@@ -71,6 +76,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showEdit: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     handleRowClick(row) {
