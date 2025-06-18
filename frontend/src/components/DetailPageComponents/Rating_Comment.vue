@@ -74,9 +74,9 @@
       <Icon icon="ant-design:comment-outlined" width="40" height="40" />
       <span>
         {{
-          reviewStore.reviews.length === 0
+          filteredReviews.length === 0
             ? 'No review yet'
-            : 'Total Review' + (reviewStore.reviews.length > 1 ? 's ' : ' ') + reviewStore.reviews.length
+            : 'Total Review' + (filteredReviews.length > 1 ? 's ' : ' ') + filteredReviews.length
         }}
       </span>
     </div>
@@ -89,10 +89,16 @@
       >
         <div class="profileWrap">
           <!-- User profile image -->
-          <img :src="item.user?.pfp_thumbnail_url || '/src/assets/images/comment/_.jpeg'" alt="" />
+          <img :src="`http://localhost:9000/romdoul/${item.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'" alt="" />
           <div class="name">
-            <!-- User name -->
-            <h2>{{ item.user?.firstname || 'Anonymous' }}</h2>
+            <!-- Full user name (firstname + lastname) -->
+            <h2>
+              {{
+                item.user
+                  ? (item.user.firstname || '') + ' ' + (item.user.lastname || '')
+                  : 'Anonymous'
+              }}
+            </h2>
           </div>
         </div>
         <div class="textReview">
@@ -114,7 +120,7 @@
           <Icon icon="mdi:close" class="close-icon" @click="closePopup" />
         </div>
         <div class="user-info">
-          <img :src="userStore.user?.pfp_thumbnail_url || '/src/assets/images/comment/_.jpeg'" alt="User" class="user-img" />
+          <img :src="`http://localhost:9000/romdoul/${userStore.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'" alt="User" class="user-img" />
           <div class="user-details">
             <p class="username">{{ userStore.user?.firstname || 'Anonymous' }}</p>
             <p class="post-info">Posting publicly across Romdoul Joul Pteas</p>
@@ -153,109 +159,111 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useReviewStore } from '@/stores/review'
-import { useUserStore } from '@/stores/user'
+<script>
+import { useReviewStore } from '@/stores/review';
+import { useUserStore } from '@/stores/user';
+import { mapStores } from 'pinia';
+export default {
+  name: 'RatingComment',
+  data() {
+    return {
+      showPopup: false,
+      finalRating: 0,
+      newReview: {
+        reviews: '',
+        rating: 0,
+      },
+      questions: [
+        { text: 'Was the place clean and well-maintained?', category: 'Cleanliness', rating: 4 },
+        { text: 'Was the landlord responsive and helpful?', category: 'Communication', rating: 4 },
+        { text: 'Was the furniture and living space comfortable?', category: 'Comfort', rating: 4 },
+        { text: 'Was the area safe and convenient?', category: 'Location', rating: 4 },
+        { text: 'Was the place worth the rent?', category: 'Value', rating: 4 }
+      ],
+      ratingBox: [
+        { title: 'Location', rating: 0, icon: 'mdi:map-marker-outline' },
+        { title: 'Value', rating: 0, icon: 'mdi:currency-usd' },
+        { title: 'Comfort', rating: 0, icon: 'mdi:sofa-outline' },
+        { title: 'Cleanliness', rating: 0, icon: 'carbon:clean' },
+        { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' }
+      ]
+    };
+  },
+  computed: {
+    ...mapStores(useReviewStore, useUserStore),
 
-const reviewStore = useReviewStore()
-const userStore = useUserStore()
-const route = useRoute()
+    ratings() {
+      const ratingBar = this.reviewStore.overall?.ratingBar;
+      return ratingBar
+        ? Object.entries(ratingBar).flatMap(([star, count]) => Array(count).fill(Number(star)))
+        : [];
+    },
 
-const showPopup = ref(false)
-const finalRating = ref(4)
-const newReview = ref({ reviews: '' })
+    filteredReviews() {
+      return (this.reviewStore.reviews || []).filter(r => r.comment && r.comment.trim() !== '');
+    },
 
-const questions = ref([
-  { text: 'Was the place clean and well-maintained?', category: 'Cleanliness', rating: 4 },
-  { text: 'Was the landlord responsive and helpful?', category: 'Communication', rating: 4 },
-  { text: 'Was the furniture and living space comfortable?', category: 'Comfort', rating: 4 },
-  { text: 'Was the area safe and convenient?', category: 'Location', rating: 4 },
-  { text: 'Was the place worth the rent?', category: 'Value', rating: 4 }
-])
+    listingId() {
+      return this.$route.params.id || this.$route.params.listingId;
+    }
+  },
+  methods: {
+    closePopup() {
+      this.showPopup = false;
+      this.newReview.reviews = '';
+      this.finalRating = 4;
+      this.questions.forEach(q => (q.rating = 4));
+    },
 
-const ratingBox = ref([
-  { title: 'Location', rating: 0, icon: 'mdi:map-marker-outline' },
-  { title: 'Value', rating: 0, icon: 'mdi:currency-usd' },
-  { title: 'Comfort', rating: 0, icon: 'mdi:sofa-outline' },
-  { title: 'Cleanliness', rating: 0, icon: 'carbon:clean' },
-  { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' }
-])
+    async submitFeedback() {
+      if (this.questions.some(q => q.rating === 0)) {
+        alert('Please rate all questions.');
+        return;
+      }
 
-// Use backend summary for all overall and per-category ratings
+      const trimmedReview = this.newReview.reviews.trim();
+      const userId = this.userStore.user?.id;
 
-// Use backend's ratingBar for star counts
-const ratings = computed(() =>
-  reviewStore.overall && reviewStore.overall.ratingBar
-    ? Object.entries(reviewStore.overall.ratingBar)
-        .flatMap(([star, count]) => Array(count).fill(Number(star)))
-    : []
-);
+      if (!userId) {
+        alert('You must be logged in to submit a review.');
+        return;
+      }
+      if (!this.listingId) {
+        alert('Listing ID is missing.');
+        return;
+      }
 
-// Computed: Only reviews with non-empty comment
-const filteredReviews = computed(() =>
-  (reviewStore.reviews || []).filter(r => r.comment && r.comment.trim() !== '')
-)
+      const payload = {
+        user: String(userId),
+        listing: String(this.listingId),
+        comment: trimmedReview,
+        priceRating: Number(this.questions.find(q => q.category === 'Value')?.rating || 4),
+        comfortRating: Number(this.questions.find(q => q.category === 'Comfort')?.rating || 4),
+        locationRating: Number(this.questions.find(q => q.category === 'Location')?.rating || 4),
+        cleanlinessRating: Number(this.questions.find(q => q.category === 'Cleanliness')?.rating || 4),
+        communicationRating: Number(this.questions.find(q => q.category === 'Communication')?.rating || 4),
+        overallRating: Number(this.finalRating || 4)
+      };
 
-function closePopup() {
-  showPopup.value = false;
-  newReview.value.reviews = '';
-  finalRating.value = 4;
-  questions.value.forEach(q => q.rating = 4);
+      try {
+        await this.reviewStore.createReview(payload);
+        await Promise.all([
+          this.reviewStore.fetchReviewsByListingId(this.listingId),
+          this.reviewStore.fetchOverallRating(this.listingId)
+        ]);
+        this.closePopup();
+      } catch (error) {
+        alert('Failed to submit review, please try again.');
+      }
+    }
+  },
+  mounted() {
+    if (this.listingId) {
+      this.reviewStore.fetchReviewsByListingId(this.listingId);
+      this.reviewStore.fetchOverallRating(this.listingId);
+    }
+  }
 }
-
-const listingId = route.params.id || route.params.listingId
-
-async function submitFeedback() {
-  if (questions.value.some(q => q.rating === 0)) {
-    alert("Please rate all questions.");
-    return;
-  }
-
-  const trimmedReview = newReview.value.reviews.trim();
-  const userId = userStore.user && userStore.user.id ? String(userStore.user.id) : '';
-  const listingId = route.params.id || route.params.listingId;
-
-  if (!userId) {
-    alert('You must be logged in to submit a review.');
-    return;
-  }
-  if (!listingId) {
-    alert('Listing ID is missing.');
-    return;
-  }
-
-  const payload = {
-    user: userId,
-    listing: String(listingId),
-    comment: trimmedReview,
-    priceRating: Number(questions.value.find(q => q.category === 'Value')?.rating || 4),
-    comfortRating: Number(questions.value.find(q => q.category === 'Comfort')?.rating || 4),
-    locationRating: Number(questions.value.find(q => q.category === 'Location')?.rating || 4),
-    cleanlinessRating: Number(questions.value.find(q => q.category === 'Cleanliness')?.rating || 4),
-    communicationRating: Number(questions.value.find(q => q.category === 'Communication')?.rating || 4),
-    overallRating: Number(finalRating.value || 4),
-  };
-
-  try {
-    await reviewStore.createReview(payload);
-    await Promise.all([
-      reviewStore.fetchReviewsByListingId(listingId),
-      reviewStore.fetchOverallRating(listingId)
-    ]);
-    closePopup();
-  } catch (error) {
-    alert('Failed to submit review, please try again.');
-  }
-}
-
-onMounted(() => {
-  if (listingId) {
-    reviewStore.fetchReviewsByListingId(listingId)
-    reviewStore.fetchOverallRating(listingId)
-  }
-})
 </script>
 
 <style scoped>
