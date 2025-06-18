@@ -27,11 +27,11 @@
     <!-- Overall Rating Bar (from backend summary) -->
     <div class="overallRating">
       <span>Overall Rating</span>
-      <div class="ratingBar-wrapper" v-for="star in [5,4,3,2,1]" :key="star">
+      <div class="ratingBar-wrapper" v-for="star in [5, 4, 3, 2, 1]" :key="star">
         <span class="countRating">{{ star }}</span>
         <div class="ratingBar">
           <div class="ratingBar-fill"
-            :style="{ width: reviewStore.overall && reviewStore.overall.ratingBar ? ((reviewStore.overall.ratingBar[star] || 0) / (Object.values(reviewStore.overall.ratingBar).reduce((a,b)=>a+b,0) || 1) * 100).toFixed(1) + '%' : '0%' }">
+            :style="{ width: reviewStore.overall && reviewStore.overall.ratingBar ? ((reviewStore.overall.ratingBar[star] || 0) / (Object.values(reviewStore.overall.ratingBar).reduce((a, b) => a + b, 0) || 1) * 100).toFixed(1) + '%' : '0%' }">
           </div>
         </div>
       </div>
@@ -45,11 +45,11 @@
           <span>
             {{
               reviewStore.overall &&
-              reviewStore.overall.perCategory &&
-              Object.prototype.hasOwnProperty.call(
-                reviewStore.overall.perCategory,
-                item.title.toLowerCase()
-              )
+                reviewStore.overall.perCategory &&
+                Object.prototype.hasOwnProperty.call(
+                  reviewStore.overall.perCategory,
+                  item.title.toLowerCase()
+                )
                 ? Number(reviewStore.overall.perCategory[item.title.toLowerCase()]).toFixed(1)
                 : '0.0'
             }}
@@ -82,14 +82,12 @@
     </div>
     <div class="container">
       <!-- Only show reviews with non-empty comment -->
-      <div
-        class="commentSection"
-        v-for="(item, index) in filteredReviews"
-        :key="item.id || index"
-      >
+      <div class="commentSection" v-for="(item, index) in filteredReviews" :key="item.id || index">
         <div class="profileWrap">
           <!-- User profile image -->
-          <img :src="`http://localhost:9000/romdoul/${item.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'" alt="" />
+          <img
+            :src="`http://localhost:9000/romdoul/${item.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'"
+            alt="" />
           <div class="name">
             <!-- Full user name (firstname + lastname) -->
             <h2>
@@ -116,13 +114,16 @@
     <div class="popup-container">
       <div class="header">
         <div class="heading-row">
-          <h3>BKK1, Chamkarmon, Phnom Penh</h3>
+          <!-- Use computed listingTitle -->
+          <h3>{{ listingDescription }}</h3>
           <Icon icon="mdi:close" class="close-icon" @click="closePopup" />
         </div>
         <div class="user-info">
-          <img :src="`http://localhost:9000/romdoul/${userStore.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'" alt="User" class="user-img" />
+          <img
+            :src="`http://localhost:9000/romdoul/${userStore.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'"
+            alt="User" class="user-img" />
           <div class="user-details">
-            <p class="username">{{ userStore.user?.firstname || 'Anonymous' }}</p>
+            <p class="username">{{ (userStore.user?.firstname) + ' ' + (userStore.user?.lastname) || 'Anonymous' }}</p>
             <p class="post-info">Posting publicly across Romdoul Joul Pteas</p>
           </div>
         </div>
@@ -162,13 +163,16 @@
 <script>
 import { useReviewStore } from '@/stores/review';
 import { useUserStore } from '@/stores/user';
+import { useListingStore } from '@/stores/listing';
 import { mapStores } from 'pinia';
+
+
 export default {
   name: 'RatingComment',
   data() {
     return {
       showPopup: false,
-      finalRating: 0,
+      finalRating: 4, 
       newReview: {
         reviews: '',
         rating: 0,
@@ -186,11 +190,12 @@ export default {
         { title: 'Comfort', rating: 0, icon: 'mdi:sofa-outline' },
         { title: 'Cleanliness', rating: 0, icon: 'carbon:clean' },
         { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' }
-      ]
+      ],
+      listingTitle: '', // Add this for dynamic title
     };
   },
   computed: {
-    ...mapStores(useReviewStore, useUserStore),
+    ...mapStores(useReviewStore, useUserStore, useListingStore),
 
     ratings() {
       const ratingBar = this.reviewStore.overall?.ratingBar;
@@ -205,7 +210,19 @@ export default {
 
     listingId() {
       return this.$route.params.id || this.$route.params.listingId;
-    }
+    },
+
+    listingDescription() {
+      // Defensive: get the description for the current listingId from listings array if currentListing is not set
+      if (this.listingStore.currentListing && this.listingStore.currentListing.description) {
+        return this.listingStore.currentListing.description;
+      }
+      // Fallback: try to find the listing in the listings array
+      const found = this.listingStore.listings.find(
+        l => l.id === this.listingId
+      );
+      return found && found.description ? found.description : '';
+    },
   },
   methods: {
     closePopup() {
@@ -237,12 +254,12 @@ export default {
         user: String(userId),
         listing: String(this.listingId),
         comment: trimmedReview,
-        priceRating: Number(this.questions.find(q => q.category === 'Value')?.rating || 4),
-        comfortRating: Number(this.questions.find(q => q.category === 'Comfort')?.rating || 4),
-        locationRating: Number(this.questions.find(q => q.category === 'Location')?.rating || 4),
-        cleanlinessRating: Number(this.questions.find(q => q.category === 'Cleanliness')?.rating || 4),
-        communicationRating: Number(this.questions.find(q => q.category === 'Communication')?.rating || 4),
-        overallRating: Number(this.finalRating || 4)
+        priceRating: Number(this.questions.find(q => q.category === 'Value')?.rating),
+        comfortRating: Number(this.questions.find(q => q.category === 'Comfort')?.rating),
+        locationRating: Number(this.questions.find(q => q.category === 'Location')?.rating),
+        cleanlinessRating: Number(this.questions.find(q => q.category === 'Cleanliness')?.rating),
+        communicationRating: Number(this.questions.find(q => q.category === 'Communication')?.rating),
+        overallRating: Number(this.finalRating)
       };
 
       try {
@@ -255,12 +272,18 @@ export default {
       } catch (error) {
         alert('Failed to submit review, please try again.');
       }
-    }
+    },
+
+
   },
   mounted() {
     if (this.listingId) {
       this.reviewStore.fetchReviewsByListingId(this.listingId);
       this.reviewStore.fetchOverallRating(this.listingId);
+      // Always fetch the listing by ID to ensure currentListing is set
+      if (typeof this.listingStore.fetchListingById === 'function') {
+        this.listingStore.fetchListingById(this.listingId);
+      }
     }
   }
 }
@@ -436,9 +459,10 @@ export default {
 }
 
 .profileWrap>img {
-  width: 95px;
-  height: 95px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .name {
@@ -548,12 +572,14 @@ export default {
   align-items: center;
   gap: 20px;
   margin: 15px 0 40px 0;
+  object-fit: cover;
 }
 
 .user-img {
   border-radius: 50%;
   width: 60px;
   height: 60px;
+  object-fit: cover;
 }
 
 .username {
