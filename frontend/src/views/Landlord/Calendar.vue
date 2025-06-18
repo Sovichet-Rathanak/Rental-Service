@@ -25,7 +25,10 @@ export default {
     data() {
         return {
             togglePaymentPop: false,
-            paymentDate: new Date(2025, 4, 16)  
+            paymentDates: [
+                new Date(2025, 5, 15), //(month index starts from 0)
+                new Date(2025, 6, 15)  
+            ]  
         };
     },
     setup() {
@@ -38,7 +41,10 @@ export default {
             {
                 key: 'payment',
                 highlight: { contentClass: 'highlight-payment' },
-                dates: new Date(2025, 4, 16),
+                dates: [
+                    new Date(2025, 5, 15), 
+                    new Date(2025, 6, 15)  
+                ]
             }
         ]);
 
@@ -52,15 +58,12 @@ export default {
         },
         onDayClick(day) {
             const clickedDate = new Date(day.date);
-            if (
-                clickedDate.getFullYear() === this.paymentDate.getFullYear() &&
-                clickedDate.getMonth() === this.paymentDate.getMonth() &&
-                clickedDate.getDate() === this.paymentDate.getDate()
-            ) {
-                this.togglePaymentPop = true;
-            } else {
-                this.togglePaymentPop = false;
-            }
+            const isPaymentDate = this.paymentDates.some(date =>
+                date.getFullYear() === clickedDate.getFullYear() &&
+                date.getMonth() === clickedDate.getMonth() &&
+                date.getDate() === clickedDate.getDate()
+            );
+            this.togglePaymentPop = isPaymentDate;
         }
     }
 }
@@ -95,6 +98,9 @@ export default {
 }
 ::v-deep(.highlight-payment){
     padding: 40px !important;
-    background-color: green !important;
+    background-color: #9ce5bf !important; 
+    border: 3px solid #10B981 !important; 
+    border-radius: 100% !important; 
+    box-sizing: border-box;
 }
 </style>

@@ -12,7 +12,7 @@
                 <div class="payment-detail">
                     <h1>Expected Payment</h1>
                     <li>Tenant: <strong>Lina Van</strong></li>
-                    <li>Payment will be executed on: <strong>15/05/2025</strong></li>
+                    <li>Payment will be executed on: <strong>15/06/2025</strong></li>
                     <h1>Income: $3000</h1>
                 </div>
             </div>
