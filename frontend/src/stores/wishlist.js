@@ -18,7 +18,7 @@ export const useWishlistStore = defineStore('wishlist', {
       this.wishlistLoading = true
       try {
         const res = await axios.get(`http://localhost:3000/api/wishlist/user/${this.userId}`)
-        this.items = res.data // expected to be: [{ id, listing }]
+        this.items = res.data 
       } catch (err) {
         console.error('Failed to fetch wishlist:', err)
       } finally {
@@ -29,9 +29,10 @@ export const useWishlistStore = defineStore('wishlist', {
     async addToWishlist(listing) {
       try {
         const res = await axios.post(`http://localhost:3000/api/wishlist`, {
-          listingId: listing.id
+          listingId: listing.id,
+          userId: this.userId
         })
-        this.items.push(res.data) // push full wishlist entry: { id, listing }
+        this.items.push(res.data)
       } catch (err) {
         console.error('Failed to add to wishlist:', err)
       }

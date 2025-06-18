@@ -48,10 +48,7 @@ export const useUserStore = defineStore('user', {
                     pfp_original_url: user.pfp_original_url || '',
                     pfp_thumbnail_url: user.pfp_thumbnail_url || '',
                 };
-<<<<<<< Updated upstream
-=======
                 console.log('USER ID:', user.id)
->>>>>>> Stashed changes
 
                 this.isLoggedIn = true;
 

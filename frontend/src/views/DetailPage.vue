@@ -43,7 +43,7 @@ export default {
     data() {
     return {
       tenantId: 'be31efbe-80a9-4b85-88b0-52b5bb48aeac' ,
-      listingId: '2f285e02-48ae-4782-be51-15d1c02c7cc3'
+      listingId: '17e2c7c0-d21c-4ce2-8791-3490f503f6aa'
     //   listingId: route.params.id
     };
   },

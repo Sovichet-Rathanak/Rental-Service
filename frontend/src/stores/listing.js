@@ -83,6 +83,16 @@ export const useListingStore = defineStore('listing', {
             }
         },
 
+        async fetchListingImagesById(id){
+            try{
+                const imageRsp = await axios.get(`http://localhost:3000/api/picture/${id}`)
+                const listingImageData = imageRsp.data;
+                return listingImageData;
+            }catch(error){
+                console.error(error);
+            }
+        },
+
         getThumbnailByIndex(index) {
             const images = this.listingImages[index];
             if (!images || images.length === 0) return '';
@@ -92,7 +102,7 @@ export const useListingStore = defineStore('listing', {
 
             const key = imageToUse.isThumbnail ? imageToUse.thumbnail_url : `original/${imageToUse.original_url}`;
             return `http://localhost:9000/romdoul/${key}`;
-        }
+        },
 
     },
 

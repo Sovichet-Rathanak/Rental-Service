@@ -13,7 +13,7 @@
                     khan: listing.region?.region_name ?? 'Unknown',
                     songkat: listing.songkat,
                     street: listing.street_address,
-                    image: getThumbnailByIndex(index),
+                    image: getThumbnailByIndex(index),  
                     rating: listing.rating,
                 }" />
             </div>
