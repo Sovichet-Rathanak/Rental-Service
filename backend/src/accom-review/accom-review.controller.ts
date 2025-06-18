@@ -24,7 +24,7 @@ export class AccomReviewController {
   }
 
   @Get('listing/:listingId')
-  findByListing(@Param('listing') listing: string): Promise<AccomReview[]> {
-    return this.reviewService.findByListing(listing);
+  findByListing(@Param('listingId') listingId: string): Promise<AccomReview[]> {
+    return this.reviewService.findByListing(listingId);
   }
 }
