@@ -47,14 +47,14 @@ export default {
     //   listingId: route.params.id
     };
   },
-  computed: {
-    ...mapState(useBookingStore, ["bookings"])
-  },
-  methods: {
-    ...mapActions(useBookingStore, [
-      "updateBookingField"
-    ]),
-  }
+//   computed: {
+//     ...mapState(useBookingStore, ["bookings"])
+//   },
+//   methods: {
+//     ...mapActions(useBookingStore, [
+//       "updateBookingField"
+//     ]),
+//   }
   
 }
 </script>
