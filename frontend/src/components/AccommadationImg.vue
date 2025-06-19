@@ -6,8 +6,11 @@
       <span>Back</span>
     </button>
     <!-- Save Button -->
-    <button class="action-btn save-btn" @click="saveImage">
-      <Icon icon="solar:heart-linear" class="icon-spacing-right" />
+    <button class="action-btn save-btn" @click="handleWishlist">
+      <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'"
+        width="32"
+        height="32"
+        :style="{ color: isWishlisted ? '#FF3131' : '#000' }" class="icon-spacing-right" />
       <span>Save</span>
     </button>
   </div>
@@ -49,39 +52,77 @@
 </template>
 
 <script>
+import { useWishlistStore } from "@/stores/wishlist";
+
 export default {
-  data() {
-    return {
-      currentIndex: null,
-    }
-  },
   props: {
     images: {
       type: Array,
       required: true,
-    }
+    },
+    listing: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      currentIndex: null,
+      wishlistStore: null,
+    };
+  },
+  created() {
+    this.wishlistStore = useWishlistStore();
+    console.log("AccommodationImg listing id:", this.listing?.id);
+  },
+  computed: {
+    isWishlisted() {
+      return this.wishlistStore.items.some(
+        (item) => item.listing?.id === this.listing?.id
+      );
+    },
+  },
+  watch: {
+    listing(newVal) {
+      if (newVal?.id) {
+        console.log("Listing updated:", newVal.id);
+      }
+    },
   },
   methods: {
+    goBack() {
+      this.$router.push({ name: "Home" });
+    },
     openModal(index) {
-      this.currentIndex = index
+      this.currentIndex = index;
     },
     closeModal() {
-      this.currentIndex = null
+      this.currentIndex = null;
     },
     prevImage() {
-      this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.images.length - 1
+      this.currentIndex =
+        this.currentIndex > 0 ? this.currentIndex - 1 : this.images.length - 1;
     },
     nextImage() {
-      this.currentIndex = this.currentIndex < this.images.length - 1 ? this.currentIndex + 1 : 0
+      this.currentIndex =
+        this.currentIndex < this.images.length - 1 ? this.currentIndex + 1 : 0;
     },
-    goBack() {
-      this.$router.push({ name: "Home" })
+    async handleWishlist() {
+      console.log("Heart clicked!");
+      if (!this.listing?.id) return;
+
+      try {
+        if (this.isWishlisted) {
+          await this.wishlistStore.removeFromWishlist(this.listing.id);
+        } else {
+          await this.wishlistStore.addToWishlist(this.listing);
+        }
+      } catch (err) {
+        console.error("Error toggling wishlist:", err);
+      }
     },
-    saveImage() {
-      console.log('Image saved!')
-    }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

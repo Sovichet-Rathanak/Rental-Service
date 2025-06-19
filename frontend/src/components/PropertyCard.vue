@@ -4,7 +4,7 @@
       <img :src="data.image" alt="property image" />
       <button class="fave-btn" @click.stop="handleWishlist">
         <Icon :icon="isWishlisted ? 'mdi:heart' : 'mdi:heart-outline'" width="32" height="32"
-          :style="{ color: isWishlisted ? '#08FF10' : '#fff' }" />
+          :style="{ color: isWishlisted ? '#FF3131' : '#fff' }" />
       </button>
     </div>
     <div class="info">
@@ -27,31 +27,38 @@
 </template>
 
 <script>
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 import { useWishlistStore } from '@/stores/wishlist'
 
 export default {
   props: {
     data: {
       type: Object,
-      require: true
+      required: true
     }
   },
   computed: {
     ...mapState(useWishlistStore, ['items']),
-    // isWishlisted() {
-    //   return this.items.some(item => item.id === this.data.id)
-    // }
+    
+    isWishlisted() {
+      const wishlistStore = useWishlistStore()
+      return wishlistStore.isWishlisted(this.data.id)
+    }
   },
   methods: {
     goToDetailPage(id) {
       this.$router.push(`/accommodation/${id}`);
     },
 
-    // ...mapActions(useWishlistStore, ['toggleWishlist']),
-    // handleWishlist() {
-    //   this.toggleWishlist(this.data)
-    // }
+    ...mapActions(useWishlistStore, [ 'removeFromWishlist', 'addToWishlist']),
+    
+    async handleWishlist() {
+      if (this.isWishlisted) {
+        await this.removeFromWishlist(this.data.id)
+      }else {
+        await this.addToWishlist(this.data)
+      }
+    }
   },
 }
 </script>

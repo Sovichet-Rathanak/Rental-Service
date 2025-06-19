@@ -34,6 +34,9 @@ import PropertyCard from '@/components/PropertyCard.vue';
 import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 import { mapActions, mapState } from 'pinia';
 import { useListingStore } from '@/stores/listing';
+import { useWishlistStore } from '@/stores/wishlist';
+import { useUserStore } from '@/stores/user';
+
 
 export default {
     components: {
@@ -44,6 +47,12 @@ export default {
         Rating,
     },
     async mounted() {
+        await this.fetchCurrentUser();
+
+        const userStore = useUserStore();
+        if (userStore.user.id) {
+            await this.fetchWishlist();
+        }
         await this.fetchAllListingsWithImages();
     },
     computed: {
@@ -51,6 +60,8 @@ export default {
     },
     methods: {
         ...mapActions(useListingStore, ['fetchAllListingsWithImages', 'getThumbnailByIndex']),
+        ...mapActions(useWishlistStore, ['fetchWishlist']),
+        ...mapActions(useUserStore, ['fetchCurrentUser'])
     }
 }
 </script>
