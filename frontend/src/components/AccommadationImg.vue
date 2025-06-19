@@ -68,25 +68,15 @@ export default {
   data() {
     return {
       currentIndex: null,
-      wishlistStore: null,
+      wishlistStore: useWishlistStore(),
     };
   },
-  created() {
-    this.wishlistStore = useWishlistStore();
-    console.log("AccommodationImg listing id:", this.listing?.id);
-  },
+
   computed: {
     isWishlisted() {
       return this.wishlistStore.items.some(
         (item) => item.listing?.id === this.listing?.id
       );
-    },
-  },
-  watch: {
-    listing(newVal) {
-      if (newVal?.id) {
-        console.log("Listing updated:", newVal.id);
-      }
     },
   },
   methods: {
