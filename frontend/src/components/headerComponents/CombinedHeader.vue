@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header-nav></header-nav>
-    <filter-nav></filter-nav>
+    <filter-nav @apply-filters="applyFilters"></filter-nav>
   </div>
 </template>
 
@@ -13,11 +13,11 @@ export default {
     HeaderNav,
     FilterNav,
   },
-  data() {
-    return {
-      
+  methods: {
+    applyFilters(filters) {
+      this.$emit('apply-filters', filters);
     }
-  },
+  }
 }
 </script>
 
@@ -34,5 +34,4 @@ export default {
   background-size: cover;
   z-index: 100;
 }
-
 </style>

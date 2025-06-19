@@ -145,8 +145,6 @@ export const useUserStore = defineStore('user', {
 })
 
 //Account settings (TBD) (3h)
-//Unique listing details (3h)
 //Filtering (3h - 12h (in case of geolocation filtering))
 //Add coord to each listing  (4h update listing steps as well)
 //Show more function on the homepage
-

@@ -1,45 +1,87 @@
 <template>
     <div class="common-popup location-popup" :class="{ showPopup: visible }">
-        <h3 class="popup-title">Search For Your Prefered Location</h3>
-        <input class="location-input" type="text" placeholder="Toul Kork, Boeng Keng Kang, etc.">
-
+        <h3 class="popup-title">Search For Your Preferred Location</h3>
+        <input v-model="searchQuery" class="location-input" type="text"
+            placeholder="Toul Kork, Boeng Keng Kang, etc." />
         <div class="location-header">
-            <h3 class="location-title">Locations</h3>
-            <h5 class="location-subtitle">Select Your Prefered Location</h5>
+            <hgroup>
+                <h3 class="location-title">Locations</h3>
+                <h5 class="location-subtitle">Select Your Preferred Locations</h5>
+            </hgroup>
+            <button class="clear-button" @click="clearSelect">Clear Selection</button>
         </div>
-
         <div class="region">
-            <h4 class="region-title">Chamkarmon</h4>
             <div class="sangkat">
-                <div class="sangkat-children" @click="toggleSangkat" :class="{ sangkatChildrenActive: activeOption }">
+                <div class="sangkat-children" v-for="(item, index) in filteredRegions" :key="item.id || index"
+                    @click="toggleSangkat(item.id || item.region_name)"
+                    :class="{ sangkatChildrenActive: selectedSangkats.includes(item.id || item.region_name) }">
                     <Icon icon="solar:city-bold-duotone" width="20" height="20"
-                        :style="{ color: activeOption ? '#fff' : '#000' }" />
-                    Tonle Basac
+                        :style="{ color: selectedSangkats.includes(item.id || item.region_name) ? '#fff' : '#000' }" />
+                    {{ item.region_name }}
                 </div>
+                <p v-if="filteredRegions.length === 0" class="no-result">No matching locations found.</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { useFilterStore } from '@/stores/filter';
+import { useListingStore } from '@/stores/listing';
+import { mapState, mapStores, mapWritableState } from 'pinia';
+
 export default {
-    name: 'LocationPopup',
+    name: "LocationPopup",
     props: {
         visible: {
             type: Boolean,
-            default: false
+            default: false,
         },
-        activeOption: {
-            type: Boolean,
-            default: false
-        }
+        region: {
+            type: Array,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            selectedSangkats: [],
+            searchQuery: "",
+        };
+    },
+    computed: {
+        filteredRegions() {
+            //if search query is empty return all regions
+            if (!this.searchQuery.trim()){
+                return this.region;
+            }
+
+            const query = this.searchQuery.toLowerCase();
+            return this.region.filter((reg) => reg.region_name.toLowerCase().includes(query)); //see if any region mactches the query
+        },
+        ...mapWritableState(useFilterStore, ['selectedRegions'])
     },
     methods: {
-        toggleSangkat() {
-            this.$emit('toggle-sangkat');
-        }
-    }
-}
+        toggleSangkat(uniqueId) {
+            if (this.selectedSangkats.includes(uniqueId)) {
+                this.selectedSangkats = this.selectedSangkats.filter((s) => s !== uniqueId);
+            } else {
+                this.selectedSangkats.push(uniqueId);
+            }
+
+            console.log('SETTING SELECTED REGIONS')
+            this.selectedRegions = this.selectedSangkats
+            console.log('VALUE FROM STORE AFTER SELECTED')
+            console.log(this.selectedRegions)
+
+            this.$emit("toggle-sangkat", this.selectedSangkats);
+            console.log(this.selectedSangkats)
+        },
+        clearSelect() {
+            this.selectedSangkats = [];
+            this.$emit("toggle-sangkat", []);
+        },
+    },
+};
 </script>
 
 <style scoped>
@@ -87,7 +129,17 @@ export default {
 }
 
 .location-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
     margin-bottom: 20px;
+}
+
+.clear-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .location-title {
@@ -97,15 +149,6 @@ export default {
 .location-subtitle {
     margin: 0px;
     color: grey;
-}
-
-.region {
-    height: 100%;
-    width: 100%;
-}
-
-.region-title {
-    margin: 0px 0px 10px 0px;
 }
 
 .sangkat {

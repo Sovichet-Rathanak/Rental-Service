@@ -2,40 +2,34 @@
     <div class="common-popup furniture-popup" :class="{ showPopup: visible }">
         <h3 class="popup-title">Select Your Furniture Status</h3>
         <div class="furniture-options">
-            <label class="furniture-radio">
-                <input type="radio" name="furniture" value="furnished"
-                    :checked="internalFurnitureStatus === 'furnished'" @change="updateFurnitureStatus('furnished')" />
-                <span class="furniture-label">
+            <label class="furniture-radio" @click="toggleFurniture(true)">
+                <span class="furniture-label" :class="{ active: internalFurnitureStatus === true }">
                     <Icon icon="fluent-emoji-high-contrast:couch-and-lamp" width="26" height="26"
-                        :style="{ color: internalFurnitureStatus === 'furnished' ? '#fff' : '#000' }" />
+                        :style="{ color: internalFurnitureStatus === true ? '#fff' : '#000' }" />
                     Furnished
                 </span>
             </label>
 
-            <label class="furniture-radio">
-                <input type="radio" name="furniture" value="unfurnished"
-                    :checked="internalFurnitureStatus === 'unfurnished'"
-                    @change="updateFurnitureStatus('unfurnished')" />
-                <span class="furniture-label">
+            <label class="furniture-radio" @click="toggleFurniture(false)">
+                <span class="furniture-label" :class="{ active: internalFurnitureStatus === false }">
                     <Icon icon="mingcute:empty-box-line" width="26" height="26"
-                        :style="{ color: internalFurnitureStatus === 'unfurnished' ? '#fff' : '#000' }" />
+                        :style="{ color: internalFurnitureStatus === false ? '#fff' : '#000' }" />
                     Unfurnished
                 </span>
             </label>
+
         </div>
     </div>
 </template>
+
 
 <script>
 export default {
     name: 'FurniturePopup',
     props: {
-        visible: {
-            type: Boolean,
-            default: false
-        },
+        visible: Boolean,
         furnitureStatus: {
-            type: String,
+            type: [Boolean, null],
             default: null
         }
     },
@@ -45,18 +39,20 @@ export default {
         }
     },
     watch: {
-        furnitureStatus(newValue) {
-            this.internalFurnitureStatus = newValue;
+        furnitureStatus(newVal) {
+            this.internalFurnitureStatus = newVal;
         }
     },
     methods: {
-        updateFurnitureStatus(value) {
-            this.internalFurnitureStatus = value;
-            this.$emit('update:furniture-status', value);
+        toggleFurniture(value) {
+            // Toggle logic: unselect if clicked same again
+            this.internalFurnitureStatus = this.internalFurnitureStatus === value ? null : value;
+            this.$emit('update:furniture-status', this.internalFurnitureStatus);
         }
     }
 }
 </script>
+
 
 <style scoped>
 .common-popup {
@@ -64,15 +60,17 @@ export default {
     display: none;
     z-index: 1000;
     top: 120px;
+    left: 21%;
+    width: 30%;
+    height: 265px;
+    padding: 30px 40px;
     background-color: white;
     border-radius: 24px;
-    flex-direction: column;
-    align-items: start;
-    padding: 30px 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .showPopup {
@@ -80,25 +78,19 @@ export default {
 }
 
 .popup-title {
-    margin: 0px 0px 20px 0px;
-}
-
-.furniture-popup {
-    align-items: start;
-    width: 30%;
-    height: 265px;
-    left: 21%;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .furniture-options {
     display: flex;
     flex-direction: column;
+    gap: 20px;
     width: 100%;
 }
 
 .furniture-radio {
-    margin: 20px 0px;
-    position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -106,24 +98,25 @@ export default {
 }
 
 .furniture-radio input[type="radio"] {
-    opacity: 0;
-    position: absolute;
+    display: none;
 }
 
 .furniture-label {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    justify-content: flex-start;
+    gap: 12px;
     width: 100%;
-    height: 100%;
-    gap: 10px;
+    height: 30px;
+    padding: 12px 16px;
     border: 2px solid black;
-    border-radius: 9px;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    transition: all 0.25s ease-in-out;
     user-select: none;
+    font-size: 16px;
 }
 
-.furniture-radio input[type="radio"]:checked+.furniture-label {
+.furniture-label.active {
     background-color: #0026ffc2;
     color: white;
     transform: translateY(-3px);

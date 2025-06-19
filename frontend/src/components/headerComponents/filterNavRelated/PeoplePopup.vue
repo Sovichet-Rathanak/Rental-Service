@@ -46,17 +46,17 @@
 
 <script>
 export default {
-    name:'PeoplePopup',
+    name: 'PeoplePopup',
     props: {
         visible: {
             type: Boolean,
             default: false
         },
-        adultCount:{
+        adultCount: {
             type: Number,
             default: 1,
         },
-        childrenCount:{
+        childrenCount: {
             type: Number,
             default: 0,
         }
@@ -68,26 +68,32 @@ export default {
         }
     },
     methods: {
+        emitUpdatedGuests() {
+            this.$emit('guests-change', {
+                adults: this.InternalAdultCount,
+                children: this.InternalChildrenCount,
+                total: this.InternalAdultCount + this.InternalChildrenCount
+            });
+        },
         incrementAdults() {
             this.InternalAdultCount++;
-            console.log(typeof(this.InternalAdultCount))
-            this.$emit('incrementAdults');
+            this.emitUpdatedGuests();
         },
         decrementAdults() {
             if (this.InternalAdultCount > 1) {
                 this.InternalAdultCount--;
+                this.emitUpdatedGuests();
             }
-            this.$emit('decrementAdults');
         },
         incrementChildren() {
             this.InternalChildrenCount++;
-            this.$emit('incrementChildren');
+            this.emitUpdatedGuests();
         },
         decrementChildren() {
             if (this.InternalChildrenCount > 0) {
                 this.InternalChildrenCount--;
+                this.emitUpdatedGuests();
             }
-            this.$emit('decrementChildren');
         },
     }
 }

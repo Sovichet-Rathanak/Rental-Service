@@ -54,23 +54,24 @@
                         <span class="sub-label">Number of People</span>
                     </p>
                 </button>
-                <button class="enter" @click.stop>
+                <button class="enter" @click.stop="applyFilters">
                     <Icon icon="iconoir:search" width="32" height="32" />
                     <h2 class="search-label" :class="{ searchActive: activeTab !== null }">Search</h2>
                 </button>
             </div>
 
-            <LocationPopup :visible="activeTab === 'location'" :active-option="activeSangkatChild"
+            <LocationPopup :visible="activeTab === 'location'" :active-option="activeSangkatChild" :region="regionOptions"
                 @toggle-sangkat="setActiveSangkat"></LocationPopup>
 
             <FurniturePopup :visible="activeTab === 'furniture'" :furnitureStatus="furnitureStatus"
                 @update:furniture-status="updateFurnitureStatus"></FurniturePopup>
 
-            <PricePopup :visible="activeTab === 'price'" :max-price="maxPrice" :min-price="minPrice" @setPrice=""></PricePopup>
+            <PricePopup :visible="activeTab === 'price'" :max-price="maxPrice" :min-price="minPrice"
+                @setPrice="setPrice">
+            </PricePopup>
 
-            <PeoplePopup :visible="activeTab === 'people'" :adultCount="adultCount" :children-count="childrenCount" @incrementAdults=""
-                @decrementAdults="decrementAdults" @incrementChildren="incrementChildren"
-                @decrementChildren="decrementChildren"></PeoplePopup>
+            <PeoplePopup :visible="activeTab === 'people'" @guests-change="handleGuestsChange">
+            </PeoplePopup>
         </div>
     </div>
 </template>
@@ -80,6 +81,9 @@ import LocationPopup from './LocationPopup.vue';
 import FurniturePopup from './FurniturePopup.vue';
 import PricePopup from './PricePopup.vue';
 import PeoplePopup from './PeoplePopup.vue';
+import { mapActions, mapState } from 'pinia';
+import { useListingStore } from '@/stores/listing';
+import { useFilterStore } from '@/stores/filter';
 
 export default {
     components: {
@@ -96,10 +100,40 @@ export default {
             minPrice: 200,
             maxPrice: 1000,
             adultCount: 1,
-            childrenCount: 0
+            childrenCount: 0,
+            totalGuests: 1,
+            regions: [],
+            furnitureStatus: null
         }
     },
+    mounted() {
+        this.fetchRegion();
+    },
+    computed: {
+        ...mapState(useListingStore, ['regionOptions']),
+        ...mapState(useFilterStore, ['selectedRegions']),
+
+    },
     methods: {
+        ...mapActions(useListingStore, ['fetchRegion']),
+
+        //ERROR
+        applyFilters() {
+            const regionIds = (this.regions || [])
+                .map(region => region.id)
+                .filter(id => !!id);
+
+            console.log("REGION ID BEING SEND: ", regionIds)
+            const filters = {
+                furnishing: this.furnitureStatus,
+                minMonthlyPrice: this.minPrice,
+                maxMonthlyPrice: this.maxPrice,
+                guests: this.totalGuests,
+                regions: this.selectedRegions,
+            };
+
+            this.$emit('apply-filters', filters);
+        },
         setActiveTab(tabName) {
             if (this.activeTab === tabName) {
                 this.activeTab = null;
@@ -107,31 +141,30 @@ export default {
                 this.activeTab = tabName;
             }
         },
-        setActiveSangkat() {
+        setActiveSangkat(selectedSangkats) {
+            console.log('SELECTED',selectedSangkats);
+
+            this.selectedRegions = selectedSangkats;
+            console.log('SELECTED REGIONS FROM STORE    ')
+            console.log(this.selectedRegions)
+
             this.activeSangkatChild = !this.activeSangkatChild;
         },
         setPrice(min, max) {
+            console.log("min price: ", min);
+            console.log("max price: ", max);
             this.minPrice = min;
             this.maxPrice = max;
         },
         updateFurnitureStatus(status) {
+            console.log(status)
             this.furnitureStatus = status;
         },
-        incrementAdults() {
-            this.adultCount++;
-        },
-        decrementAdults() {
-            if (this.adultCount > 1) {
-                this.adultCount--;
-            }
-        },
-        incrementChildren() {
-            this.childrenCount++;
-        },
-        decrementChildren() {
-            if (this.childrenCount > 0) {
-                this.childrenCount--;
-            }
+        handleGuestsChange(data) {
+            console.log(data);
+            this.adultCount = data.adults;
+            this.childrenCount = data.children;
+            this.totalGuests = data.total;
         },
     },
 }

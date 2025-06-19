@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from 'qs';
 import { defineStore } from "pinia";
 
 export const useListingStore = defineStore('listing', {
@@ -20,7 +21,7 @@ export const useListingStore = defineStore('listing', {
             price_yearly: 0,
         },
         regionOptions: [],
-        amenitiesOptions: [],   
+        amenitiesOptions: [],
         listings: [],
         listingImages: []
     }),
@@ -83,12 +84,13 @@ export const useListingStore = defineStore('listing', {
             }
         },
 
-        async fetchListingImagesById(id){
-            try{
+        async fetchListingImagesById(id) {
+            try {
                 const imageRsp = await axios.get(`http://localhost:3000/api/picture/${id}`)
+                console.log("IMAGE RSP: ", imageRsp)
                 const listingImageData = imageRsp.data;
                 return listingImageData;
-            }catch(error){
+            } catch (error) {
                 console.error(error);
             }
         },
@@ -98,22 +100,50 @@ export const useListingStore = defineStore('listing', {
             if (!images || images.length === 0) return '';
 
             const thumbImage = images.find(img => img.isThumbnail);
-            const imageToUse = thumbImage || images[0]; 
+            const imageToUse = thumbImage || images[0];
 
             const key = imageToUse.isThumbnail ? imageToUse.thumbnail_url : `original/${imageToUse.original_url}`;
             return `http://localhost:9000/romdoul/${key}`;
         },
 
-        async getListingById(id){
-            try{
+        async getListingById(id) {
+            try {
                 const foundLisitng = await axios.get(`http://localhost:3000/api/listing/${id}`);
                 const foundListingData = foundLisitng.data;
                 return foundListingData;
-            }catch(error){
+            } catch (error) {
                 console.error(error)
             }
-        }
+        },
 
+        //ERROR
+        async fetchFilteredListing(params) {
+            try {
+                console.log('Sending filter params:', params);
+                const processedParams = {};
+
+                Object.keys(params).forEach(key => {
+                    if (Array.isArray(params[key]) && params[key].length > 0) {
+                        processedParams[key] = params[key];
+                    } else if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+                        processedParams[key] = params[key];
+                    }
+                });
+
+                console.log('Processed params for URL:', processedParams);
+
+                const response = await axios.get('http://localhost:3000/api/listing/filter/', {
+                    params: processedParams,
+                    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }),
+                });
+
+                this.listings = response.data;
+                console.log('Filtered listings received:', this.listings.length, 'items');
+            } catch (error) {
+                console.error('Failed to fetch filtered listings:', error.response?.data || error.message);
+                this.listings = [];
+            }
+        }
     },
 
     persist: true

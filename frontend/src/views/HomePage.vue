@@ -1,6 +1,6 @@
 <template>
     <header>
-        <combined-header></combined-header>
+        <combined-header @apply-filters="handleFilters"></combined-header>
     </header>
     <main>
         <div class="homescreen-container">
@@ -44,13 +44,38 @@ export default {
         Rating,
     },
     async mounted() {
+        if(Object.keys(this.$route.query).length >0 ){
+            this.$router.replace({query: {}})
+        }
+
         await this.fetchAllListingsWithImages();
     },
     computed: {
         ...mapState(useListingStore, ['listings', 'listingImages']),
     },
+    watch: {
+        '$route.query': {
+            immediate: true,
+            handler() {
+                this.fetchListingFromQuery();
+            }
+        }
+    },
     methods: {
-        ...mapActions(useListingStore, ['fetchAllListingsWithImages', 'getThumbnailByIndex']),
+        ...mapActions(useListingStore, ['fetchAllListingsWithImages', 'getThumbnailByIndex', 'fetchFilteredListing']),
+        handleFilters(filters) {
+            this.$router.push({ query: filters })
+        },
+        async fetchListingFromQuery() {
+            const query = this.$route.query;
+            console.log('QUERY')
+            console.log(query)
+            if (Object.keys(query).length === 0) {
+                await this.fetchAllListingsWithImages();
+            } else {
+                await this.fetchFilteredListing(query);
+            }
+        }
     }
 }
 </script>

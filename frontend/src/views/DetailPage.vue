@@ -57,7 +57,7 @@ export default {
   async mounted() {
     try {
       const imageData = await this.fetchListingImagesById(this.$route.params.id);
-      console.log(imageData);
+      console.log("Data: ",   imageData);
 
       this.images = imageData.map(img => ('http://localhost:9000/romdoul/original/' + img.original_url)); //thumbnail too blurry use original for now
 

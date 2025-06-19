@@ -6,6 +6,7 @@ import { createListingDTO } from './dto/create-listing.dto';
 import { updateListingDTO } from './dto/update-listing.dto';
 import { Amenity } from 'src/amenity/amenity.entity';
 import { RegionService } from 'src/region/region.service';
+import { FilterListingDto } from './dto/filter-listing.dto';
 
 @Injectable()
 export class ListingService {
@@ -17,7 +18,7 @@ export class ListingService {
     private amenityRepo: Repository<Amenity>,
 
     private regionService: RegionService,
-  ) {}
+  ) { }
 
   async getAllListing(): Promise<Listing[]> {
     return this.listingRepo.find();
@@ -58,5 +59,48 @@ export class ListingService {
   async deleteListingByID(id: string) {
     const found = await this.findOne(id);
     this.listingRepo.remove(found);
+  }
+
+  async filterListings(filterListingDto: FilterListingDto): Promise<Listing[]> {
+    //destructuring FilterListingDto
+    const {
+      regions,
+      guests,
+      furnishing,
+      minMonthlyPrice,
+      maxMonthlyPrice,
+    } = filterListingDto;
+
+    const query = this.listingRepo
+      .createQueryBuilder('listing')
+      .leftJoinAndSelect('listing.region', 'region')
+      .leftJoinAndSelect('listing.amenities', 'amenity')
+      .leftJoinAndSelect('listing.pictures', 'picture');
+
+    if (regions) {
+      if (Array.isArray(regions) && regions.length > 0) { query.andWhere('region.id IN (:...regions)', { regions }) }
+      else {
+        query.andWhere('region.id = :regions', { regions });
+      }
+    }
+
+
+    if (furnishing !== undefined) {
+      query.andWhere('listing.furnishing = :furnishing', { furnishing });
+    }
+
+    if (guests) {
+      query.andWhere('listing.guests >= :guests', { guests })
+    }
+
+    if (minMonthlyPrice) {
+      query.andWhere('listing.price_monthly >= :minMonthlyPrice', { minMonthlyPrice })
+    }
+
+    if (maxMonthlyPrice) {
+      query.andWhere('listing.price_monthly <= :maxMonthlyPrice', { maxMonthlyPrice })
+    }
+
+    return await query.getMany();
   }
 }

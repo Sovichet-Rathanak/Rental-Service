@@ -75,7 +75,7 @@ export default {
         return {
             internalMaxPrice: this.maxPrice,
             internalMinPrice: this.minPrice,
-            maxPriceLimit: 5000
+            maxPriceLimit: 10000
         }
     },
     methods: {
