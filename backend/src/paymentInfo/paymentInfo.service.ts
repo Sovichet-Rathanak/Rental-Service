@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Payment, PaymentStatus } from './payment.entity';
+import { Payment, PaymentStatus } from './paymentInfo.entity';
 import { Repository } from 'typeorm';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { CreatePaymentDto } from './dto/create-paymentInfo.dto';
+import { UpdatePaymentDto } from './dto/update-paymentInfo.dto';
 import { User } from 'src/user/user.entity';
 
 @Injectable()

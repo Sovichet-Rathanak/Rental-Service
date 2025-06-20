@@ -9,9 +9,9 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { PaymentService } from './payment.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PaymentService } from './paymentInfo.service';
+import { CreatePaymentDto } from './dto/create-paymentInfo.dto';
+import { UpdatePaymentDto } from './dto/update-paymentInfo.dto';
 
 @Controller('payments')
 export class PaymentController {

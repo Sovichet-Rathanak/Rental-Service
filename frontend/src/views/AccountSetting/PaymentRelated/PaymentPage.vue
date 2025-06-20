@@ -179,7 +179,7 @@ export default {
                 zipCode: this.zipCode,
                 firstName: this.firstName,
                 lastName: this.lastName,
-                status: 'completed'
+                status: 'pending' // Default status
             };
             fetch('http://localhost:3000/api/payments', {
                 method: 'POST',
