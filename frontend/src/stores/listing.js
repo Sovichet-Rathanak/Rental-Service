@@ -116,7 +116,6 @@ export const useListingStore = defineStore('listing', {
             }
         },
 
-        //ERROR
         async fetchFilteredListing(params) {
             try {
                 console.log('Sending filter params:', params);
@@ -143,7 +142,28 @@ export const useListingStore = defineStore('listing', {
                 console.error('Failed to fetch filtered listings:', error.response?.data || error.message);
                 this.listings = [];
             }
-        }
+        },
+
+        async fetchListingsByOwner(ownerId) {
+            try {
+                const response = await axios.get('http://localhost:3000/api/listing/filter', {
+                    params: { ownerId: ownerId }
+                });
+                this.listings = response.data;
+
+                const imageFetches = this.listings.map((listing) =>
+                    axios.get(`http://localhost:3000/api/picture/${listing.id}`).then(res => res.data)
+                );
+
+                this.listingImages = await Promise.all(imageFetches);
+
+                console.log('Fetched owner listings:', this.listings);
+            } catch (error) {
+                console.error('Error fetching owner listings:', error);
+                this.listings = [];
+                this.listingImages = [];
+            }
+        },
     },
 
     persist: true

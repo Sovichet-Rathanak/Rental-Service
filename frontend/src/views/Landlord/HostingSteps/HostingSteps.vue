@@ -24,6 +24,7 @@
 <script>
 import { useImageStore } from '@/stores/image';
 import { useListingStore } from '@/stores/listing';
+import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { mapStores } from 'pinia';
 
@@ -64,7 +65,15 @@ export default {
         },
 
         async handleSubmit() {
-            const form = this.listingStore.listingForm;
+            const form = { ...this.listingStore.listingForm };
+
+            if (this.userStore.user && this.userStore.user.id) {
+                form.owner_id = this.userStore.user.id;
+            } else {
+                console.error('Current user not found - cannot create listing');
+                return;
+            }
+
             try {
                 console.log(form)
                 const createRsp = await axios.post('http://localhost:3000/api/listing/', form)
@@ -78,10 +87,10 @@ export default {
                 }
 
                 this.listingStore.resetListingForm();
-                this.imageStore.images= [];
+                this.imageStore.images = [];
                 localStorage.removeItem('propertyImages');
 
-                this.$router.push({name: 'Landlord Page'})
+                this.$router.push({ name: 'Landlord Page' })
             } catch (error) {
                 console.log(error);
             }
@@ -90,6 +99,7 @@ export default {
     computed: {
         ...mapStores(useListingStore),
         ...mapStores(useImageStore),
+        ...mapStores(useUserStore),
 
         percent() {
             const childRoutes = this.getAllChildRoutes("Hosting Steps");

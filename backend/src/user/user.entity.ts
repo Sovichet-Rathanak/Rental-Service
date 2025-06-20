@@ -3,6 +3,7 @@ import { UserRole } from './user_role.enum';
 import { AccomReview } from 'src/accom-review/accom-review.entity';
 import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Booking } from 'src/booking/booking.entity';
+import { Listing } from 'src/listing/listing.entity';
 
 @Entity()
 export class User {
@@ -38,4 +39,7 @@ export class User {
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.tenant)
   wishlist: Wishlist[];
+  
+  @OneToMany(() => Listing, (listing) => listing.owner)
+  listings: Listing[];
 }

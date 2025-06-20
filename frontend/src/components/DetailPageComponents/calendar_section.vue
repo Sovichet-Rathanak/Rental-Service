@@ -17,10 +17,12 @@
         </div>
       </div>
       <div class="host_pfp">
-        <Icon icon="octicon:feed-person-16" width="75" height="75" style="color: #000" />
+        <Icon v-if="!thumbnail_url" icon="fluent:person-circle-32-filled" width="90" height="90"
+          style="color: black;" />
+        <img :src="`http://localhost:9000/romdoul/${thumbnail_url}`" alt="PFP" class="profile-pic"
+          style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
         <div class="host_des">
-          <h2>Hosted by Shen Yue</h2>
-          <p>4 years hosting</p>
+          <h2>{{ hostname }}</h2>
         </div>
       </div>
       <h2>About this place</h2>
@@ -106,6 +108,14 @@ export default {
       type: Array,
       require: true
     },
+    thumbnail_url: {
+      type: String,
+      require: false
+    },
+    hostname:{
+      type: String,
+      require: true
+    }
   },
   data() {
     return {

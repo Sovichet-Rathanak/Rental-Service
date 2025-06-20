@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { MinioModule } from 'nestjs-minio-client';
+import { ListingsModule } from 'src/listing/listing.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]),

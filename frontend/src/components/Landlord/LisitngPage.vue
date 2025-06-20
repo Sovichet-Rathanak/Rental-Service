@@ -1,5 +1,4 @@
 <template>
-  
   <h1 class="title">Your Listing</h1>
   <div class="item">
     <PropertyCard v-for="(listing, index) in listings" :key="listing.id" :data="{
@@ -12,9 +11,8 @@
       image: getThumbnailByIndex(index),
       rating: listing.rating,
     }" />
-  </div>
+  </div> <!-- This closing tag should be here -->
 
-  <!-- Missing this popup !!! -->
   <div class="popUpPage" v-if="showTenantHistory" @click.self="closePopup">
     <div class="overview">
       <TenantHistoryPage @close="closePopup" />
@@ -27,6 +25,7 @@ import TenantHistoryPage from '@/views/Landlord/TenantHistoryPage.vue';
 import PropertyCard from '../PropertyCard.vue';
 import { mapActions, mapState } from 'pinia';
 import { useListingStore } from '@/stores/listing';
+import { useUserStore } from '@/stores/user';
 
 export default {
   components: {
@@ -39,14 +38,18 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchAllListingsWithImages();
+    if (this.user && this.user.id) {
+      await this.fetchListingsByOwner(this.user.id);
+    } else {
+      console.error('Current user not found');
+    }
   },
   computed: {
     ...mapState(useListingStore, ['listings', 'listingImages']),
+    ...mapState(useUserStore, ['user']),
   },
   methods: {
-    ...mapActions(useListingStore, ['fetchAllListingsWithImages', 'getThumbnailByIndex']),
-
+    ...mapActions(useListingStore, ['fetchListingsByOwner', 'getThumbnailByIndex']),
     closePopup() {
       this.showTenantHistory = false;
     },

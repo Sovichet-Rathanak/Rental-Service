@@ -24,4 +24,8 @@ export class FilterListingDto {
     @IsNumber()
     @Type(() => Number)
     maxMonthlyPrice?: number;
+
+    @IsOptional()
+    @IsUUID()
+    ownerId?: string;
 }

@@ -15,14 +15,19 @@ import { Picture } from 'src/picture/picture.entity';
 import { AccomReview } from 'src/accom-review/accom-review.entity';
 import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Booking } from 'src/booking/booking.entity';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Listing {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @Column()
-  // owner: FK
+  @ManyToOne(()=> User, (user) => user.listings, {
+    eager: true,
+    nullable: true
+  })
+  @JoinColumn({name: 'owner_id'})
+  owner: User;
 
   @Column({ nullable: true })
   property_type: PropertyType;

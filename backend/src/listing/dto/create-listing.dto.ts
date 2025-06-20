@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 import { PropertyType } from "../property_type.enum";
 
 export class createListingDTO {
@@ -6,17 +6,16 @@ export class createListingDTO {
     @IsOptional()
     property_type: PropertyType;
 
-    // @IsString()
-    // @IsOptional()
-    // p
-
     @IsString()
     @IsOptional()
     street_address: string;
 
     @IsString()
     @IsOptional()
-    region_id: string
+    region_id: string;
+
+    @IsUUID()
+    owner_id: string;
     
     @IsString()
     @IsOptional()

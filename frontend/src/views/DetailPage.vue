@@ -5,7 +5,9 @@
   <div class="main-container">
     <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
     <AccommadationImg :images="images"/>
-    <Calendar_section 
+    <Calendar_section
+      :thumbnail_url="owner_pfp"
+      :hostname="hostname"
       v-if="listing && userId" 
       :listingId="listingId" 
       :userId="userId" 
@@ -52,6 +54,8 @@ export default {
       listingId: '',
       userId: '',
       listing: null,
+      owner_pfp: '',
+      hostname: ''
     };
   },
   async mounted() {
@@ -67,8 +71,11 @@ export default {
     }
 
     const listingData = await this.getListingById(this.$route.params.id);
-    console.log(listingData);
+    console.log("Listing Data",listingData);
     this.listing = listingData;
+    this.owner_pfp = listingData.owner.pfp_original_url;
+    this.hostname = listingData.owner.firstname + ' ' + listingData.owner.lastname;
+    console.log(this.owner_pfp)
     this.listingId = listingData.id;
     this.userId = this.user.id;
   },

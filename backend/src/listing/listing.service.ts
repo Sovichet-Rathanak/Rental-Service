@@ -7,6 +7,7 @@ import { updateListingDTO } from './dto/update-listing.dto';
 import { Amenity } from 'src/amenity/amenity.entity';
 import { RegionService } from 'src/region/region.service';
 import { FilterListingDto } from './dto/filter-listing.dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class ListingService {
@@ -16,6 +17,9 @@ export class ListingService {
 
     @InjectRepository(Amenity)
     private amenityRepo: Repository<Amenity>,
+
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
 
     private regionService: RegionService,
   ) { }
@@ -27,6 +31,13 @@ export class ListingService {
   async createListing(dto: createListingDTO): Promise<Listing> {
     const listing = this.listingRepo.create(dto);
 
+    if (dto.owner_id) {
+      const owner = await this.userRepo.findOne({ where: { id: dto.owner_id } });
+      if (!owner) {
+        throw new NotFoundException('Owner not found');
+      }
+      listing.owner = owner;
+    }
     if (dto.amenity_id && dto.amenity_id.length > 0) {
       //check if amenities is provided
       const amenities = await this.amenityRepo.findBy({
@@ -46,6 +57,16 @@ export class ListingService {
     const listing = await this.listingRepo.findOne({ where: { id } });
     if (!listing) throw new NotFoundException('Listing could not be found');
 
+    if (dto.owner_id) {
+      const owner = await this.userRepo.findOne({
+        where: { id: dto.owner_id }
+      });
+      if (!owner) {
+        throw new NotFoundException('Owner not found');
+      }
+      listing.owner = owner;
+    }
+
     Object.assign(listing, dto);
     return this.listingRepo.save(listing);
   }
@@ -62,28 +83,30 @@ export class ListingService {
   }
 
   async filterListings(filterListingDto: FilterListingDto): Promise<Listing[]> {
-    //destructuring FilterListingDto
+    // Destructuring FilterListingDto
     const {
       regions,
       guests,
       furnishing,
       minMonthlyPrice,
       maxMonthlyPrice,
+      ownerId, 
     } = filterListingDto;
 
     const query = this.listingRepo
       .createQueryBuilder('listing')
       .leftJoinAndSelect('listing.region', 'region')
       .leftJoinAndSelect('listing.amenities', 'amenity')
-      .leftJoinAndSelect('listing.pictures', 'picture');
+      .leftJoinAndSelect('listing.pictures', 'picture')
+      .leftJoinAndSelect('listing.owner', 'owner'); 
 
     if (regions) {
-      if (Array.isArray(regions) && regions.length > 0) { query.andWhere('region.id IN (:...regions)', { regions }) }
-      else {
+      if (Array.isArray(regions) && regions.length > 0) {
+        query.andWhere('region.id IN (:...regions)', { regions })
+      } else {
         query.andWhere('region.id = :regions', { regions });
       }
     }
-
 
     if (furnishing !== undefined) {
       query.andWhere('listing.furnishing = :furnishing', { furnishing });
@@ -99,6 +122,10 @@ export class ListingService {
 
     if (maxMonthlyPrice) {
       query.andWhere('listing.price_monthly <= :maxMonthlyPrice', { maxMonthlyPrice })
+    }
+
+    if (ownerId) {
+      query.andWhere('owner.id = :ownerId', { ownerId });
     }
 
     return await query.getMany();
