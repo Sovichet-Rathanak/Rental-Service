@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional, IsString, Matches } from 'class-validator';
-import { PaymentStatus } from '../paymentInfo.entity';
+import { PaymentInfoStatus } from '../paymentInfo.entity';
 
-export class CreatePaymentDto {
+export class CreatePaymentInfoDto {
   @IsString()
   userId: string;
 
@@ -40,6 +40,6 @@ export class CreatePaymentDto {
   lastName: string;
 
   @IsOptional()
-  @IsEnum(PaymentStatus)
-  status: PaymentStatus;
+  @IsEnum(PaymentInfoStatus)
+  status: PaymentInfoStatus;
 }

@@ -9,38 +9,38 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { PaymentService } from './paymentInfo.service';
-import { CreatePaymentDto } from './dto/create-paymentInfo.dto';
-import { UpdatePaymentDto } from './dto/update-paymentInfo.dto';
+import { PaymentInfoService } from './paymentInfo.service';
+import { CreatePaymentInfoDto } from './dto/create-paymentInfo.dto';
+import { UpdatePaymentInfoDto } from './dto/update-paymentInfo.dto';
 
-@Controller('payments')
-export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+@Controller('payments-info')
+export class PaymentInfoController {
+  constructor(private readonly paymentInfoService: PaymentInfoService) {}
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  create(@Body() dto: CreatePaymentDto) {
-    return this.paymentService.create(dto);
+  create(@Body() dto: CreatePaymentInfoDto) {
+    return this.paymentInfoService.create(dto);
   }
 
   @Patch(':id')
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  update(@Param('id') id: string, @Body() dto: UpdatePaymentDto) {
-    return this.paymentService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdatePaymentInfoDto) {
+    return this.paymentInfoService.update(id, dto);
   }
 
   @Get()
   findAll() {
-    return this.paymentService.findAll();
+    return this.paymentInfoService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paymentService.findOne(id);
+    return this.paymentInfoService.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.paymentService.remove(id);
+    return this.paymentInfoService.remove(id);
   }
 }

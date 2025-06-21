@@ -1,26 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Payment, PaymentStatus } from './paymentInfo.entity';
+import { PaymentInfo, PaymentInfoStatus } from './paymentInfo.entity';
 import { Repository } from 'typeorm';
-import { CreatePaymentDto } from './dto/create-paymentInfo.dto';
-import { UpdatePaymentDto } from './dto/update-paymentInfo.dto';
+import { CreatePaymentInfoDto } from './dto/create-paymentInfo.dto';
+import { UpdatePaymentInfoDto } from './dto/update-paymentInfo.dto';
 import { User } from 'src/user/user.entity';
 
 @Injectable()
-export class PaymentService {
+export class PaymentInfoService {
   constructor(
-    @InjectRepository(Payment)
-    private readonly paymentRepo: Repository<Payment>,
+    @InjectRepository(PaymentInfo)
+    private readonly paymentInfoRepo: Repository<PaymentInfo>,
 
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async create(dto: CreatePaymentDto) {
+  async create(dto: CreatePaymentInfoDto) {
     const user = await this.userRepo.findOne({ where: { id: dto.userId } });
     if (!user) throw new NotFoundException('User not found');
 
-    const payment = this.paymentRepo.create({
+    const paymentInfo = this.paymentInfoRepo.create({
       user,
       cardNumber: dto.cardNumber,
       expiryDate: dto.expiryDate,
@@ -32,35 +32,35 @@ export class PaymentService {
       zipCode: dto.zipCode,
       firstName: dto.firstName,
       lastName: dto.lastName,
-      status: dto.status ?? PaymentStatus.PENDING,
+      status: dto.status ?? PaymentInfoStatus.PENDING,
     });
 
-    return this.paymentRepo.save(payment);
+    return this.paymentInfoRepo.save(paymentInfo);
   }
 
-  async update(id: string, dto: UpdatePaymentDto) {
-    const payment = await this.paymentRepo.findOne({ where: { id } });
-    if (!payment) throw new NotFoundException('Payment not found');
+  async update(id: string, dto: UpdatePaymentInfoDto) {
+    const paymentInfo = await this.paymentInfoRepo.findOne({ where: { id } });
+    if (!paymentInfo) throw new NotFoundException('Payment info not found');
 
-    Object.assign(payment, dto); // Merge the updated fields
-    return this.paymentRepo.save(payment);
+    Object.assign(paymentInfo, dto); // Merge the updated fields
+    return this.paymentInfoRepo.save(paymentInfo);
   }
 
   async findAll() {
-    return this.paymentRepo.find({ relations: ['user'] });
+    return this.paymentInfoRepo.find({ relations: ['user'] });
   }
 
   async findOne(id: string) {
-    const payment = await this.paymentRepo.findOne({
+    const paymentInfo = await this.paymentInfoRepo.findOne({
       where: { id },
       relations: ['user'],
     });
-    if (!payment) throw new NotFoundException('Payment not found');
-    return payment;
+    if (!paymentInfo) throw new NotFoundException('Payment info not found');
+    return paymentInfo;
   }
 
   async remove(id: string) {
-    const payment = await this.findOne(id);
-    return this.paymentRepo.remove(payment);
+    const paymentInfo = await this.findOne(id);
+    return this.paymentInfoRepo.remove(paymentInfo);
   }
 }

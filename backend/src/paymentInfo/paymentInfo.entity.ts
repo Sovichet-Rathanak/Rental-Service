@@ -7,14 +7,15 @@ import {
 } from 'typeorm';
 import { User } from 'src/user/user.entity';
 
-export enum PaymentStatus {
+export enum PaymentInfoStatus {
   PENDING = 'pending',
-  COMPLETED = 'completed',
+  PAID = 'paid',
+  OVERDUE = 'overdue',
   FAILED = 'failed',
 }
 
 @Entity()
-export class Payment {
+export class PaymentInfo {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -54,6 +55,10 @@ export class Payment {
   @Column({ nullable: true })
   lastName: string;
 
-  @Column({ type: 'enum', enum: PaymentStatus, default: PaymentStatus.PENDING })
-  status: PaymentStatus;
+  @Column({
+    type: 'enum',
+    enum: PaymentInfoStatus,
+    default: PaymentInfoStatus.PENDING,
+  })
+  status: PaymentInfoStatus;
 }

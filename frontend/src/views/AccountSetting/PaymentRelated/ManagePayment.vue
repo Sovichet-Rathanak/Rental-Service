@@ -7,9 +7,9 @@
             <BreadCrumbs></BreadCrumbs>
             <hgroup style="width: 100%;">
                 <h1>Your Payment Methods</h1>               
-                <div class="payment-table">
+                <div class="paymentInfo-table">
                     <DynamicTable
-                      class="payment"
+                      class="paymentInfo"
                       :columns="columnsSet1"
                       :rows="dataSet1"
                       :show-status="false"
@@ -57,7 +57,7 @@ export default {
     },
     async fetchPayments() {
       try {
-        const response = await fetch("http://localhost:3000/api/payments");
+        const response = await fetch("http://localhost:3000/api/payments-info");
         if (!response.ok) throw new Error('Network response was not ok');
         const payments = await response.json();
 
@@ -75,7 +75,7 @@ export default {
     async handleDeleteItem(index) {
       const itemToDelete = this.dataSet1[index];
       try {
-        const response = await fetch(`http://localhost:3000/api/payments/${itemToDelete.id}`, {
+        const response = await fetch(`http://localhost:3000/api/payments-info/${itemToDelete.id}`, {
           method: 'DELETE',
         });
         if (!response.ok) {
@@ -106,7 +106,7 @@ main {
     align-items: start;
 }
 
-.payment-table {
+.paymentInfo-table {
     margin-top: 40px;
 }
 </style>

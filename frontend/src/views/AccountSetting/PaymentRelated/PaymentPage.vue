@@ -181,7 +181,7 @@ export default {
                 lastName: this.lastName,
                 status: 'pending' // Default status
             };
-            fetch('http://localhost:3000/api/payments', {
+            fetch('http://localhost:3000/api/payments-info', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json'
