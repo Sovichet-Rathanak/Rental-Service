@@ -14,6 +14,7 @@ import { WishlistModule } from './wishlist/wishlist.module';
 import { RentalDecisionModule } from './rental-decision/rental-decision.module';
 import { ConfigModule } from '@nestjs/config';
 import { PaymentInfoModule } from './paymentInfo/paymentInfo.module';
+import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -40,6 +41,7 @@ import { PaymentInfoModule } from './paymentInfo/paymentInfo.module';
     WishlistModule,
     RentalDecisionModule,
     PaymentInfoModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
