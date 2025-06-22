@@ -11,7 +11,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 
-const series = [300, 250, 100, 80, 70]; // dummy data
+const series = [300, 250, 100, 80, 70];
 
 const chartOptions = {
     labels: ['BKK', 'Toul Kork', 'Duan Penh', 'Sen Sok', 'Mean Chey'],

@@ -13,52 +13,71 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { Icon } from '@iconify/vue'
+import { useListingStore } from '@/stores/listing'
+import { defineComponent } from 'vue'
 
-const series = [
-  {
-    name: 'Properties',
-    data: [600, 450, 300, 120, 100]
-  }
-];
+export default defineComponent({
+  components: { Icon },
+  data() {
+    return {
+      series: [
+        {
+          name: 'Properties',
+          data: [1, 6, 7, 9, 10] // Initial placeholder values
+        }
+      ],
+      chartOptions: {
+        chart: {
+          type: 'bar',
+          toolbar: { show: false }
+        },
+        colors: ['#7b1fa2'],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '40%',
+            borderRadius: 6
+          }
+        },
+        dataLabels: { enabled: false },
+        xaxis: {
+          categories: ['House', 'Villa', 'Borey', 'Traditional House', 'Apartment'],
+          labels: {
+            style: { fontSize: '12px', colors: '#444' }
+          }
+        },
+        yaxis: {
+          title: {
+            text: '',
+            style: { fontSize: '12px', color: '#555' }
+          }
+        },
+        legend: { show: false },
+        tooltip: {
+          y: { formatter: val => `${val}` }
+        },
+        grid: {
+          borderColor: '#eee',
+          strokeDashArray: 5
+        }
+      }
+    };
+  },
+  async mounted() {
+    const listingStore = useListingStore();
+    await listingStore.fetchAllListingsWithImages();
 
-const chartOptions = {
-  chart: {
-    type: 'bar',
-    toolbar: { show: false }
-  },
-  colors: ['#7b1fa2'],
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '40%',
-      borderRadius: 6
-    }
-  },
-  dataLabels: { enabled: false },
-  xaxis: {
-    categories: ['House', 'Villa', 'Borey', 'Traditional House','Apartment'],
-    labels: {
-      style: { fontSize: '12px', colors: '#444' }
-    }
-  },
-  yaxis: {
-    title: {
-      text: '',
-      style: { fontSize: '12px', color: '#555' }
-    }
-  },
-  legend: { show: false },
-  tooltip: {
-    y: { formatter: val => `${val}` }
-  },
-  grid: {
-    borderColor: '#eee',
-    strokeDashArray: 5
+    const types = ['House', 'Villa', 'Borey', 'Traditional House', 'Apartment'];
+    const counts = types.map(type => listingStore.listings.filter(l => l.property_type === type).length);
+
+    this.series[0].data = counts;
   }
-};
+});
 </script>
+
+
 
 <style scoped>
 .chart-card {
