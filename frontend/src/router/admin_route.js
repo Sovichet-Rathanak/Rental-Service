@@ -64,7 +64,7 @@ export default [
                 component: EditLandlord
             },
             {
-                path: "property/edit-property/:id",
+                path: "property/edit-property/:id/edit",
                 name: "Admin Edit Property",
                 component: EditProperty
             }
