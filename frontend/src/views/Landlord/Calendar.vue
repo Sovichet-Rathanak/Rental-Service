@@ -38,7 +38,7 @@ export default {
             {
                 key: 'payment',
                 highlight: { contentClass: 'highlight-payment' },
-                dates: new Date(2025, 4, 16),
+                dates: new Date(2025, 5, 28),
             }
         ]);
 

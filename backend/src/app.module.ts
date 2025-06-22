@@ -13,6 +13,8 @@ import { BookingModule } from './booking/booking.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { RentalDecisionModule } from './rental-decision/rental-decision.module';
 import { ConfigModule } from '@nestjs/config';
+import { NotificationModule } from './notification/notification.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,6 +40,7 @@ import { ConfigModule } from '@nestjs/config';
     BookingModule,
     WishlistModule,
     RentalDecisionModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService],

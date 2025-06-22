@@ -1,0 +1,23 @@
+meta {
+  name: create notification
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/notifications
+  body: json
+  auth: inherit
+}
+
+body:json {
+    {
+        "userId": "ae2f0cb9-b8d6-4af2-b1c6-b33562dedbcd",
+        "bookingId": "94b3c2cc-e72c-4641-90fb-aaa17f9373e5",
+      "role": "tenant",
+        "message": "Hi can i rent?",
+        "type": "tour",
+        "status": "pending",
+        "imgUrl": "https://i.pinimg.com/736x/9f/a6/94/9fa694d0f64e4c15b610b16d1e59e550.jpg"
+    }
+}

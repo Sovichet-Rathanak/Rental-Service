@@ -23,6 +23,8 @@ import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import { useNotificationStore } from '@/stores/notification';
 import { storeToRefs } from 'pinia';
 import NotificationList from '@/components/notificationComponent/NotificationList.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 
 export default {
   components: {
@@ -35,7 +37,7 @@ export default {
   setup() {
     const notificationStore = useNotificationStore();
     const { filteredNotifications, filterType } = storeToRefs(notificationStore);
-
+    const userStore = useUserStore()
     const filterButtons = [
       { label: 'All', value: 'all' },
       { label: 'Tour Request', value: 'tour' },
@@ -53,6 +55,10 @@ export default {
       if (status === 'Declined') return 'red';
       return '#2D01CE';
     };
+    onMounted(() => {
+      notificationStore.fetchNotifications(userStore.user.id); // or ._id if using MongoDB
+    });
+
 
     return {
       notificationStore,

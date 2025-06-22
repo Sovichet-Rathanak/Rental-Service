@@ -5,6 +5,7 @@
         <h1>{{ listing.title }}</h1>
         <p>Suitable for {{ listing.guests }} Guest(s), {{ listing.bedrooms }} Bedroom(s), {{ listing.bathrooms }}
           Bathroom</p>
+          <p>{{ listing.owner.id }}</p>
         <div style="
             display: flex;
             align-items: center;
@@ -65,8 +66,8 @@
           </div>
         </div>
       </div>
-      <button class="check-availability" @click="checkAvailability">
-        Check availability
+        <button class="check-availability" @click="checkAvailability">
+        {{ isAvailableChecked ? "Book Now" : "Check Availability" }}
       </button>
       <p v-if="validationMessage" class="warning-msg">{{ validationMessage }}</p>
     </div>
@@ -82,6 +83,8 @@ import Date_pop_up from "./date_pop_up.vue";
 import Request_tour from "./request_tour.vue";
 import Amenities_pop_up from "./amenities_pop_up.vue";
 import { useBookingStore } from "@/stores/booking";
+import { useNotificationStore } from "@/stores/notification";
+import { useUserStore } from "@/stores/user";
 import { mapActions, mapState } from "pinia";
 
 export default {
@@ -126,6 +129,7 @@ export default {
       toggleTour: false,
       toggleAmenities: false,
       validationMessage: "",
+      isAvailableChecked: false, // controls button state
     };
   },
   computed: {
@@ -146,21 +150,15 @@ export default {
     setRentalDuration(duration) {
       this.rentalDuration = duration;
       this.updateBookingField("rentalDuration", duration);
-
-      if (this.rentalDuration && this.selectedMoveInDate) {
-        this.validationMessage = ""; // Clear only if both are selected
-      }
+      this.validationMessage = "";
+      this.isAvailableChecked = false; 
     },
     handleSelectedDate(date) {
       this.selectedMoveInDate = date;
-      console.log("Selected move-in date:", date);
-
       const formatted = date ? date.toISOString().split("T")[0] : "";
       this.updateBookingField("moveInDate", formatted);
-
-      if (this.rentalDuration && this.selectedMoveInDate) {
-        this.validationMessage = "";
-      }
+      this.validationMessage = "";
+      this.isAvailableChecked = false; 
     },
     handleCloseDatePopup() {
       this.isDateSelected = true;
@@ -179,33 +177,56 @@ export default {
     },
 
     checkAvailability() {
-      if (!this.selectedMoveInDate || !this.rentalDuration) {
-        this.validationMessage =
-          "Please select move-in date and rental duration.";
-        return;
+      if (!this.isAvailableChecked) {
+        // First click: validate and open popup
+        if (!this.selectedMoveInDate || !this.rentalDuration) {
+          this.validationMessage = "Please select move-in date and rental duration.";
+          return;
+        }
+        this.validationMessage = "";
+        this.isAvailableChecked = true;
+        this.toggleTour = true;
+      } else {
+        // Second click: create booking & send notification
+        this.handleTourSubmit();
       }
-
-      this.validationMessage = "";
-      this.toggleTour = true;
     },
 
     async handleTourSubmit() {
-      try {
+      const notificationStore = useNotificationStore();
+      const userStore = useUserStore();
+
+      // try {
         const data = await this.createBooking();
         console.log("Booking successful:", data);
-        return data;
-      } catch (err) {
-        this.error = err.response?.data?.message || "Booking failed";
-        if (message.includes("already taken")) {
-          alert(
-            "This time slot is already taken. Please choose a different one."
-          );
-        } else {
-          alert(message);
-        }
 
-        throw err;
-      }
+        const landlordId = data?.listing?.owner?.id || data?.listing?.landlordId || data?.listing?.landlord_id;
+        if (!landlordId) {
+          alert("Landlord ID not found in the booking data. Cannot send notification.");
+          return;
+        }
+        const tenantName = `${userStore.user.firstname} ${userStore.user.lastname}`;
+        const senderId = `${userStore.user.id}`
+
+        await notificationStore.createBookingNotifications({
+          senderId: String(senderId),
+          receiverId: String(landlordId), 
+          type: "tour",
+          bookingId: data.id,
+          tenantName,
+        });
+
+        return data;
+      // } catch (err) {
+      //   const message = err.response?.data?.message || "Booking failed"; 
+      //   this.error = message;
+
+      //   if (message.includes("already taken")) {
+      //     alert("This time slot is already taken. Please choose a different one.");
+      //   } else {
+      //     alert(message);
+      //   }
+      // }
     },
   },
 

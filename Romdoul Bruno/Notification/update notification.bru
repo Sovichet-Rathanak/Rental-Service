@@ -1,0 +1,18 @@
+meta {
+  name: update notification
+  type: http
+  seq: 3
+}
+
+patch {
+  url: http://localhost:3000/api/notifications/ef12d3dd-1952-4e8b-8afa-cba10b2f9641
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "status": "Approved"
+  
+  }
+}
