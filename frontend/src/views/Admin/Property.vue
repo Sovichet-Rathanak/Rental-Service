@@ -5,7 +5,7 @@
       class="property"
       :columns="columnsSet1"
       :rows="dataSet1"
-      :show-status="true"
+      :show-status="false"
       @delete-item="handleDeleteItem"
       @edit-item="handleEditItem"
     />

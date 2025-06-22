@@ -1,0 +1,18 @@
+meta {
+  name: update
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:3000/api/listing/bf5f6446-84dc-4708-ae52-aa7339ba1187
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "property_type": "house"
+  
+  }
+}
