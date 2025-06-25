@@ -38,4 +38,22 @@ export class PaymentService {
     const payment = await this.findOne(id);
     return this.paymentRepo.remove(payment);
   }
+
+  // integrate with Total Payment Summary Chart
+  async getMonthlySummary() {
+    return this.paymentRepo
+      .createQueryBuilder('payment')
+      .select(`TO_CHAR(payment.paymentDate, 'YYYY-MM')`, 'month')
+      .addSelect(
+        `SUM(CASE WHEN payment.status = 'paid' THEN payment.amount ELSE 0 END)`,
+        'received',
+      )
+      .addSelect(
+        `SUM(CASE WHEN payment.status = 'pending' THEN payment.amount ELSE 0 END)`,
+        'expected',
+      )
+      .groupBy('month')
+      .orderBy('month', 'ASC')
+      .getRawMany();
+  }
 }

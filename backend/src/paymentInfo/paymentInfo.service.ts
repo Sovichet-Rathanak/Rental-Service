@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaymentInfo, PaymentInfoStatus } from './paymentInfo.entity';
 import { Repository } from 'typeorm';
 import { CreatePaymentInfoDto } from './dto/create-paymentInfo.dto';
 import { UpdatePaymentInfoDto } from './dto/update-paymentInfo.dto';
 import { User } from 'src/user/user.entity';
+import { PaymentInfo } from './paymentInfo.entity';
 
 @Injectable()
 export class PaymentInfoService {
@@ -32,7 +32,6 @@ export class PaymentInfoService {
       zipCode: dto.zipCode,
       firstName: dto.firstName,
       lastName: dto.lastName,
-      status: dto.status ?? PaymentInfoStatus.PENDING,
     });
 
     return this.paymentInfoRepo.save(paymentInfo);

@@ -1,5 +1,4 @@
-import { IsEnum, IsOptional, IsString, Matches } from 'class-validator';
-import { PaymentInfoStatus } from '../paymentInfo.entity';
+import { IsOptional, IsString, Matches } from 'class-validator';
 
 export class CreatePaymentInfoDto {
   @IsString()
@@ -38,8 +37,4 @@ export class CreatePaymentInfoDto {
 
   @IsString()
   lastName: string;
-
-  @IsOptional()
-  @IsEnum(PaymentInfoStatus)
-  status: PaymentInfoStatus;
 }

@@ -43,4 +43,9 @@ export class PaymentController {
   remove(@Param('id') id: string) {
     return this.paymentService.remove(id);
   }
+
+  @Get('/summary/monthly')
+  getMonthlySummary() {
+    return this.paymentService.getMonthlySummary();
+  }
 }
