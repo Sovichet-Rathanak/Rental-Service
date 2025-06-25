@@ -65,7 +65,7 @@ export class WishlistService {
   async getUserWishlist(userId: string): Promise<Wishlist[]> {
     return this.wishlistRepository.find({
       where: { tenant: { id: userId } },
-      relations: ['user', 'listing'],
+      relations: ['tenant', 'listing'],
     });
   }
 }

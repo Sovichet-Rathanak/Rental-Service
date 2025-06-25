@@ -46,15 +46,16 @@ export const useUserStore = defineStore("user", {
         );
         const { accessToken, user } = userRsp.data;
 
-        this.user = {
-          id: user.id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          role: user.role,
-          pfp_original_url: user.pfp_original_url || "",
-          pfp_thumbnail_url: user.pfp_thumbnail_url || "",
-        };
+                this.user = {
+                    id: user.id,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    role: user.role,
+                    pfp_original_url: user.pfp_original_url || '',
+                    pfp_thumbnail_url: user.pfp_thumbnail_url || '',
+                };
+                console.log('USER ID:', user.id)
 
         this.isLoggedIn = true;
 

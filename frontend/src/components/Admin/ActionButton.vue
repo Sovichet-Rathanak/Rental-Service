@@ -4,7 +4,7 @@
       @click.stop="$emit('edit-item', index)"
       class="btn-edit"
     >
-      <!-- <Icon icon="mdi:edit" width="30" height="30" class="icon" /> -->
+      <Icon icon="mdi:edit" width="30" height="30" class="icon" />
     </button>
 
     <button

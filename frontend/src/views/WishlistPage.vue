@@ -2,16 +2,25 @@
   <main>
     <header-nav-2></header-nav-2>
     <div class="title">
-      <Icon icon="material-symbols:arrow-back-ios-rounded" width="32" height="32" @click="goBack"/>
+      <Icon icon="material-symbols:arrow-back-ios-rounded" width="32" height="32" @click="goBack" />
       <h1>Wishlist</h1>
     </div>
 
     <!-- Wishlist items -->
     <div v-if="wishlist.length > 0" class="hasItem">
       <PropertyCard
-        v-for="item in wishlist"
+        v-for="(item, index) in wishlist"
         :key="item.id"
-        :product="item"
+        :data="{
+          id: item.listing.id,
+          title: item.listing.title,
+          price: '$' + item.listing.price_monthly + '/month',
+          khan: item.listing.region?.region_name ?? 'Unknown',
+          songkat: item.listing.songkat,
+          street: item.listing.street_address,
+          image: getThumbnail(item.listing.id),
+          rating: item.listing.rating
+        }"
       />
     </div>
 
@@ -19,43 +28,47 @@
     <div v-else class="empty-message">
       <p>No items in wishlist.</p>
     </div>
-
   </main>
 </template>
-
 
 <script>
 import HeaderNav2 from '@/components/headerComponents/HeaderNav2.vue'
 import PropertyCard from '@/components/PropertyCard.vue'
-import { mapState } from 'pinia'
 import { useWishlistStore } from '@/stores/wishlist'
+import { useListingStore } from '@/stores/listing'
+import { mapActions, mapStores } from 'pinia'
 
 export default {
   components: {
     HeaderNav2,
     PropertyCard
   },
-  // computed: {
-  //   ...mapState(useWishlistStore, ['items']),
-  //   wishlist() {
-  //     return this.items
-  //   }
-  // },
-  methods:{
-    goBack(){
-      this.$router.push({name: 'Home'})
-    }
+
+  methods: {
+    goBack() {
+      this.$router.push({ name: 'Home' })
+    },
+    getThumbnail(listingId) {
+      const listingStore = useListingStore()
+      const index = listingStore.listings.findIndex(l => l.id === listingId)
+      return listingStore.getThumbnailByIndex(index)
+    },
+
+    ...mapActions(useListingStore, ['getThumbnailByIndex']),
   },
   
+  computed: {
+    ...mapStores(useWishlistStore, ['items'])
+  },
   setup() {
     const wishlistStore = useWishlistStore()
-    console.log('WISHLIST IN PAGE:', wishlistStore.items)
     return {
-      wishlist: wishlistStore.items,
+      wishlist: wishlistStore.items
     }
   }
 }
 </script>
+
 
 
 <style scoped>

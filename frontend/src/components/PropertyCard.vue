@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 import { useWishlistStore } from '@/stores/wishlist'
 
 export default {
@@ -39,19 +39,25 @@ export default {
   },
   computed: {
     ...mapState(useWishlistStore, ['items']),
-    // isWishlisted() {
-    //   return this.items.some(item => item.id === this.data.id)
-    // }
+    isWishlisted() {
+      const wishlistStore = useWishlistStore()
+      return wishlistStore.isWishlisted(this.data.id)
+    }
   },
   methods: {
     goToDetailPage(id) {
       this.$router.push(`/accommodation/${id}`);
     },
 
-    // ...mapActions(useWishlistStore, ['toggleWishlist']),
-    // handleWishlist() {
-    //   this.toggleWishlist(this.data)
-    // }
+    ...mapActions(useWishlistStore, ['isWishlisted', 'removeFromWishlist', 'addToWishlist']),
+    async handleWishlist() {
+      const wishlistStore = useWishlistStore()
+      if (this.isWishlisted) {
+        await wishlistStore.removeFromWishlist(this.data.id)
+      }else {
+        await wishlistStore.addToWishlist(this.data)
+      }
+    }
   },
 }
 </script>

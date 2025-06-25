@@ -18,7 +18,7 @@ export class WishlistController {
   }
 
   @Post()
-  toggleWishlist(@Body('listingId') listingId: string, userId: string) {
+  createWishlist(@Body('listingId') listingId: string, userId: string) {
     return this.wishlistService.createWishlist(userId, listingId);
   }
 
