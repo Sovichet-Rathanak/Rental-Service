@@ -17,11 +17,28 @@
                       @delete-item="handleDeleteItem"
                     />
                 </div>
+
+                <!-- Make Payment Button -->
+                <div class="make-payment-btn">
+                  <button @click="openPaymentPopup">Make Payment</button>
+                </div>
+
             </hgroup>
         </main>
         <footer>
             <FooterComponent></FooterComponent>
         </footer>
+
+        <!--  Payment Popup Component -->
+        <PaymentPopup
+          v-if="showPopup"
+          :bookingId="selectedBookingId"
+          :listingId="selectedListingId"
+          @close="showPopup = false"
+        />
+        <p v-if="showPopup">DEBUG: showPopup is TRUE</p>
+
+
     </div>
 </template>
 
@@ -31,15 +48,23 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import DynamicTable from '@/components/Admin/DynamicTable.vue';
 
+import PaymentPopup from '@/components/payment/PaymentPopup.vue';
+
 export default {
     components: {
         HeaderNav2,
         FooterComponent,
         BreadCrumbs,
-        DynamicTable
+        DynamicTable,
+        PaymentPopup
     },
     data() {
     return {
+
+      showPopup: false,
+      selectedBookingId: 'ba0d3551-7653-47a9-bb93-f16ad208019e',  // Replace with real ID if available
+      selectedListingId: '3251d625-bc63-40af-8332-97f15b290cd3',  // Replace with real ID if available
+      
       columnsSet1: [
         { key: "id", label: "ID" },
         { key: "cardNumber", label: "Card Number" },
@@ -86,7 +111,14 @@ export default {
         console.error("Delete failed:", error);
         alert("Failed to delete payment. Please try again.");
       }
-    },  
+    }, 
+    //  Open popup
+    openPaymentPopup() {
+      // TODO: Replace with dynamic IDs if available
+      this.selectedBookingId = 'ba0d3551-7653-47a9-bb93-f16ad208019e'; 
+      this.selectedListingId = '3251d625-bc63-40af-8332-97f15b290cd3';
+      this.showPopup = true;
+    } 
   },
   mounted() {
     this.fetchPayments();
