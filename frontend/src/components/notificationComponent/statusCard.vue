@@ -23,7 +23,7 @@
       </div>
 
       <div v-if="notification.status === 'pending'" class="button-group">
-        <!-- ================= Tour Tenant ================= -->
+        <!-- ========== Tour Tenant ========== -->
         <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'tour'">
           <button class="cancel" @click="cancelRequest">
             <Icon class="icon" icon="iconoir:cancel" />
@@ -31,34 +31,34 @@
           </button>
         </div>
 
-        <!-- ================= Rent Tenant ================= -->
+        <!-- ========== Rent Tenant ========== -->
         <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'rent'">
-          <button v-if="notification.type === 'rent'" class="pay" @click="payNow">
-            <Icon class="icon" icon="uiw:pay" @click="payNow"/>
+          <button class="pay" @click="payNow">
+            <Icon class="icon" icon="uiw:pay" />
             <span>Pay now</span>
           </button>
         </div>
 
-        <!-- ============ Tour Request for Landlord ============ -->
+        <!-- ========== Tour Request for Landlord ========== -->
         <div class="rent-container" v-if="notification.role === 'landlord' && notification.type === 'tour'">
           <button class="cancel" @click="declineRequest">
-            <Icon class="icon" icon="iconoir:cancel" />
+            <Icon class="icon" icon="gridicons:cross-circle" />
             <span>Decline Tour</span>
           </button>
           <button class="pay" @click="approveRequest">
-            <Icon class="icon" icon="charm:tick" />
+            <Icon class="icon" icon="teenyicons:tick-circle-solid" />
             <span>Approve Tour</span>
           </button>
         </div>
 
-        <!-- ============ Rent Request for Landlord ============ -->
+        <!-- ========== Rent Request for Landlord ========== -->
         <div class="rent-container" v-else-if="notification.role === 'landlord' && notification.type === 'rent'">
           <button class="cancel" @click="declineRequest">
-            <Icon class="icon" icon="iconoir:cancel" />
+            <Icon class="icon" icon="gridicons:cross-circle" />
             <span>Decline Tenant</span>
           </button>
           <button class="pay" @click="approveRequest">
-            <Icon class="icon" icon="charm:tick" />
+            <Icon class="icon" icon="teenyicons:tick-circle-solid" />
             <span>Approve Tenant</span>
           </button>
         </div>
@@ -69,26 +69,19 @@
 
 <script>
 import { Icon } from '@iconify/vue';
-import axios from 'axios';
-import { useUserStore } from '@/stores/user';
 import { useNotificationStore } from '@/stores/notification';
+
 export default {
-  components: {
-    Icon
-  },
+  components: { Icon },
   props: {
-    notification: Object,
-    iconName: String,
-    iconColor: String,
-    type: String,
-    role: String,
-    status: String
+    notification: Object
   },
   methods: {
     async approveRequest() {
       const store = useNotificationStore();
       try {
         await store.performAction(this.notification.id, 'approve');
+        this.notification.status = 'approve';
         alert('Request approved.');
         this.$emit('close');
       } catch (error) {
@@ -100,6 +93,7 @@ export default {
       const store = useNotificationStore();
       try {
         await store.performAction(this.notification.id, 'decline');
+        this.notification.status = 'decline';
         alert('Request declined.');
         this.$emit('close');
       } catch (error) {
@@ -111,6 +105,7 @@ export default {
       const store = useNotificationStore();
       try {
         await store.performAction(this.notification.id, 'pay');
+        this.notification.status = 'pay';
         alert('Payment successful.');
         this.$emit('close');
       } catch (error) {
@@ -122,6 +117,7 @@ export default {
       const store = useNotificationStore();
       try {
         await store.performAction(this.notification.id, 'cancel');
+        this.notification.status = 'cancel';
         alert('Request cancelled.');
         this.$emit('close');
       } catch (error) {
@@ -131,21 +127,46 @@ export default {
     }
   },
   computed: {
-    isTenant() {
-      return this.notification.role === 'tenant';
+    iconName() {
+      switch (this.notification.status) {
+        case 'approved':
+          return 'charm:tick';
+        case 'declined':
+          return 'iconoir:cancel';
+        case 'cancel':
+          return 'mdi:cancel';
+        case 'pay':
+          return 'uiw:pay';
+        case 'pending':          
+          return 'ion:hourglass-outline';
+        default:
+          return 'solar:clock-linear';
+      }
     },
-    isLandlord() {
-      return this.notification.role === 'landlord';
+    iconColor() {
+      switch (this.notification.status) {
+        case 'approve':
+          return 'green';
+        case 'decline':
+          return 'red';
+        case 'cancel':
+          return 'red';
+        case 'pay':
+          return 'blue';
+        case 'pending':
+          return '#2D01CE';
+        default:
+          return 'gray';
+      }
     }
   },
   mounted() {
-    console.log('Role:', this.notification.role)
-    console.log('Status:', this.notification.status)
-    console.log('Type:', this.notification.type)
+    console.log('Role:', this.notification.role);
+    console.log('Status:', this.notification.status);
+    console.log('Type:', this.notification.type);
   }
 };
 </script>
-
 
 <style scoped>
 .status-card-overlay {

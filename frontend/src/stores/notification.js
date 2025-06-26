@@ -26,22 +26,16 @@ export const useNotificationStore = defineStore('notification', {
 
     async fetchNotifications() {
       const userStore = useUserStore();
+      const userId = userStore.user?.id;
 
-      if (!userStore.user?.id || !userStore.authToken) {
-        console.error('User not logged in or missing token');
+      if (!userId) {
+        console.error('User ID is missing');
         this.notifications = [];
         return;
       }
 
       try {
-        const res = await axios.get(
-          `http://localhost:3000/api/notifications/user/${userStore.user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userStore.authToken}`,
-            },
-          }
-        );
+        const res = await axios.get(`http://localhost:3000/api/notifications/user/${userId}`);
         this.notifications = res.data;
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
@@ -49,49 +43,32 @@ export const useNotificationStore = defineStore('notification', {
       }
     },
 
-    async markAsRead(notificationId) {
-      const userStore = useUserStore();
-
-      if (!userStore.authToken) {
-        console.error('Missing token, cannot mark as read');
-        return;
-      }
-
-      try {
-        await axios.patch(
-          `http://localhost:3000/api/notifications/${notificationId}`,
-          { isRead: true },
-          {
-            headers: {
-              Authorization: `Bearer ${userStore.authToken}`,
-            },
-          }
-        );
-        const notif = this.notifications.find(n => n.id === notificationId);
-        if (notif) notif.isRead = true;
-      } catch (error) {
-        console.error('Failed to mark notification as read:', error);
-      }
-    },
+    // async markAsRead(notificationId) {
+    //   try {
+    //     await axios.patch(`http://localhost:3000/api/notifications/${notificationId}`, {
+    //       isRead: true,
+    //     });
+    //     const notif = this.notifications.find(n => n.id === notificationId);
+    //     if (notif) notif.isRead = true;
+    //   } catch (error) {
+    //     console.error('Failed to mark notification as read:', error);
+    //   }
+    // },
 
     async performAction(notificationId, action) {
       const userStore = useUserStore();
+      const userId = userStore.user?.id;
 
-      if (!userStore.user?.id || !userStore.authToken) {
-        console.error('User not logged in or missing token');
+      if (!userId) {
+        console.error('User not logged in — missing userId');
         return;
       }
 
       try {
-        await axios.post(
-          `http://localhost:3000/api/notifications/${notificationId}/action`,
-          { action },
-          {
-            headers: {
-              Authorization: `Bearer ${userStore.authToken}`,
-            },
-          }
-        );
+        await axios.post(`http://localhost:3000/api/notifications/${notificationId}/action`, {
+          action,
+          userId,
+        });
         await this.fetchNotifications();
       } catch (error) {
         console.error(`Failed to ${action} notification:`, error);
@@ -99,73 +76,53 @@ export const useNotificationStore = defineStore('notification', {
       }
     },
 
-    // Create booking notification (tenant initiates booking)
-    async createBookingNotifications({ senderId, receiverId, type, bookingId, tenantName }) {
-      const userStore = useUserStore();
 
-      if (!userStore.user?.id || !userStore.authToken) {
-        console.error('User not logged in or missing token');
+    async createBookingNotifications({ listing, type, bookingId }) {
+      const userStore = useUserStore();
+      const user = userStore.user;
+      const userId = user?.id;
+
+      if (!userId) {
+        console.error('User ID is missing');
         return;
       }
 
       try {
-        const res = await axios.post(
-            'http://localhost:3000/api/notifications/booking/request',
-          {
-            senderId,
-            receiverId,
-            type,
-            bookingId,
-            tenantName,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${userStore.authToken}`,
-            },
-          }
-        );
-        console.log("✅ Notification sent successfully!");
+        const res = await axios.post('http://localhost:3000/api/notifications/booking/request', {
+          senderId: userId,
+          receiverId: listing.owner.id,
+          type,
+          bookingId,
+          tenantName: `${user.firstname} ${user.lastname}`,
+        });
 
+        console.log('Notification sent successfully!');
         await this.fetchNotifications();
         return res.data;
       } catch (error) {
-  console.error("❌ Failed to send booking notification:");
-  if (error.response) {
-    console.error("Status:", error.response.status);
-    console.error("Data:", error.response.data);
-  } else {
-    console.error("Error:", error.message);
-  }
-  throw error;
-}
-
+        console.error('Failed to send booking notification:', error);
+        throw error;
+      }
     },
 
-    // Notify booking action (approve, decline, cancel, pay)
-    async notifyBookingAction({ tenantUserId, landlordUserId, action, type, bookingId }) {
+    async notifyBookingAction({ listing, action, type, bookingId }) {
       const userStore = useUserStore();
+      const userId = userStore.user?.id;
 
-      if (!userStore.user?.id || !userStore.authToken) {
-        console.error('User not logged in or missing token');
+      if (!userId) {
+        console.error('User ID is missing');
         return;
       }
 
       try {
-        const res = await axios.post(
-          'http://localhost:3000/api/notifications/booking/action',
-          {
-            tenantUserId,
-            landlordUserId,
-            action,
-            type,
-            bookingId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${userStore.authToken}`,
-            },
-          }
-        );
+        const res = await axios.post('http://localhost:3000/api/notifications/booking/action', {
+          tenantUserId: userId,
+          landlordUserId: listing.owner.id,
+          action,
+          type,
+          bookingId,
+        });
+
         await this.fetchNotifications();
         return res.data;
       } catch (error) {

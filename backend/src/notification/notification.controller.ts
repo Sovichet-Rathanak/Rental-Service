@@ -5,7 +5,9 @@ import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationStatus } from './enum/notification-status.enum';
 import { NotifyBookingActionDto } from './dto/notify-booking-action.dto';
 import { CreateBookingNotificationDto } from './dto/create-booking-notification.dto';
+// import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 
+// @UseGuards(AuthGuard)
 @Controller('notifications')
 export class NotificationController {
   constructor(
@@ -23,10 +25,9 @@ export class NotificationController {
    * Called when tenant initiates a booking request (e.g., clicks "Check availability")
    */
   @Post('booking/request')
-  async createBookingNotifications(@Body() dto: CreateBookingNotificationDto, @Req() req) {
-    const senderId = req.user.id;
+  async createBookingNotifications(@Body() dto: CreateBookingNotificationDto) {
     return this.notificationService.createBookingNotifications({
-      senderId,
+      senderId: dto.senderId,
       receiverId: dto.receiverId, // landlord ID
       type: dto.type,
       bookingId: dto.bookingId,
@@ -95,9 +96,8 @@ export class NotificationController {
   async performAction(
     @Param('id') id: string,
     @Body('action') action: 'approve' | 'decline' | 'cancel' | 'pay',
-    @Req() req
+    @Body('userId') userId: string, 
   ) {
-    const userId = req.user.id; // Use 'id' instead of 'userId' for consistency
     return this.notificationService.handleAction(id, userId, action);
   }
 }

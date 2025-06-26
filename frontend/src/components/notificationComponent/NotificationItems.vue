@@ -67,11 +67,7 @@ export default {
   },
   methods: {
     async toggleStatusCard() {
-      if (!this.showCard) {
-        // Mark read on open
-        const notificationStore = useNotificationStore();
-        await notificationStore.markAsRead(this.notification.id);
-      }
+
       this.showCard = !this.showCard;
     },
   },
