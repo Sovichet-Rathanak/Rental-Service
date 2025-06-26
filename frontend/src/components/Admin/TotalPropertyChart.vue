@@ -4,7 +4,9 @@
       <Icon icon="mdi:location-city" class="chart-icon" />
       <span class="chart-title">Total Properties</span>
     </div>
+    <div v-if="loading" class="loading-message">Loading data...</div>
     <apexchart 
+      v-else
       type="bar" 
       height="260"
       :options="chartOptions" 
@@ -16,18 +18,17 @@
 <script>
 import { Icon } from '@iconify/vue'
 import { useListingStore } from '@/stores/listing'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
+export default {
   components: { Icon },
   data() {
     return {
-      series: [
-        {
-          name: 'Properties',
-          data: [1, 6, 7, 9, 10] // Initial placeholder values
-        }
-      ],
+      loading: true,
+      propertyTypes: ['House', 'Villa', 'Borey', 'Traditional House', 'Apartment'],
+      series: [{
+        name: 'Properties',
+        data: []
+      }],
       chartOptions: {
         chart: {
           type: 'bar',
@@ -43,39 +44,75 @@ export default defineComponent({
         },
         dataLabels: { enabled: false },
         xaxis: {
-          categories: ['House', 'Villa', 'Borey', 'Traditional House', 'Apartment'],
+          categories: [],
           labels: {
             style: { fontSize: '12px', colors: '#444' }
           }
         },
         yaxis: {
+          min: 0,
+          forceNiceScale: true,
           title: {
-            text: '',
+            text: 'Number of Properties',
             style: { fontSize: '12px', color: '#555' }
           }
         },
         legend: { show: false },
         tooltip: {
-          y: { formatter: val => `${val}` }
+          y: { 
+            formatter: (val) => `${val} ${val === 1 ? 'property' : 'properties'}` 
+          }
         },
         grid: {
           borderColor: '#eee',
           strokeDashArray: 5
         }
       }
-    };
+    }
   },
   async mounted() {
-    const listingStore = useListingStore();
-    await listingStore.fetchAllListingsWithImages();
-
-    const types = ['House', 'Villa', 'Borey', 'Traditional House', 'Apartment'];
-    const counts = types.map(type => listingStore.listings.filter(l => l.property_type === type).length);
-
-    this.series[0].data = counts;
+    const listingStore = useListingStore()
+    
+    try {
+      await listingStore.fetchAllListingsWithImages()
+      this.updateChartData(listingStore.listings)
+    } catch (error) {
+      console.error('Failed to load listing data:', error)
+    } finally {
+      this.loading = false
+    }
+  },
+  methods: {
+    updateChartData(listings) {
+      // Count properties by type
+      const counts = this.propertyTypes.map(type => {
+        return listings.filter(listing => 
+          listing.property_type && 
+          listing.property_type.toLowerCase() === type.toLowerCase()
+        ).length
+      })
+      
+      // Update chart data
+      this.series[0].data = counts
+      this.chartOptions = {
+        ...this.chartOptions,
+        xaxis: {
+          ...this.chartOptions.xaxis,
+          categories: this.propertyTypes
+        }
+      }
+      
+      console.log('Property counts:', counts)
+      console.log('Listings data:', listings.map(l => ({
+        id: l.id,
+        type: l.property_type
+      })))
+    }
   }
-});
+}
 </script>
+
+
 
 
 
