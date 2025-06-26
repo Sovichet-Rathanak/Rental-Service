@@ -6,7 +6,7 @@
     </div>
 
     <div class="rightSection">
-      <div class="total">Total {{ title }} : {{ totalInvoices }}</div>
+      <div class="total">Total {{ title }} : {{ totalCount }}</div>
       <div class="searchBox">
         <Icon icon="material-symbols:search-rounded" width="24" height="24" class="searchIcon"></Icon>
         <input type="text" placeholder="Search">
@@ -23,7 +23,7 @@
 export default {
   props: {
     title: String,
-    total: {
+    totalCount: {  
       type: Number,
       default: 0
     },
@@ -31,24 +31,15 @@ export default {
       type: String,
       required: true
     },
-    invoices: {
-      type: Array,
-      default: () => []
-    },
     createRoute: {
       type: String,
-      // required: true,
     },
     showCreate: {
       type: Boolean,
       default: true
     }
-  },
-  computed: {
-    totalInvoices() {
-      return this.invoices.length;
-    }
   }
+ 
 };
 </script>
 

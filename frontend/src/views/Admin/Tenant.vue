@@ -2,7 +2,7 @@
   <AdminCRUDTitle
     :title="'Tenant'"
     icon="mdi:people-group"
-    :invoices="dataSet3"
+    :totalCount="uniqueTenantCount"
     :showCreate="false"
   ></AdminCRUDTitle>
   <div>
@@ -34,11 +34,13 @@ export default {
         { key: "id", label: "ID" },
         { key: "image", label: "Image", type: "image" },
         { key: "name", label: "Name" },
-        { key: "currentRental", label: "Current Rental" },
+        { key: "currentRental", label: "Rental" },
+        { key: "rentalStatus", label: "Status" },
         { key: "email", label: "Email" },
         { key: "rating", label: "Rating" },
       ],
       dataSet3: [],
+      uniqueTenantCount: 0,
     };
   },
   methods: {
@@ -54,8 +56,8 @@ export default {
 
       try {
         await userStore.deleteUser(user.id);
-        this.dataSet3.splice(index, 1);
-        console.log("Delete user with this ID:", user.id);
+        this.dataSet3 = this.dataSet3.filter(item => item.tenantId !== user.id);
+        this.uniqueTenantCount = new Set(this.dataSet3.map(item => item.tenantId)).size;
       } catch (error) {
         console.error("Failed to delete");
       }
@@ -67,54 +69,58 @@ export default {
       });
     },
   },
-
   async mounted() {
     const userStore = useUserStore();
     const bookingStore = useBookingStore();
 
     await userStore.fetchAllUsers();
-
     const tenants = userStore.users.filter((u) => u.role === "tenant");
+    this.uniqueTenantCount = tenants.length;
 
-    const enrichedTenants = await Promise.all(
-      tenants.map(async (tenant) => {
-        let currentRental = "None";
-
-        try {
-          const rentingList = await bookingStore.fetchRentingList(tenant.id);
-
-          // Find accepted/active booking
-          const activeRental = rentingList.find(
-            (booking) => booking.status === "accepted"
-            // || booking.rentalDecision === "accepted"
-          );
-
-          if (
-            activeRental &&
-            activeRental.listing &&
-            activeRental.listing.title
-          ) {
-            currentRental = activeRental.listing.title;
-          }
-        } catch (e) {
-          console.warn(`Failed to fetch rental for ${tenant.firstname}:`, e);
+    const tenantRows = [];
+    
+    await Promise.all(tenants.map(async (tenant) => {
+      try {
+        const rentingList = await bookingStore.fetchRentingList(tenant.id);
+        
+        if (rentingList.length === 0) {
+          tenantRows.push({
+            id: tenant.id,
+            tenantId: tenant.id,
+            image: tenant.pfp_thumbnail_url
+              ? `http://localhost:9000/romdoul/${tenant.pfp_thumbnail_url}`
+              : "/src/assets/images/default_user.png",
+            name: `${tenant.firstname} ${tenant.lastname}`,
+            currentRental: "None",
+            rentalStatus: "N/A",
+            email: tenant.email,
+            rating: 5.0,
+            tableName: "tenant",
+          });
+          return;
         }
 
-        return {
-          id: tenant.id,
-          image: tenant.pfp_thumbnail_url
-            ? `http://localhost:9000/romdoul/${tenant.pfp_thumbnail_url}`
-            : "/src/assets/images/default_user.png",
-          name: `${tenant.firstname} ${tenant.lastname}`,
-          currentRental,
-          email: tenant.email,
-          rating: 5.0,
-          tableName: "tenant",
-        };
-      })
-    );
+        rentingList.forEach((rental) => {
+          tenantRows.push({
+            id: `${tenant.id}-${rental.id}`,
+            tenantId: tenant.id,
+            image: tenant.pfp_thumbnail_url
+              ? `http://localhost:9000/romdoul/${tenant.pfp_thumbnail_url}`
+              : "/src/assets/images/default_user.png",
+            name: `${tenant.firstname} ${tenant.lastname}`,
+            currentRental: rental.listing?.title || "Unknown Property",
+            rentalStatus: rental.rentingStatus?.toUpperCase() || "UNKNOWN",
+            email: tenant.email,
+            rating: 5.0,
+            tableName: "tenant",
+          });
+        });
+      } catch (e) {
+        console.warn(`Failed to fetch rentals for ${tenant.firstname}:`, e);
+      }
+    }));
 
-    this.dataSet3 = enrichedTenants;
+    this.dataSet3 = tenantRows;
   },
 };
 </script>

@@ -2,7 +2,7 @@
   <AdminCRUDTitle
     :title="'Properties'"
     icon="solar:home-bold"
-    :invoices="dataSet1"
+    :totalCount="propertiesCount"
     :createRoute="{ name: 'Admin Create House' }"
   ></AdminCRUDTitle>
   <div>
@@ -41,6 +41,7 @@ export default {
         { key: "rating", label: "Rating" },
       ],
       dataSet1: [],
+      propertiesCount: 0,
     };
   },
   methods: {
@@ -56,6 +57,7 @@ export default {
       try {
         await listingStore.deleteListing(listing.id);
         this.dataSet1.splice(index, 1);
+        this.propertiesCount = this.dataSet1.length;
         console.log("Deleted listing with ID:", listing.id);
       } catch (err) {
         console.error("Failed to delete listing:", err);
@@ -69,7 +71,6 @@ export default {
       });
     },
   },
-
   async mounted() {
     const listingStore = useListingStore();
     await listingStore.fetchAllListingsWithImages();
@@ -86,11 +87,13 @@ export default {
         " " +
         (listing.songkat || "null") +
         " " +
-        (listing.songkat || "null"),
+        (listing.region?.region_name || "null"),
       price: `$${listing.price_monthly || 0}`,
       rating: listing.rating || "new",
       tableName: "property",
     }));
+
+    this.propertiesCount = this.dataSet1.length;
   },
 };
 </script>

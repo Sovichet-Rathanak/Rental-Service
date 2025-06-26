@@ -53,8 +53,6 @@ import DynamicForm from "@/components/Admin/DynamicForm.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import ImageInForm from "@/components/Admin/ImageInForm.vue";
 import StepButton from "@/components/StepButton.vue";
-import { useListingStore } from '@/stores/listing';
-import { mapActions } from 'pinia';
 
 export default {
   components: { DynamicForm, MapComponent, ImageInForm, StepButton },

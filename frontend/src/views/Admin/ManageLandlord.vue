@@ -2,7 +2,7 @@
   <AdminCRUDTitle
     :title="'Landlord'"
     icon="mdi:people-group"
-    :invoices="dataSet4"
+    :totalCount="uniqueLandlordCount"
     :showCreate="false"
   ></AdminCRUDTitle>
   <div>
@@ -34,21 +34,21 @@ export default {
         { key: "id", label: "ID" },
         { key: "image", label: "Image", type: "image" },
         { key: "name", label: "Name" },
-        { key: "properties", label: "Properties" },
+        { key: "property", label: "Property" },
         { key: "address", label: "Address" },
         { key: "email", label: "Email" },
         { key: "income", label: "Income" },
         { key: "rating", label: "Rating" },
       ],
       dataSet4: [],
+      uniqueLandlordCount: 0,
     };
   },
   methods: {
-     async handleDeleteItem(index) {
+    async handleDeleteItem(index) {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this tenant"
+        "Are you sure you want to delete this landlord?"
       );
-
       if (!confirmed) return;
 
       const userStore = useUserStore();
@@ -56,8 +56,8 @@ export default {
 
       try {
         await userStore.deleteUser(user.id);
-        this.dataSet4.splice(index, 1);
-        console.log("Delete user with this ID:", user.id);
+        this.dataSet4 = this.dataSet4.filter(item => item.landlordId !== user.id);
+        this.uniqueLandlordCount = new Set(this.dataSet4.map(item => item.landlordId)).size;
       } catch (error) {
         console.error("Failed to delete");
       }
@@ -77,44 +77,57 @@ export default {
     await listingStore.fetchAllListingsWithImages();
 
     const landlords = userStore.users.filter((u) => u.role === "landlord");
+    this.uniqueLandlordCount = landlords.length;
 
-    const infoLandlords = landlords.map((landlord) => {
+    const landlordRows = [];
+    
+    landlords.forEach((landlord) => {
       const userListings = listingStore.listings.filter(
         (listing) => listing.owner?.id === landlord.id
       );
 
-      const properties =
-        userListings.map((l) => l.title).join(", ") || "None";
-      const firstListing = userListings[0];
+      if (userListings.length === 0) {
+        landlordRows.push({
+          id: landlord.id,
+          landlordId: landlord.id,
+          image: landlord.pfp_thumbnail_url
+            ? `http://localhost:9000/romdoul/${landlord.pfp_thumbnail_url}`
+            : "/src/assets/images/default_user.png",
+          name: `${landlord.firstname} ${landlord.lastname}`,
+          property: "None",
+          address: "N/A",
+          email: landlord.email,
+          income: "$0",
+          rating: 5.0,
+          tableName: "landlord",
+        });
+        return;
+      }
 
-  const address = firstListing
-    ? `${firstListing.street_address || ''} ${firstListing.songkat || ''} ${firstListing.region?.region_name || ''}`.trim()
-    : "N/A";
-        const income = userListings.reduce(
-        (total, l) => total + (l.price_monthly || 0),
-        0
-      );
-
-      return {
-        id: landlord.id,
-        image: landlord.pfp_thumbnail_url
-          ? `http://localhost:9000/romdoul/${landlord.pfp_thumbnail_url}`
-          : "/src/assets/images/default_user.png",
-        name: `${landlord.firstname} ${landlord.lastname}`,
-        properties,
-        address,
-        email: landlord.email,
-        income: `$${income}`,
-        rating: 5.0,
-        tableName: "landlord",
-      };
+      userListings.forEach((listing) => {
+        const address = `${listing.street_address || ''} ${listing.songkat || ''} ${listing.region?.region_name || ''}`.trim();
+        
+        landlordRows.push({
+          id: `${landlord.id}-${listing.id}`,
+          landlordId: landlord.id,
+          image: landlord.pfp_thumbnail_url
+            ? `http://localhost:9000/romdoul/${landlord.pfp_thumbnail_url}`
+            : "/src/assets/images/default_user.png",
+          name: `${landlord.firstname} ${landlord.lastname}`,
+          property: listing.title || "Untitled",
+          address: address || "N/A",
+          email: landlord.email,
+          income: `$${listing.price_monthly || 0}`,
+          rating: 5.0,
+          tableName: "landlord",
+        });
+      });
     });
 
-    this.dataSet4 = infoLandlords;
+    this.dataSet4 = landlordRows;
   },
 };
 </script>
-
 
 <style scoped>
 .houses {

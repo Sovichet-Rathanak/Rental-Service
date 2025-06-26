@@ -183,10 +183,10 @@ export class BookingService {
         tenantName: `${booking.tenant.firstname} ${booking.tenant.lastname}`,
         properties: booking.listing.title ?? 'Unknown Property',
         address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
-        totalPayment: '$500', // Static or placeholder for now
+        totalPayment: '$500',
         dueDate: booking.moveOutDate,
         duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
-        status: 'Paid', // Static or placeholder for now
+        status: 'Paid',
       };
     });
 
@@ -205,7 +205,7 @@ export class BookingService {
         landlordName: `${booking.listing.owner.firstname} ${booking.listing.owner.lastname}`,
         properties: booking.listing.title ?? 'Unknown Property',
         address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
-        totalPayment: '--',
+        totalPayment: '$400',
         dueDate: booking.moveOutDate,
         duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
         status: 'Pending',

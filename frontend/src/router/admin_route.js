@@ -34,7 +34,7 @@ export default [
                 component: AdminInvoice
             },
             {
-                path: 'room/create-house',
+                path: 'property/create-house',
                 name: 'Admin Create House',
                 component: CreateHouse
             },
