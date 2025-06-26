@@ -10,12 +10,15 @@
         <p>{{ selectedDate ? formatDate(selectedDate) : "Select date" }}</p>
       </div>
     </div>
+
     <v-calendar
       borderless
       expanded
       :attributes="attributes"
+      :disabled-dates="disabledDates"
       @dayclick="onDayClick"
     />
+
     <div class="btn-group">
       <button class="clear" @click="clearDate">Clear date</button>
       <button class="close" @click="handleClose">Close</button>
@@ -24,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
 import { ref, computed } from "vue";
 
 export default {
@@ -37,10 +41,12 @@ export default {
   setup(props, { emit }) {
     const selectedDate = ref(null);
 
-    const onDayClick = (day) => {
-      selectedDate.value = day.date;
-      if (day.isDisabled) return;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    const onDayClick = (day) => {
+      if (day.isDisabled) return;
+      selectedDate.value = day.date;
       emit("update-date", selectedDate.value);
     };
 
@@ -72,9 +78,18 @@ export default {
       }
       return attrs;
     });
+
+    const disabledDates = [
+      {
+        start: new Date(1900, 0, 1),
+        end: new Date(today.getTime() - 86400000) // yesterday
+      }
+    ];
+
     return {
       selectedDate,
       attributes,
+      disabledDates,
       onDayClick,
       clearDate,
       handleClose

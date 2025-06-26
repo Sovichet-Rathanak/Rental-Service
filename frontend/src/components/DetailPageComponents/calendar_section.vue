@@ -7,8 +7,6 @@
           Suitable for {{ listing.guests }} Guest(s), {{ listing.bedrooms }} Bedroom(s),
           {{ listing.bathrooms }} Bathroom
         </p>
-        <p>Listing: {{ listing.owner.id }}</p>
-        <p>User: {{ userId }}</p>
         <div
           style="
             display: flex;
@@ -39,6 +37,7 @@
         />
         <div class="host_des">
           <h2>{{ hostname }}</h2>
+          <p>{{ listing.owner.email }}</p>
         </div>
       </div>
       <h2>About this place</h2>
@@ -237,7 +236,7 @@ export default {
         await notificationStore.createBookingNotifications({
           listing: booking.listing,
           bookingId: booking.id,
-          type: 'tour',  // adjust to your notification type
+          type: 'tour',  
           user: booking.tenant,
           userId: booking.tenant.id,
         });

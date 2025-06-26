@@ -7,45 +7,43 @@
           <Icon icon="charm:cross" width="27px" />
         </button>
       </div>
+
       <div class="body-container">
         <h2>Select a preferred date for tour</h2>
         <div class="detail-container">
           <VDatePicker
             expanded
             borderless
-            view="weekly"
             v-model="tourDateTime"
+            view="weekly"
             mode="dateTime"
             is12hr
             :min-date="new Date()"
-            :available-dates="availableDates"
-            :disabled-dates="bookedDates"
+            :min-time="minTime"
+            :max-time="maxTime"
+            :date-disabled="disabledDates"
             :attributes="dateAttributes"
           />
         </div>
+
         <div class="host-pfp">
           <h3>Will be sent to</h3>
           <div class="host-des">
-            <Icon
-              icon="octicon:feed-person-16"
-              width="75"
-              height="75"
-              style="color: #000"
-            />
+            <Icon icon="octicon:feed-person-16" width="75" height="75" style="color: #000" />
             <div class="host-detail">
-              <h3>Hosted by Shen Yue</h3>
-              <p>4 years hosting</p>
-              <h4>+855 622 7293</h4>
+              <h3>Hosted by {{ hostname }}</h3>
+              <!-- <h4>{{ listing.owner.email }}</h4> -->
             </div>
           </div>
         </div>
+
         <p class="condition">
-          By contacting this property, you agree to our <u>Term of use </u>Visit
-          our <u>Privacy Portal</u>  for more information. When you click Send
-          tour request, we’ll send your inquiry to the property manager so they
-          can reach out and answer your questions.
+          By contacting this property, you agree to our
+          <u>Terms of use</u>. Visit our <u>Privacy Portal</u> for more information. When you click
+          Send tour request, we’ll send your inquiry to the property manager so they can reach out and answer your questions.
         </p>
       </div>
+
       <div class="footer">
         <button class="send-tour" @click="submitTour" :disabled="!tourDateTime">
           Send tour request
@@ -56,33 +54,56 @@
 </template>
 
 <script>
+import { ref, computed, watch } from "vue";
 import { useBookingStore } from "@/stores/booking";
-import { mapActions, mapState } from "pinia";
+import { useListingStore } from "@/stores/listing";
 
 export default {
-  name: "request-tour",
+  name: "RequestTour",
   props: {
     showTour: Boolean,
     listingId: String,
   },
-  emits: ["close", "submit"],
-  data() {
-    return {
-      tourDateTime: null,
-      availableDates: [],
-      bookedDates: [],
+  emits: ["close", "submitTour"],
+  setup(props, { emit }) {
+    const tourDateTime = ref(null);
+    const bookingStore = useBookingStore();
+
+    // Host info
+    const hostname = computed(() => listing.value?.owner?.name || "Host");
+    const hostEmail = computed(() => listing.value?.owner?.email || "No email");
+
+    // Limit time selection to 8am–5pm
+    const minTime = new Date(0, 0, 0, 8, 0); // 8:00 AM
+    const maxTime = new Date(0, 0, 0, 17, 0); // 5:00 PM
+
+    // Disable past dates
+    const disabledDates = (date) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date < today;
     };
-  },
-  watch: {
-    tourDateTime(newVal) {
+
+    // Highlight booked dates (can be set dynamically)
+    const bookedDates = ref([]); // e.g., ["2025-07-01", "2025-07-02"]
+    const dateAttributes = computed(() =>
+      bookedDates.value.map((dateStr) => ({
+        key: `booked-${dateStr}`,
+        dot: true,
+        dates: new Date(dateStr),
+        customData: { isBooked: true },
+        popover: {
+          label: "Already booked",
+          visibility: "hover",
+        },
+        contentClass: "booked-dot",
+      }))
+    );
+
+    // Watch selected time and update store
+    watch(tourDateTime, (newVal) => {
       if (!newVal) return;
-
-      const bookingStore = useBookingStore();
-
-      // Format date: YYYY-MM-DD
       const date = newVal.toISOString().split("T")[0];
-
-      // Format time: 12-hour format with AM/PM
       const time = new Intl.DateTimeFormat("en-US", {
         hour: "2-digit",
         minute: "2-digit",
@@ -91,38 +112,30 @@ export default {
 
       bookingStore.updateBookingField("tourDate", date);
       bookingStore.updateBookingField("tourTime", time);
-    },
-  },
-  computed: {
-    ...mapState(useBookingStore, ["bookings"]),
-   
-      dateAttributes() {
-        return this.bookedDates.map((dateStr) => ({
-          key: `booked-${dateStr}`,
-          dot: true,
-          dates: new Date(dateStr),
-          customData: { isBooked: true },
-          popover: {
-            label: "Already booked",
-            visibility: "hover",
-          },
-          contentClass: "booked-dot",
-        }));
-      
-    },
-  },
-  methods: {
-    async submitTour() {
-      if (!this.tourDateTime) return;
+    });
 
-      this.$emit("submitTour", this.tourDateTime);
-      this.$emit("close");
-    },
+    // Submit tour request
+    const submitTour = () => {
+      if (!tourDateTime.value) return;
+      emit("submitTour", tourDateTime.value);
+      emit("close");
+    };
 
-    ...mapActions(useBookingStore, ["updateBookingField"]),
+    return {
+      tourDateTime,
+      listing,
+      hostname,
+      hostEmail,
+      minTime,
+      maxTime,
+      disabledDates,
+      dateAttributes,
+      submitTour,
+    };
   },
 };
 </script>
+
 <style scoped>
 .tour-container-overlay {
   position: fixed;
@@ -154,9 +167,6 @@ export default {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .body-container {
   display: flex;
@@ -207,27 +217,20 @@ p {
 ::v-deep(.vc-title) {
   font-size: 20px !important;
   font-family: "Airbnb Font";
-  background-color: transparent;
 }
 ::v-deep(.vc-weekday) {
   padding: 20px;
 }
-
-/* Validation */
 ::v-deep(.vc-day-content.vc-disabled) {
   background-color: #f7f7f7;
   cursor: not-allowed;
 }
-
 ::v-deep(.vc-dot) {
   background-color: #f44336;
-  border-color: #f44336;
 }
-
 .booked-dot {
   position: relative;
 }
-
 .booked-dot::after {
   content: '';
   position: absolute;
@@ -239,5 +242,4 @@ p {
   background-color: red;
   border-radius: 50%;
 }
-
 </style>
