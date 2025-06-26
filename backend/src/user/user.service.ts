@@ -3,6 +3,7 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { createUserDTO } from './dto/create-user.dto';
+import { UpdateUserDto  } from './dto/update-user.dto';
 import * as sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
 import { MinioService } from 'nestjs-minio-client';
@@ -126,6 +127,14 @@ export class UserService {
         await this.userRepo.remove(user);
         return "User Deleted Successfuly";
     }
+async updateUser(id: string, updateData: UpdateUserDto): Promise<User> {
+    const user = await this.userRepo.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('User not found');
+
+    Object.assign(user, updateData);
+
+    return this.userRepo.save(user);
+}
 }
 
 

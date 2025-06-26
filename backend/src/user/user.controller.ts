@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { createUserDTO } from './dto/create-user.dto';
@@ -7,6 +7,9 @@ import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { ExpressAdapter, FileInterceptor } from '@nestjs/platform-express';
 import { UserRole } from './user_role.enum';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { RequestWithUser } from 'src/common/types/request-with-user';
+import { log } from 'console';
 
 @Controller('user')
 export class UserController {
@@ -40,12 +43,21 @@ export class UserController {
         return this.userService.uploadPfp(userId, file);
     }
 
-    @Patch('/:id/role')
+    // @Patch('/:id/role')
     // @UseGuards(AuthGuard, RolesGuard)
-    // @Roles('UserRole.ADMIN')
-    async updateRole(@Param('id') userId: string, @Body('role') newRole: UserRole) {
-        return this.userService.switchUserRole(userId, newRole);
-    }
+    // // @Roles('UserRole.ADMIN')
+    // async updateRole(@Param('id') userId: string, @Body('role') newRole: UserRole) {
+    //     return this.userService.switchUserRole(userId, newRole);
+    // }
+    @Patch('/me')
+    @UseGuards(AuthGuard)
+    async updateCurrentUser(@Req() req: RequestWithUser, @Body() updateData: UpdateUserDto) {
+    const userId = req.user.userId;
+    log(`Updating user with ID: ${userId}`, updateData);
+    return this.userService.updateUser(userId, updateData);
+}
+
+
 
     @Delete('/:id')
     async deleteUser(@Param('id') userId: string){
