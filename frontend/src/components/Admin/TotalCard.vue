@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { Icon } from '@iconify/vue'
 export default {
     props: {
         label: String,

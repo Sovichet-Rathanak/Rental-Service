@@ -1,24 +1,34 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ListingService } from './listing.service';
 import { createListingDTO } from './dto/create-listing.dto';
 import { Listing } from './listing.entity';
 import { FilterListingDto } from './dto/filter-listing.dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+import { updateListingDTO } from './dto/update-listing.dto';
 
 @Controller('listing')
 export class ListingController {
-  constructor(private listingService: ListingService) { }
+  constructor(private listingService: ListingService) {}
   @Get('filter')
   async filterListings(@Query() rawQuery: any) {
     const filterDto = plainToInstance(FilterListingDto, rawQuery, {
       enableImplicitConversion: true,
     });
 
-    await validateOrReject(filterDto); 
+    await validateOrReject(filterDto);
     return this.listingService.filterListings(filterDto);
   }
-  
+
   @Get('/')
   async getAllListing(): Promise<Listing[]> {
     return this.listingService.getAllListing();
@@ -38,5 +48,13 @@ export class ListingController {
   @Get('/:id')
   async findOneById(@Param('id') id: string): Promise<Listing> {
     return this.listingService.findOne(id);
+  }
+
+  @Patch(':id')
+  async updateById(
+    @Param('id') id: string,
+    @Body() dto: updateListingDTO,
+  ): Promise<Listing> {
+    return this.listingService.updateListing(id, dto);
   }
 }

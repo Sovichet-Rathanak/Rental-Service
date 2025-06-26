@@ -40,7 +40,7 @@
           <td v-else>
             <ActionButton
               :index="index"
-              @edit-item="editItem"
+              
               @delete-item="deleteItem"
             ></ActionButton>
           </td>

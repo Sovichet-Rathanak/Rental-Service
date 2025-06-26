@@ -13,7 +13,8 @@
             v-if="input.type !== 'file'"
             :type="input.type"
             :placeholder="input.placeholder"
-            v-model="formData[input.key]"
+            :value="formData[input.key]"
+  @input="updateValue(input.key, $event.target.value)"
           />
           <input
             v-else
@@ -53,22 +54,45 @@ export default {
       formData: {},
     };
   },
+  watch: {
+  modelValue: {
+    immediate: true,
+    handler(newVal) {
+      this.formData = { ...newVal }; 
+    },
+  },
+},
+
   methods: {
-    handleFileUpload(event, key) {
-      const file = event.target.files[0];
-      if (file) {
-        this.$set(this.formData, key, file);
-      }
-    },
-    submitForm() {
-      this.$emit("submit", this.formData);
-    },
+    updateValue(key, value) {
+    this.$set(this.formData, key, value);
+    this.$emit("update:modelValue", { ...this.formData });
   },
-  mounted() {
-    this.inputSet.forEach((input) => {
-      this.formData[input.key] = this.initialData[input.key] || "";
-    });
+  handleFileUpload(event, key) {
+    const file = event.target.files[0];
+    if (file) {
+      this.$set(this.formData, key, file);
+      this.$emit("update:modelValue", { ...this.formData });
+    }
   },
+  submitForm() {
+    this.$emit("submit", this.formData);
+  },
+    // handleFileUpload(event, key) {
+    //   const file = event.target.files[0];
+    //   if (file) {
+    //     this.$set(this.formData, key, file);
+    //   }
+    // },
+    // submitForm() {
+    //   this.$emit("submit", this.formData);
+    // },
+  },
+  // mounted() {
+  //   this.inputSet.forEach((input) => {
+  //     this.formData[input.key] = this.initialData[input.key] || "";
+  //   });
+  // },
 };
 </script>
 

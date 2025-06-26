@@ -34,7 +34,7 @@ export default [
                 component: AdminInvoice
             },
             {
-                path: 'room/create-house',
+                path: 'property/create-house',
                 name: 'Admin Create House',
                 component: CreateHouse
             },
@@ -64,7 +64,7 @@ export default [
                 component: EditLandlord
             },
             {
-                path: "property/edit-property/:id",
+                path: "property/edit-property/:id/edit",
                 name: "Admin Edit Property",
                 component: EditProperty
             }

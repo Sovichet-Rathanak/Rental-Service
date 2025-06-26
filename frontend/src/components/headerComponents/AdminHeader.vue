@@ -13,7 +13,7 @@
       <router-link to="/admin/property" class="nav-item" active-class="active">Properties</router-link>
       <router-link to="/admin/manage-landlord" class="nav-item" active-class="active">Landlords</router-link>
       <router-link to="/admin/tenant" class="nav-item" active-class="active">Tenants</router-link>
-      <router-link to="/message" class="nav-item" active-class="active">Messages</router-link>
+      <!-- <router-link to="/message" class="nav-item" active-class="active">Messages</router-link> -->
       <router-link to="/admin/invoice" class="nav-item" active-class="active">Invoices</router-link>
     </nav>
 

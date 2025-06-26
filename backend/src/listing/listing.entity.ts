@@ -76,7 +76,7 @@ export class Listing {
   @Column({ nullable: true })
   price_yearly: number;
 
-  @OneToMany(() => AccomReview, (review) => review.listing) // add here
+  @OneToMany(() => AccomReview, (review) => review.listing)
   accomReviews: AccomReview[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.listing)

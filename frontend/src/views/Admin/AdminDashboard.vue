@@ -15,19 +15,49 @@
 
 
 
-<script setup>
+<script>
 import TotalCard from '@/components/Admin/TotalCard.vue'
 import TotalUserChart from '@/components/Admin/TotalUserChart.vue'
 import TotalPaymentChart from '@/components/Admin/TotalPaymentChart.vue'
 import TotalPropertyChart from '@/components/Admin/TotalPropertyChart.vue'
 import LocationChart from '@/components/Admin/LocationChart.vue'
 
-const stats = [
-  { label: 'Total Properties', value: 369, icon: 'solar:home-bold', route: 'Admin Dashboard' },
-  { label: 'Total Landlords', value: 320, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Landlord' },
-  { label: 'Total Tenants', value: 500, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Tenant' },
-]
+import { useUserStore } from '@/stores/user'
+import { useListingStore } from '@/stores/listing'
+
+export default {
+  components: {
+    TotalCard,
+    TotalUserChart,
+    TotalPaymentChart,
+    TotalPropertyChart,
+    LocationChart
+  },
+  data() {
+    return {
+      stats: []
+    };
+  },
+  async mounted() {
+    const userStore = useUserStore();
+    const listingStore = useListingStore();
+
+    await userStore.fetchAllUsers();
+    await listingStore.fetchAllListingsWithImages();
+
+    const totalProperties = listingStore.listings.length;
+    const totalLandlords = userStore.users.filter(u => u.role === 'landlord').length;
+    const totalTenants = userStore.users.filter(u => u.role === 'tenant').length;
+
+    this.stats = [
+      { label: 'Total Properties', value: totalProperties, icon: 'solar:home-bold', route: 'Admin Dashboard Property' },
+      { label: 'Total Landlords', value: totalLandlords, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Landlord' },
+      { label: 'Total Tenants', value: totalTenants, icon: 'solar:people-nearby-bold', route: 'Admin Dashboard Tenant' },
+    ];
+  }
+}
 </script>
+
 
 
 <style scoped>

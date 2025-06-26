@@ -22,7 +22,7 @@ export class ListingService {
     private userRepo: Repository<User>,
 
     private regionService: RegionService,
-  ) { }
+  ) {}
 
   async getAllListing(): Promise<Listing[]> {
     return this.listingRepo.find();
@@ -32,7 +32,9 @@ export class ListingService {
     const listing = this.listingRepo.create(dto);
 
     if (dto.owner_id) {
-      const owner = await this.userRepo.findOne({ where: { id: dto.owner_id } });
+      const owner = await this.userRepo.findOne({
+        where: { id: dto.owner_id },
+      });
       if (!owner) {
         throw new NotFoundException('Owner not found');
       }
@@ -59,7 +61,7 @@ export class ListingService {
 
     if (dto.owner_id) {
       const owner = await this.userRepo.findOne({
-        where: { id: dto.owner_id }
+        where: { id: dto.owner_id },
       });
       if (!owner) {
         throw new NotFoundException('Owner not found');
@@ -90,7 +92,7 @@ export class ListingService {
       furnishing,
       minMonthlyPrice,
       maxMonthlyPrice,
-      ownerId, 
+      ownerId,
     } = filterListingDto;
 
     const query = this.listingRepo
@@ -98,11 +100,11 @@ export class ListingService {
       .leftJoinAndSelect('listing.region', 'region')
       .leftJoinAndSelect('listing.amenities', 'amenity')
       .leftJoinAndSelect('listing.pictures', 'picture')
-      .leftJoinAndSelect('listing.owner', 'owner'); 
+      .leftJoinAndSelect('listing.owner', 'owner');
 
     if (regions) {
       if (Array.isArray(regions) && regions.length > 0) {
-        query.andWhere('region.id IN (:...regions)', { regions })
+        query.andWhere('region.id IN (:...regions)', { regions });
       } else {
         query.andWhere('region.id = :regions', { regions });
       }
@@ -113,15 +115,19 @@ export class ListingService {
     }
 
     if (guests) {
-      query.andWhere('listing.guests >= :guests', { guests })
+      query.andWhere('listing.guests >= :guests', { guests });
     }
 
     if (minMonthlyPrice) {
-      query.andWhere('listing.price_monthly >= :minMonthlyPrice', { minMonthlyPrice })
+      query.andWhere('listing.price_monthly >= :minMonthlyPrice', {
+        minMonthlyPrice,
+      });
     }
 
     if (maxMonthlyPrice) {
-      query.andWhere('listing.price_monthly <= :maxMonthlyPrice', { maxMonthlyPrice })
+      query.andWhere('listing.price_monthly <= :maxMonthlyPrice', {
+        maxMonthlyPrice,
+      });
     }
 
     if (ownerId) {
