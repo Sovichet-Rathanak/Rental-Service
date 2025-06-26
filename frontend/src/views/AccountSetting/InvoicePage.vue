@@ -19,6 +19,8 @@ import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import invoicePopup from '@/components/InvoiceComponent/InvoicePopup.vue';
 import invoiceTable from '@/components/InvoiceComponent/InvoiceTable.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+import { useUserStore } from '@/stores/user';
+import axios from 'axios';
 
 export default {
   components: {
@@ -32,47 +34,30 @@ export default {
     return {
       showCard: false,
       selectedInvoice: null,
-      invoiceBoxs: [
-        {
-          id: 1,
-          landlordName: 'Shen Yue',
-          properties: 'A-001 (Brat Villa)',
-          address: 'BKK1, Chamkarmon, Phnom Penh',
-          totalPayment: '$500',
-          dueDate: '14-Oct-2025',
-          duration: '1 May - 1 June 2026',
-          status: 'Paid',
-          action: 'Download',
-          icon: 'mi:share'
-        },
-        {
-          id: 2,
-          landlordName: 'Shen Yue',
-          properties: 'A-001 (Brat Villa)',
-          address: 'BKK1, Chamkarmon, Phnom Penh',
-          totalPayment: '$500',
-          dueDate: '14-Oct-2025',
-          duration: '1 May - 1 June 2026',
-          status: 'Pending',
-          action: 'Pay Now',
-          icon: 'uiw:pay'
-        },
-        {
-          id: 3,
-          landlordName: 'Sovichet Rathanak',
-          properties: 'A-001 (Brat Villa)',
-          address: 'BKK1, Chamkarmon, Phnom Penh',
-          totalPayment: '$500',
-          dueDate: '14-Oct-2025',
-          duration: '1 May - 1 June 2026',
-          status: 'Overdue',
-          action: 'Pay Now',
-          icon: 'uiw:pay'
-        },
-      ]
+      invoiceBoxs: []
     };
   },
+
+  mounted(){
+    const userStore = useUserStore();
+    const tenantId = userStore.user.id;
+
+    if (tenantId){
+      this.fetchInvoices(tenantId)
+    } 
+    else {
+    console.warn('No tenant ID found in userStore');}
+  },
+
   methods: {
+    async fetchInvoices(tenantId) {
+      try {
+        const res = await axios.get(`http://localhost:3000/api/booking/tenant-invoices/${tenantId}`);
+        this.invoiceBoxs = res.data;
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    },
     handleRowClick(invoice) {
       this.invoicePopup(invoice);
     },
@@ -85,7 +70,6 @@ export default {
       }
     },
 
-    // Your existing method
     invoicePopup(invoiceBox) {
       this.selectedInvoice = invoiceBox;
       this.showCard = true;

@@ -171,6 +171,52 @@ export class BookingService {
     return rentingList;
   }
 
+  async getLandlordInvoices(): Promise<any[]> {
+    const bookings = await this.bookingRepo.find({
+      relations: ['tenant', 'listing', 'listing.owner'],
+    });
+
+    const invoices = bookings.map((booking) => {
+      return {
+        id: booking.id,
+        landlordName: `${booking.listing.owner.firstname} ${booking.listing.owner.lastname}`,
+        tenantName: `${booking.tenant.firstname} ${booking.tenant.lastname}`,
+        properties: booking.listing.title ?? 'Unknown Property',
+        address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
+        totalPayment: '$500', // Static or placeholder for now
+        dueDate: booking.moveOutDate,
+        duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
+        status: 'Paid', // Static or placeholder for now
+      };
+    });
+
+    return invoices;
+  }
+
+  async getTenantInvoices(tenantId: string): Promise<any[]> {
+    const bookings = await this.bookingRepo.find({
+      where: { tenant: { id: tenantId } },
+      relations: ['listing', 'listing.owner'],
+    });
+
+    const invoices = bookings.map((booking) => {
+      return {
+        id: booking.id,
+        landlordName: `${booking.listing.owner.firstname} ${booking.listing.owner.lastname}`,
+        properties: booking.listing.title ?? 'Unknown Property',
+        address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
+        totalPayment: '--',
+        dueDate: booking.moveOutDate,
+        duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
+        status: 'Pending',
+        action: 'Download',
+        icon: 'mi:share',
+      };
+    });
+
+    return invoices;
+  }
+
   async getBookedDates(listingId: string) {
     const bookings = await this.bookingRepo.find({
       where: { listing: { id: listingId } },

@@ -56,4 +56,14 @@ export class BookingController {
   ): Promise<RentingListItem[]> {
     return this.bookingService.getRentingList(tenantId);
   }
+
+  @Get('/landlord-invoices')
+  async getLandlordInvoices() {
+    return this.bookingService.getLandlordInvoices();
+  }
+
+  @Get('/tenant-invoices/:tenantId')
+  async getTenantInvoices(@Param('tenantId') tenantId: string) {
+    return this.bookingService.getTenantInvoices(tenantId);
+  }
 }
