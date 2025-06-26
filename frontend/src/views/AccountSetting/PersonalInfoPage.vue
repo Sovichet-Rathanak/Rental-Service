@@ -11,8 +11,10 @@
                 <!-- Profile Picture Upload -->
                 <div class="pfp-container">
                     <label for="pfp-upload" class="pfp-wrapper">
-                        <Icon v-if="!user.pfp_original_url"  icon="ion:person" width="120" height="120"  style="color: black" />
-                        <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`" alt="Profile Picture" class="pfp-img" @error="onImageError" />
+                        <Icon v-if="!user.pfp_original_url" icon="ion:person" width="120" height="120"
+                            style="color: black" />
+                        <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`"
+                            alt="Profile Picture" class="pfp-img" @error="onImageError" />
                         <div class="overlay">Change</div>
                         <input type="file" id="pfp-upload" accept="image/*" @change="handlePfp" />
                     </label>
@@ -23,12 +25,24 @@
                 <div v-for="(item, index) in personalInfo" :key="index" class="info-item">
                     <div>
                         <strong>{{ item.label }}</strong>
-                        <p>{{ item.value || 'Not provided' }}</p>
+                        <div v-if="item.editing">
+                            <input v-model="item.value" class="edit-input" />
+                        </div>
+                        <p v-else>{{ item.value || 'Not provided' }}</p>
                     </div>
-                    <button v-if="!item.editing" class="edit-btn" @click="enableEdit(index)"
+                    <div>
+                        <button v-if="!item.editing" class="edit-btn" @click="enableEdit(index)">
+                            Edit
+                        </button>
+                        <button v-else class="edit-btn" @click="saveEdit(index)">
+                            Save
+                        </button>
+                    </div>
+
+                    <!-- <button v-if="!item.editing" class="edit-btn" @click="enableEdit(index)"
                         :aria-label="`Edit ${item.label}`">
                         Edit
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
@@ -61,18 +75,9 @@ export default {
         FooterComponent,
         BreadCrumbs,
     },
-    computed: {
-        ...mapState(useUserStore, ['user']),
-        personalInfo() {
-            return [
-                { label: 'Fist name', value: `${this.user.firstname}`, editing: false },
-                { label: 'Last name', value: `${this.user.lastname}`, editing: false },
-                { label: 'Email address', value: this.user.email || '', editing: false },
-            ];
-        },
-    },
     data() {
         return {
+            personalInfo: [],
             sidebarItems: [
                 {
                     title: 'Why isn’t my info shown here?',
@@ -92,8 +97,44 @@ export default {
             ],
         };
     },
+    computed: {
+        ...mapState(useUserStore, ['user']),
+    },
     methods: {
-        ...mapActions(useUserStore, ['handlePfp']),
+        ...mapActions(useUserStore, ['handlePfp', 'updateUserDetails']),
+
+        syncPersonalInfo() {
+            this.personalInfo = [
+                { key: 'firstname', label: 'First name', value: this.user.firstname, editing: false },
+                { key: 'lastname', label: 'Last name', value: this.user.lastname, editing: false },
+                { key: 'email', label: 'Email address', value: this.user.email, editing: false }
+            ];
+        },
+
+        enableEdit(index) {
+            this.personalInfo[index].editing = true;
+        },
+
+        async saveEdit(index) {
+            const item = this.personalInfo[index];
+            const update = { [item.key]: item.value };
+            try {
+                await this.updateUserDetails(update);
+                this.$toast?.success(`${item.label} updated successfully`);
+                item.editing = false;
+            } catch (err) {
+                console.error(`Failed to update ${item.label}:`, err);
+                this.$toast?.error(`Failed to update ${item.label}`);
+            }
+        },
+
+        onImageError(e) {
+            e.target.src = '/default-pfp.png'; // fallback image
+        }
+    },
+
+    created() {
+        this.syncPersonalInfo();
     },
 };
 </script>
@@ -259,4 +300,17 @@ export default {
     margin-top: 10px;
     color: #333;
 }
+.edit-input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.edit-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 </style>

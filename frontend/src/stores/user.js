@@ -139,6 +139,21 @@ export const useUserStore = defineStore('user', {
                     this.clearUser();
                 }
             }
+        },
+
+        async updateUserDetails(updatedData) {
+            try {
+                const rsp = await axios.patch(`http://localhost:3000/api/user/me`, updatedData, {
+                    headers: {
+                        'Authorization': `Bearer ${this.authToken}`
+                    }
+                });
+                this.user = { ...this.user, ...rsp.data };
+                console.log('User details updated successfully');
+            } catch (error) {
+                console.error('Error updating user details:', error);
+                throw error;
+            }
         }
     },
     persist: true
