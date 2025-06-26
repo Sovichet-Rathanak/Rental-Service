@@ -19,7 +19,7 @@ export default [
       },
       {
         path: 'listing/listing-editor',
-        name: 'Listing Editor',
+        name: 'ListingEditor',
         component: ListingEditorPage
       },
       {

@@ -23,9 +23,9 @@
     />
     </div>
     <div class="debug">
-  <p v-for="notif in filteredNotifications" :key="notif.id">
+  <!-- <p v-for="notif in filteredNotifications" :key="notif.id">
     DEBUG: {{ notif.message }} | Type: {{ notif.type }} | Create: {{ notif.createdAt }}
-  </p>
+  </p> -->
 </div>
 </template>
 <script>

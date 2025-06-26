@@ -12,7 +12,7 @@
             </div>
 
             <div class="textGr">
-                <h2 class="name">{{ notification.userId }}</h2>
+                <h2 class="name">{{ user.firstname + " " + user.lastname }}</h2>
                 <span class="description">
                 {{ notification.message }}
                 </span>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="iconGr">
-            <h2 class="date">{{ notification.createdAt }}</h2>
+            <h2 class="date"> {{ formattedDate }}</h2>
             <Icon class="icon" :icon="iconName" :color="iconColor" />
         </div>
 
@@ -73,12 +73,18 @@ export default {
         await notificationStore.markAsRead(this.notification.id);
       }
       this.showCard = !this.showCard;
-    }
+    },
   },
   computed: {
     ...mapState(useUserStore, ['user']),
     iconBgColor() {
         return this.notification.type === 'tour' ? 'rgb(236, 154, 0)' : 'rgb(52, 130, 248)';
+    },
+    formattedDate() {
+      const date = new Date(this.notification.createdAt);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+      return `${day}/${month}`;
     }
   }
 };

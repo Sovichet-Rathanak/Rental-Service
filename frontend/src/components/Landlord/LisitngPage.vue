@@ -1,18 +1,30 @@
 <template>
   <h1 class="title">Your Listing</h1>
   <div class="item">
-    <PropertyCard v-for="(listing, index) in listings" :key="listing.id" :data="{
-      id: listing.id,
-      title: listing.title,
-      price: '$' + listing.price_monthly + '/month',
-      khan: listing.region?.region_name ?? 'Unknown',
-      songkat: listing.songkat,
-      street: listing.street_address,
-      image: getThumbnailByIndex(index),
-      rating: listing.rating,
-    }" />
-  </div> <!-- This closing tag should be here -->
+    <div
+      class="item-card"
+      v-for="(listing, index) in listings"
+      :key="listing.id"
+    >
+      <PropertyCard
+        :data="{
+          id: listing.id,
+          title: listing.title,
+          price: '$' + listing.price_monthly + '/month',
+          khan: listing.region?.region_name ?? 'Unknown',
+          songkat: listing.songkat,
+          street: listing.street_address,
+          image: getThumbnailByIndex(index),
+          rating: listing.rating,
+        }"
+      />
+      <button class="edit" @click="goToEdit(listing.id)">
+        <Icon class="icons" icon="material-symbols:edit-sharp" />
+      </button>
+    </div>
+  </div>
 
+  <!-- Tenant history popup -->
   <div class="popUpPage" v-if="showTenantHistory" @click.self="closePopup">
     <div class="overview">
       <TenantHistoryPage @close="closePopup" />
@@ -26,16 +38,18 @@ import PropertyCard from '../PropertyCard.vue';
 import { mapActions, mapState } from 'pinia';
 import { useListingStore } from '@/stores/listing';
 import { useUserStore } from '@/stores/user';
+import { Icon } from '@iconify/vue'; 
 
 export default {
   components: {
     TenantHistoryPage,
-    PropertyCard
+    PropertyCard,
+    Icon,
   },
   data() {
     return {
       showTenantHistory: false,
-    }
+    };
   },
   async mounted() {
     if (this.user && this.user.id) {
@@ -53,7 +67,10 @@ export default {
     closePopup() {
       this.showTenantHistory = false;
     },
-  }
+    goToEdit(listingId) {
+      this.$router.push({ name: 'ListingEditor', params: { id: listingId } });
+    },
+  },
 };
 </script>
 
@@ -63,10 +80,9 @@ export default {
 }
 
 .icons {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  text-align: center;
+  padding: 10px;
+  height: 35px;
+  width: 30px;
 }
 
 .search,
@@ -82,12 +98,32 @@ export default {
 }
 
 .item {
-  display: flex;
+  position: relative;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   gap: 30px;
   padding: 0px 200px 200px 200px;
+}
+
+.item-card {
+  position: relative;
+  width: fit-content;
+}
+
+.edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: rgb(60, 60, 255);
+  border-radius: 50%;
+  z-index: 1;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .text {
@@ -96,10 +132,10 @@ export default {
   display: flex;
   flex-direction: column;
   margin-top: 5px;
-  gap: 0
+  gap: 0;
 }
 
-.text>span {
+.text > span {
   font-weight: 200;
   color: rgb(69, 69, 69);
 }

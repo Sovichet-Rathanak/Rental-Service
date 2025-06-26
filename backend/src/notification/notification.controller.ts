@@ -4,11 +4,9 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationStatus } from './enum/notification-status.enum';
 import { NotifyBookingActionDto } from './dto/notify-booking-action.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateBookingNotificationDto } from './dto/create-booking-notification.dto';
 
 @Controller('notifications')
-@UseGuards(AuthGuard)
 export class NotificationController {
   constructor(
     private readonly notificationService: NotificationService,
