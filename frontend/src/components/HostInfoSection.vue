@@ -38,7 +38,6 @@
                 <span class="label">years on Romdoul</span>
               </div>
             </div>
-            <button class="host-info-btn">Host Info</button>
           </div>
         </div>
       </div>
@@ -66,7 +65,7 @@
           <h2>Host Details</h2>
           <p>Response rate: 100%</p>
           <p>Responds within an hour</p>
-          <button class="host-message-btn">Message Host</button>
+       <button class="host-message-btn" @click="goToMessage">Message Host</button>
         </div>
       </div>
     </div>
@@ -110,10 +109,19 @@
 import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import pfp from '@/assets/images/pfp.jpg'; 
+import { useRouter } from 'vue-router';
 
 const showPopup = ref(false);
 const selectedRating = ref(0);
 const rating = ref(4);
+
+// Access router
+const router = useRouter();
+
+// Routing method
+function goToMessage() {
+  router.push('/message');
+}
 
 function submitRating() {
   rating.value = selectedRating.value;
@@ -254,7 +262,7 @@ function submitRating() {
   display: flex;
   flex-direction: column;
   width: 200px;
-  padding: 1px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #000000;
 }
 
@@ -279,23 +287,6 @@ function submitRating() {
   font-size: 16px;
   font-weight: normal;
   color: #000;
-}
-
-.host-info-btn {
-  margin-top: 15px;
-  width: 60%;
-  padding: 12px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.host-info-btn:hover {
-  background-color: #000536;
 }
 
 .host-info {

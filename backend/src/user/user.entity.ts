@@ -5,6 +5,7 @@ import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Booking } from 'src/booking/booking.entity';
 import { Listing } from 'src/listing/listing.entity';
 import { Notification } from 'src/notification/notification.entity';
+import { Payment } from 'src/payment/payment.entity';
 
 @Entity()
 export class User {
@@ -47,4 +48,7 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.user)
   notifications: Notification[];
 
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payment: Payment[];
 }
