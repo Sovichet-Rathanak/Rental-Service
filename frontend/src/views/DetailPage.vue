@@ -4,7 +4,7 @@
   </header>
   <div class="main-container">
     <!-- ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. Components goes here ˚. ✦.˳·˖✶ ⋆.✧̣̇˚. -->
-    <AccommadationImg :images="images"/>
+    <AccommadationImg :images="images" :listing="listing"/>
     <Calendar_section
       :thumbnail_url="owner_pfp"
       :hostname="hostname"
@@ -37,6 +37,8 @@ import { useBookingStore } from "@/stores/booking";
 import { mapActions, mapState } from "pinia";
 import { useListingStore } from '@/stores/listing';
 import { useUserStore } from '@/stores/user';
+import { useWishlistStore } from '@/stores/wishlist';
+
 
 export default {
   components: {
@@ -78,6 +80,8 @@ export default {
     console.log(this.owner_pfp)
     this.listingId = listingData.id;
     this.userId = this.user.id;
+    const wishlistStore = useWishlistStore();
+    await wishlistStore.fetchWishlist();
   },
   computed: {
     ...mapState(useListingStore, ['listings']),

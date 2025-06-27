@@ -34,6 +34,9 @@ import PropertyCard from '@/components/PropertyCard.vue';
 import Rating from '@/components/DetailPageComponents/Rating_Comment.vue';
 import { mapActions, mapState } from 'pinia';
 import { useListingStore } from '@/stores/listing';
+import { useWishlistStore } from '@/stores/wishlist';
+import { useUserStore } from '@/stores/user';
+
 
 export default {
     components: {
@@ -75,7 +78,9 @@ export default {
             } else {
                 await this.fetchFilteredListing(query);
             }
-        }
+        },
+        ...mapActions(useWishlistStore, ['fetchWishlist']),
+        ...mapActions(useUserStore, ['fetchCurrentUser'])
     }
 }
 </script>
