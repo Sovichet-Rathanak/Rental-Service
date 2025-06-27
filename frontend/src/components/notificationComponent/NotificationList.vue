@@ -1,32 +1,22 @@
 <template>
-    <div class="notification-filter">
-    <button
-        v-for="(btn, index) in filterButtons"
-        :key="index"
-        :class="{ active: filterType === btn.value }"
-        @click="notificationStore.setFilter(btn.value)"
-    >
-        {{ btn.label }}
+  <div class="notification-filter">
+    <button v-for="(btn, index) in filterButtons" :key="index" :class="{ active: filterType === btn.value }"
+      @click="notificationStore.setFilter(btn.value)">
+      {{ btn.label }}
     </button>
-    </div>
+  </div>
 
-    <div class="notiList">
-    <NotificationItems
-      v-for="notif in filteredNotifications"
-      :key="notif.id"
-      :notification="notif"
-      :icon-name="getIcon(notif.status)"
-      :icon-color="getColor(notif.status)"
-      :icon-type="notif.type === 'tour' ? 'material-symbols:tour-rounded' : 'bi:house-up-fill'"
-      :role="userRole"
-      :status="notif.status"
-    />
-    </div>
-    <div class="debug">
-  <p v-for="notif in filteredNotifications" :key="notif.id">
+  <div class="notiList">
+    <NotificationItems v-for="notif in filteredNotifications" :key="notif.id" :notification="notif"
+      :icon-name="getIcon(notif.status)" :icon-color="getColor(notif.status)"
+      :icon-type="notif.type === 'tour' ? 'material-symbols:tour-rounded' : 'bi:house-up-fill'" :role="userRole"
+      :listing="notif.listing" :status="notif.status" />
+  </div>
+  <div class="debug">
+    <!-- <p v-for="notif in filteredNotifications" :key="notif.id">
     DEBUG: {{ notif.message }} | Type: {{ notif.type }} | Create: {{ notif.createdAt }}
-  </p>
-</div>
+  </p> -->
+  </div>
 </template>
 <script>
 import NotificationItems from '@/components/notificationComponent/NotificationItems.vue';
@@ -36,10 +26,10 @@ import { onMounted } from 'vue';
 import { useNotificationStore } from '@/stores/notification';
 
 export default {
-    name: 'notification',
-    components: {
-        NotificationItems,
-    },
+  name: 'notification',
+  components: {
+    NotificationItems,
+  },
   setup() {
     const notificationStore = useNotificationStore();
     const { filteredNotifications, filterType } = storeToRefs(notificationStore);
@@ -52,16 +42,16 @@ export default {
     ];
 
     const getIcon = (status) => {
-      if (status === 'approved') return 'teenyicons:tick-circle-solid';
-      if (status === 'declined') return 'gridicons:cross-circle';
-      if (status === 'canceled') return 'mdi:cancel'; 
+      if (status === 'approve') return 'teenyicons:tick-circle-solid';
+      if (status === 'decline') return 'gridicons:cross-circle';
+      if (status === 'cancel') return 'mdi:cancel';
       return 'ion:hourglass-outline';
     };
-    
+
     const getColor = (status) => {
-      if (status === 'approved') return 'green';
-      if (status === 'declined') return 'red';
-      if (status === 'canceled') return 'red';
+      if (status === 'approve') return 'green';
+      if (status === 'decline') return 'red';
+      if (status === 'cancel') return 'red';
       return '#2D01CE';
     };
     onMounted(() => {

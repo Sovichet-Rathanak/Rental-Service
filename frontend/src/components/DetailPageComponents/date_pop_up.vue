@@ -10,12 +10,9 @@
         <p>{{ selectedDate ? formatDate(selectedDate) : "Select date" }}</p>
       </div>
     </div>
-    <v-calendar
-      borderless
-      expanded
-      :attributes="attributes"
-      @dayclick="onDayClick"
-    />
+
+    <v-calendar borderless expanded :attributes="attributes" :disabled-dates="disabledDates" @dayclick="onDayClick" />
+
     <div class="btn-group">
       <button class="clear" @click="clearDate">Clear date</button>
       <button class="close" @click="handleClose">Close</button>
@@ -24,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
 import { ref, computed } from "vue";
 
 export default {
@@ -37,10 +35,12 @@ export default {
   setup(props, { emit }) {
     const selectedDate = ref(null);
 
-    const onDayClick = (day) => {
-      selectedDate.value = day.date;
-      if (day.isDisabled) return;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    const onDayClick = (day) => {
+      if (day.isDisabled) return;
+      selectedDate.value = day.date;
       emit("update-date", selectedDate.value);
     };
 
@@ -72,9 +72,18 @@ export default {
       }
       return attrs;
     });
+
+    const disabledDates = [
+      {
+        start: new Date(1900, 0, 1),
+        end: new Date(today.getTime() - 86400000) // yesterday
+      }
+    ];
+
     return {
       selectedDate,
       attributes,
+      disabledDates,
       onDayClick,
       clearDate,
       handleClose
@@ -106,19 +115,23 @@ export default {
   padding: 30px 40px;
   box-shadow: 1px 1px 5px 4px lightgray;
 }
+
 .display-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 100px;
 }
+
 .display-header p {
   color: gray;
   margin-top: -10px;
 }
+
 .display-date h3 {
   margin-top: 10px;
 }
+
 .display-date {
   border: 1px solid black;
   width: 40%;
@@ -129,11 +142,13 @@ export default {
   border-radius: 20px;
   margin-bottom: 30px;
 }
+
 .btn-group {
   display: flex;
   justify-content: flex-end;
   gap: 20px;
 }
+
 .clear {
   font-size: 18px;
   border: none;
@@ -141,6 +156,7 @@ export default {
   text-decoration: underline;
   font-weight: bold;
 }
+
 .close {
   background-color: black;
   border-radius: 10px;
@@ -150,23 +166,28 @@ export default {
   height: 35px;
   color: white;
 }
+
 ::v-deep(.vc-day-content) {
   font-size: 18px !important;
   font-family: "Airbnb Font";
   padding: 15px !important;
   margin: 10px !important;
 }
+
 ::v-deep(.vc-title) {
   font-size: 20px !important;
   font-family: "Airbnb Font";
   background-color: transparent;
 }
+
 ::v-deep(.vc-weekday) {
   padding: 15px;
 }
+
 ::v-deep(.highlight-today) {
   background-color: #3b82f6;
 }
+
 ::v-deep(.highlight-selected) {
   background-color: black;
   color: #f0f0f0;

@@ -3,9 +3,10 @@
     <div class="desContainer">
       <div style="display: flex; flex-direction: column">
         <h1>{{ listing.title }}</h1>
-        <p>Suitable for {{ listing.guests }} Guest(s), {{ listing.bedrooms }} Bedroom(s), {{ listing.bathrooms }}
-          Bathroom</p>
-          <p>{{ listing.owner.id }}</p>
+        <p>
+          Suitable for {{ listing.guests }} Guest(s), {{ listing.bedrooms }} Bedroom(s),
+          {{ listing.bathrooms }} Bathroom
+        </p>
         <div style="
             display: flex;
             align-items: center;
@@ -20,10 +21,11 @@
       <div class="host_pfp">
         <Icon v-if="!thumbnail_url" icon="fluent:person-circle-32-filled" width="90" height="90"
           style="color: black;" />
-        <img :src="`http://localhost:9000/romdoul/${thumbnail_url}`" alt="PFP" class="profile-pic"
-          style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+        <img v-else :src="`http://localhost:9000/romdoul/${thumbnail_url}`" alt="PFP" class="profile-pic"
+          style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;" />
         <div class="host_des">
           <h2>{{ hostname }}</h2>
+          <p>{{ listing.owner.email }}</p>
         </div>
       </div>
       <h2>About this place</h2>
@@ -32,7 +34,7 @@
       <div style="margin-top: 40px">
         <h2>What this place offer</h2>
         <div class="amenContainer">
-          <div class="amenities" v-for="amenity in visibleAmenities">
+          <div class="amenities" v-for="amenity in visibleAmenities" :key="amenity.id">
             <Icon :icon="amenity.icon_name" width="24" height="24" style="color: black" />
             <span>{{ amenity.name }}</span>
           </div>
@@ -66,15 +68,15 @@
           </div>
         </div>
       </div>
-        <button class="check-availability" @click="checkAvailability">
+      <button class="check-availability" @click="checkAvailability">
         {{ isAvailableChecked ? "Book Now" : "Check Availability" }}
       </button>
       <p v-if="validationMessage" class="warning-msg">{{ validationMessage }}</p>
     </div>
+
     <Date_pop_up :show="toggleDate" @close="handleCloseDatePopup" @update-date="handleSelectedDate" />
-    <Request_tour :showTour="toggleTour" @close="handleTourPopup" @submitTour="handleTourSubmit"></Request_tour>
-    <Amenities_pop_up :amenities="amenities" :showAmenities="toggleAmenities" @close="handleAmenPopUp">
-    </Amenities_pop_up>
+    <Request_tour :showTour="toggleTour" @close="handleTourPopup" @submitTour="handleTourSubmit" />
+    <Amenities_pop_up :amenities="amenities" :showAmenities="toggleAmenities" @close="handleAmenPopUp" />
   </main>
 </template>
 
@@ -105,20 +107,20 @@ export default {
     },
     listingId: {
       type: String,
-      require: true,
+      required: true,
     },
     amenities: {
       type: Array,
-      require: true
+      required: true,
     },
     thumbnail_url: {
       type: String,
-      require: false
+      required: false,
     },
-    hostname:{
+    hostname: {
       type: String,
-      require: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -139,7 +141,7 @@ export default {
         return this.amenities.slice(0, 3);
       }
       return this.amenities.slice(0, 6);
-    }
+    },
   },
   methods: {
     ...mapActions(useBookingStore, ["updateBookingField", "createBooking"]),
@@ -151,14 +153,14 @@ export default {
       this.rentalDuration = duration;
       this.updateBookingField("rentalDuration", duration);
       this.validationMessage = "";
-      this.isAvailableChecked = false; 
+      this.isAvailableChecked = false;
     },
     handleSelectedDate(date) {
       this.selectedMoveInDate = date;
       const formatted = date ? date.toISOString().split("T")[0] : "";
       this.updateBookingField("moveInDate", formatted);
       this.validationMessage = "";
-      this.isAvailableChecked = false; 
+      this.isAvailableChecked = false;
     },
     handleCloseDatePopup() {
       this.isDateSelected = true;
@@ -196,37 +198,39 @@ export default {
       const notificationStore = useNotificationStore();
       const userStore = useUserStore();
 
-      // try {
-        const data = await this.createBooking();
-        console.log("Booking successful:", data);
+      try {
+        // Create booking
+        const booking = await this.createBooking();
+        console.log("Booking successful:", booking);
 
-        const landlordId = data?.listing?.owner?.id || data?.listing?.landlordId || data?.listing?.landlord_id;
+        // Check landlordId exists
+        const landlordId = booking?.listing?.owner?.id || booking?.listing?.landlordId || booking?.listing?.landlord_id;
         if (!landlordId) {
           alert("Landlord ID not found in the booking data. Cannot send notification.");
           return;
         }
-        const tenantName = `${userStore.user.firstname} ${userStore.user.lastname}`;
-        const senderId = `${userStore.user.id}`
 
+        // Create notification
         await notificationStore.createBookingNotifications({
-          senderId: String(senderId),
-          receiverId: String(landlordId), 
-          type: "tour",
-          bookingId: data.id,
-          tenantName,
+          listing: booking.listing,
+          bookingId: booking.id,
+          type: 'tour',
+          user: booking.tenant,
+          userId: booking.tenant.id,
         });
 
-        return data;
-      // } catch (err) {
-      //   const message = err.response?.data?.message || "Booking failed"; 
-      //   this.error = message;
+        console.log("Booking notification sent successfully!");
 
-      //   if (message.includes("already taken")) {
-      //     alert("This time slot is already taken. Please choose a different one.");
-      //   } else {
-      //     alert(message);
-      //   }
-      // }
+      } catch (err) {
+        const message = err.response?.data?.message || err.message || "Error occurred";
+        console.error("Booking or notification error:", message);
+
+        if (message.includes("already taken")) {
+          alert("This time slot is already taken. Please choose a different one.");
+        } else {
+          alert(message);
+        }
+      }
     },
   },
 
