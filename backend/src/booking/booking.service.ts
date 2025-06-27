@@ -135,7 +135,7 @@ export class BookingService {
     const bookings = await this.bookingRepo.find({
       where: {
         tenant: { id: tenantId },
-        status: BookingStatus.ACCEPT,
+        status: BookingStatus.RENT_ACCEPTED,
       },
       relations: ['listing', 'listing.pictures', 'listing.region'],
       order: { moveInDate: 'ASC' },

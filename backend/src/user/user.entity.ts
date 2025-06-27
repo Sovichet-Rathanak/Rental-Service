@@ -3,12 +3,8 @@ import { UserRole } from './user_role.enum';
 import { AccomReview } from 'src/accom-review/accom-review.entity';
 import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Booking } from 'src/booking/booking.entity';
-<<<<<<< HEAD
 import { Listing } from 'src/listing/listing.entity';
 import { Notification } from 'src/notification/notification.entity';
-=======
-import { Payment } from 'src/payment/payment.entity';
->>>>>>> origin/rompheu/payment
 
 @Entity()
 export class User {
@@ -44,7 +40,6 @@ export class User {
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.tenant)
   wishlist: Wishlist[];
-<<<<<<< HEAD
   
   @OneToMany(() => Listing, (listing) => listing.owner)
   listings: Listing[];
@@ -52,9 +47,4 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.user)
   notifications: Notification[];
 
-=======
-
-  @OneToMany(() => Payment, (payment) => payment.user)
-  payment: Payment[];
->>>>>>> origin/rompheu/payment
 }
