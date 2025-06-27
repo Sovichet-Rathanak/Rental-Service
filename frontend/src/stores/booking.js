@@ -5,6 +5,7 @@ export const useBookingStore = defineStore("booking", {
   state: () => ({
     bookings: [],
     bookingDates: [],
+    rentingList: [],
     bookingForm: {
       tenantId: "",
       listingId: "",
@@ -49,7 +50,17 @@ export const useBookingStore = defineStore("booking", {
       }
     },
 
-    actions: {
+    async fetchRentingList(tenantId) {
+      try {
+        const res = await axios.get(`http://localhost:3000/api/booking/renting-list/${tenantId}`);
+        this.rentingList = res.data;
+        return res.data
+      } catch (error) {
+        console.error("Failed to fetch renting list:", error);
+      }
+    },
+
+    
       async fetchBookedDates(listingId) {
         try {
           const res = await axios.get(
@@ -60,7 +71,7 @@ export const useBookingStore = defineStore("booking", {
           console.error("Error fetching booked dates:", err);
         }
       },
-    },
+    
   },
 
   persist: true,

@@ -1,26 +1,31 @@
 <template>
-  <AdminCRUDTitle :title="'Properties'" icon="solar:home-bold" :invoices="dataSet1" :createRoute="{ name: 'Admin Create House'}"></AdminCRUDTitle>
+  <AdminCRUDTitle
+    :title="'Properties'"
+    icon="solar:home-bold"
+    :totalCount="propertiesCount"
+    :createRoute="{ name: 'Admin Create House' }"
+  ></AdminCRUDTitle>
   <div>
     <DynamicTable
       class="property"
       :columns="columnsSet1"
       :rows="dataSet1"
-      :show-status="true"
+      :show-status="false"
       @delete-item="handleDeleteItem"
       @edit-item="handleEditItem"
     />
-
   </div>
 </template>
 
 <script>
-import DynamicTable from '@/components/Admin/DynamicTable.vue';
-import AdminCRUDTitle from '@/components/Admin/AdminCRUDTitle.vue';
+import DynamicTable from "@/components/Admin/DynamicTable.vue";
+import AdminCRUDTitle from "@/components/Admin/AdminCRUDTitle.vue";
+import { useListingStore } from "@/stores/listing";
 
 export default {
-  components: { 
+  components: {
     DynamicTable,
-    AdminCRUDTitle
+    AdminCRUDTitle,
   },
   data() {
     return {
@@ -29,77 +34,69 @@ export default {
         { key: "image", label: "Image", type: "image" },
         { key: "title", label: "Title" },
         { key: "owner", label: "Owner" },
+        { key: "property_type", label: "Type" },
         { key: "totalRooms", label: "Total Rooms" },
         { key: "address", label: "Address" },
         { key: "price", label: "Price" },
         { key: "rating", label: "Rating" },
       ],
-      dataSet1: [
-        {
-          id: 1,
-          image: "/src/assets/images/property_images/property1.jpeg",
-          title: "Building A",
-          owner: "John Doe",
-          totalRooms: 5,
-          address: "123 Main St",
-          price: "$5000",
-          rating: 4.5,
-          // status: 'Approved',
-          tableName: 'property' 
-        },
-        {
-          id: 2,
-          image: "/src/assets/images/property_images/property1.jpeg",
-          title: "Building B",
-          owner: "John Doe",
-          totalRooms: 5,
-          address: "123 Main St",
-          price: "$5000",
-          rating: 4.5,
-          // status: 'Approved ',
-          tableName: 'property' 
-        },
-        {
-          id: 3,
-          image: "/src/assets/images/property_images/property1.jpeg",
-          title: "Building C",
-          owner: "John Doe",
-          totalRooms: 5,
-          address: "123 Main St",
-          price: "$5000",
-          rating: 4.5,
-          // status: 'Rejected',
-          tableName: 'property' 
-        },
-        {
-          id: 4,
-          image: "/src/assets/images/property_images/property1.jpeg",
-          title: "Building D",
-          owner: "John Doe",
-          totalRooms: 5,
-          address: "123 Main St",
-          price: "$5000",
-          rating: 4.5,
-          status: 'Available',
-          tableName: 'property' 
-        }
-      ],
-      
+      dataSet1: [],
+      propertiesCount: 0,
     };
   },
   methods: {
-    handleDeleteItem(index) {
-      this.dataSet1.splice(index, 1);
+    async handleDeleteItem(index) {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this listing?"
+      );
+      if (!confirmed) return;
+
+      const listingStore = useListingStore();
+      const listing = this.dataSet1[index];
+
+      try {
+        await listingStore.deleteListing(listing.id);
+        this.dataSet1.splice(index, 1);
+        this.propertiesCount = this.dataSet1.length;
+        console.log("Deleted listing with ID:", listing.id);
+      } catch (err) {
+        console.error("Failed to delete listing:", err);
+      }
     },
+
     handleEditItem(row) {
-      this.$router.push({ 
-        name: "Admin Edit Property", 
-        params: { id: row.id},
-    });
+      this.$router.push({
+        name: "Admin Edit Property",
+        params: { id: row.id }, 
+      });
     },
   },
+  async mounted() {
+    const listingStore = useListingStore();
+    await listingStore.fetchAllListingsWithImages();
+
+    this.dataSet1 = listingStore.listings.map((listing, index) => ({
+      id: listing.id,
+      image: listingStore.getThumbnailByIndex(index),
+      title: listing.title,
+      owner: listing.ownerName,
+      property_type: listing.property_type,
+      totalRooms: (listing.bedrooms || 0) + (listing.bathrooms || 0),
+      address:
+        (listing.street_address || "null") +
+        " " +
+        (listing.songkat || "null") +
+        " " +
+        (listing.region?.region_name || "null"),
+      price: `$${listing.price_monthly || 0}`,
+      rating: listing.rating || "new",
+      tableName: "property",
+    }));
+
+    this.propertiesCount = this.dataSet1.length;
+  },
 };
-</script >
+</script>
 
 <style scoped>
 .property {

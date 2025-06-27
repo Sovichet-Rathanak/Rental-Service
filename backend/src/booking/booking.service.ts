@@ -10,6 +10,8 @@ import { Listing } from 'src/listing/listing.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { BookingStatus } from './enum/booking-status.enum';
 import { RentalDuration } from './enum/rental-duration.enum';
+import { RentingStatus } from './enum/reting-status.enum';
+import { RentingListItem } from './dto/get-renting-list.dto';
 
 @Injectable()
 export class BookingService {
@@ -57,7 +59,6 @@ export class BookingService {
       throw new BadRequestException('This time slot is already booked');
     }
 
-    // Handle move-in dates (convert to Cambodia time)
     const moveInDate = this.convertToCambodiaTime(new Date(dto.moveInDate));
     let moveOutDate: Date;
 
@@ -73,7 +74,7 @@ export class BookingService {
       listing: { id: dto.listingId },
       tenant: { id: dto.tenantId },
       tourDate: this.formatDateOnly(tourDate),
-      tourTime: tourTime, // Store the exact entered time
+      tourTime: tourTime,
       moveInDate: this.formatDateOnly(moveInDate),
       moveOutDate: this.formatDateOnly(moveOutDate),
       rentalDuration: dto.rentalDuration,
@@ -121,6 +122,99 @@ export class BookingService {
     booking.status = BookingStatus.REJECT;
     booking.decisionAt = this.getCurrentCambodiaTime();
     return this.bookingRepo.save(booking);
+  }
+
+  //Renting list
+  async getRentingList(tenantId: string): Promise<RentingListItem[]> {
+    const bookings = await this.bookingRepo.find({
+      where: {
+        tenant: { id: tenantId },
+        status: BookingStatus.ACCEPT,
+      },
+      relations: ['listing', 'listing.pictures', 'listing.region'],
+      order: { moveInDate: 'ASC' },
+    });
+
+    const today = new Date();
+
+    const rentingList: RentingListItem[] = bookings.map((booking) => {
+      const moveIn = new Date(booking.moveInDate);
+      const moveOut = new Date(booking.moveOutDate);
+
+      let rentingStatus: RentingStatus;
+      if (moveOut < today) {
+        rentingStatus = RentingStatus.PAST;
+      } else if (moveIn > today) {
+        rentingStatus = RentingStatus.UPCOMMING;
+      } else {
+        rentingStatus = RentingStatus.CURRENT;
+      }
+
+      return {
+        id: booking.id,
+        moveInDate: booking.moveInDate,
+        moveOutDate: booking.moveOutDate,
+        retalDuration: booking.rentalDuration,
+        listing: {
+          id: booking.listing.id,
+          title: booking.listing.title,
+          price_monthly: booking.listing.price_monthly,
+          region: booking.listing.region,
+          songkat: booking.listing.songkat,
+          street_address: booking.listing.street_address,
+          pictures: booking.listing.pictures,
+        },
+        rentingStatus,
+      };
+    });
+
+    return rentingList;
+  }
+
+  async getLandlordInvoices(): Promise<any[]> {
+    const bookings = await this.bookingRepo.find({
+      relations: ['tenant', 'listing', 'listing.owner'],
+    });
+
+    const invoices = bookings.map((booking) => {
+      return {
+        id: booking.id,
+        landlordName: `${booking.listing.owner.firstname} ${booking.listing.owner.lastname}`,
+        tenantName: `${booking.tenant.firstname} ${booking.tenant.lastname}`,
+        properties: booking.listing.title ?? 'Unknown Property',
+        address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
+        totalPayment: '$500',
+        dueDate: booking.moveOutDate,
+        duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
+        status: 'Paid',
+      };
+    });
+
+    return invoices;
+  }
+
+  async getTenantInvoices(tenantId: string): Promise<any[]> {
+    const bookings = await this.bookingRepo.find({
+      where: { tenant: { id: tenantId } },
+      relations: ['listing', 'listing.owner'],
+    });
+
+    const invoices = bookings.map((booking) => {
+      return {
+        id: booking.id,
+        landlordName: `${booking.listing.owner.firstname} ${booking.listing.owner.lastname}`,
+        properties: booking.listing.title ?? 'Unknown Property',
+        address: `${booking.listing.street_address}, ${booking.listing.songkat}`,
+        totalPayment: '$400',
+        dueDate: booking.moveOutDate,
+        duration: `${booking.moveInDate} - ${booking.moveOutDate}`,
+        status: 'Pending',
+        action: 'Download',
+        icon: 'mi:share',
+      };
+    });
+
+    return invoices;
   }
 
   async getBookedDates(listingId: string) {

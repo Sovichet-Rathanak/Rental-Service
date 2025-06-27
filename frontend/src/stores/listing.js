@@ -72,7 +72,10 @@ export const useListingStore = defineStore('listing', {
         async fetchAllListingsWithImages() {
             try {
                 const propertyData = await axios.get('http://localhost:3000/api/listing/');
-                this.listings = propertyData.data;
+                this.listings = propertyData.data.map(listing => ({
+                    ...listing,
+                    ownerName: listing.owner?.firstname + '' + listing.owner?.lastname || 'Unknown'
+                }));
 
                 const imageFetches = this.listings.map((listing) =>
                     axios.get(`http://localhost:3000/api/picture/${listing.id}`).then(res => res.data)
@@ -164,6 +167,23 @@ export const useListingStore = defineStore('listing', {
                 this.listingImages = [];
             }
         },
+
+        async updateListing({id, data}) {
+            try {
+                const res = await axios.patch(`http://localhost:3000/api/listing/${id}`, data)
+                return res.data
+            } catch (error) {
+                console,error('Failed to update listing')
+            }
+        },
+
+        async deleteListing(id) {
+            try {
+                const res = await axios.delete(`http://localhost:3000/api/listing/${id}`)
+            } catch (error) {
+                console.log('Failed to delete this listing')
+            }
+        }
     },
 
     persist: true

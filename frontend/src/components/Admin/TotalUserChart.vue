@@ -19,93 +19,112 @@
       </div>
     </div>
 
-    <apexchart type="donut" :options="chartOptions" :series="series" width="220" />
+    <apexchart
+      type="donut"
+      :options="chartOptions"
+      :series="series"
+      width="220"
+    />
   </div>
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
+import { Icon } from "@iconify/vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "@/stores/user";
 
-const series = [250, 32]
+const series = ref([0, 0]); // [Tenant, Landlord]
 
 const chartOptions = {
-    labels: ['Tenant', 'Landlord'],
-    colors: ['#e63946', '#3b5bdb'],
-    legend: { show: false },
-    dataLabels: { enabled: false },
-    plotOptions: {
-        pie: {
-            donut: {
-                size: '70%',
-                labels: {
-                    show: true,
-                    total: {
-                        show: true,
-                        label: 'Total',
-                        fontSize: '18px',
-                        fontWeight: 600,
-                        color: '#222',
-                        formatter: () => series.reduce((a, b) => a + b, 0),
-                    }
-                }
-            }
-        }
+  labels: ["Tenant", "Landlord"],
+  colors: ["#e63946", "#3b5bdb"],
+  legend: { show: false },
+  dataLabels: { enabled: false },
+  plotOptions: {
+    pie: {
+      donut: {
+        size: "70%",
+        labels: {
+          show: true,
+          total: {
+            show: true,
+            label: "Total",
+            fontSize: "18px",
+            fontWeight: 600,
+            color: "#222",
+            formatter: () => series.value.reduce((a, b) => a + b, 0),
+          },
+        },
+      },
     },
-    stroke: { width: 0 },
-    tooltip: { enabled: true }
-}
+  },
+  stroke: { width: 0 },
+  tooltip: { enabled: true },
+};
+
+const userStore = useUserStore();
+
+onMounted(async () => {
+  await userStore.fetchAllUsers();
+  const allUsers = userStore.users;
+
+  const tenants = allUsers.filter((user) => user.role === "tenant").length;
+  const landlords = allUsers.filter((user) => user.role === "landlord").length;
+
+  series.value = [tenants, landlords];
+});
 </script>
 
 <style scoped>
 .chart-card {
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    padding: 16px 12px 8px;
-    width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 16px 12px 8px;
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .chart-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
 .chart-title {
-    font-size: 1.08rem;
-    font-weight: 600;
-    color: #222;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #222;
 }
 
 .chart-icon {
-    font-size: 1.2rem;
-    margin-right: 6px;
+  font-size: 1.2rem;
+  margin-right: 6px;
 }
 
 .legend-list {
-    display: flex-row;
-    gap: 16px;
-    margin: 4px 0;
+  display: flex-row;
+  gap: 16px;
+  margin: 4px 0;
 }
 
 .legend-item {
-    display: flex;
-    align-items: center;
-    font-size: 0.97rem;
-    color: #444;
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 0.97rem;
+  color: #444;
+  font-weight: 500;
 }
 
 .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
 }
 </style>

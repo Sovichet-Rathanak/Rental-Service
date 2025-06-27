@@ -2,31 +2,22 @@
   <main>
     <header-nav-2></header-nav-2>
     <div class="title">
-      <Icon
-        icon="material-symbols:arrow-back-ios-rounded"
-        width="32"
-        height="32"
-        @click="goBack"
-      />
+      <Icon icon="material-symbols:arrow-back-ios-rounded" width="32" height="32" @click="goBack" />
       <h1>Wishlist</h1>
     </div>
 
     <!-- Wishlist items -->
     <div v-if="wishlist.length > 0" class="hasItem">
-      <PropertyCard
-        v-for="(item, index) in wishlist"
-        :key="item.id"
-        :data="{
-          id: item.listing.id,
-          title: item.listing.title,
-          price: '$' + item.listing.price_monthly + '/month',
-          khan: item.listing.region?.region_name ?? 'Unknown',
-          songkat: item.listing.songkat,
-          street: item.listing.street_address,
-          image: getThumbnail(item.listing.id),
-          rating: item.listing.rating,
-        }"
-      />
+      <PropertyCard v-for="(item, index) in wishlist" :key="item.id" :data="{
+        id: item.listing.id,
+        title: item.listing.title,
+        price: '$' + item.listing.price_monthly + '/month',
+        khan: item.listing.region?.region_name ?? 'Unknown',
+        songkat: item.listing.songkat,
+        street: item.listing.street_address,
+        image: getThumbnail(item.listing.id),
+        rating: item.listing.rating,
+      }" />
     </div>
 
     <!-- Empty message -->
@@ -72,7 +63,7 @@ export default {
       if (index === -1) return "fallback-image.jpg";
       return this.listingStore.getThumbnailByIndex(index);
     },
-    
+
   },
 
   async mounted() {
@@ -82,6 +73,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>

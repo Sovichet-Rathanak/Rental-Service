@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
+import { RentingListItem } from './dto/get-renting-list.dto';
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
@@ -47,5 +48,22 @@ export class BookingController {
   @Get('availability/:listingId')
   async getBookedDates(@Param('listingId') listingId: string) {
     return this.bookingService.getBookedDates(listingId);
+  }
+
+  @Get('renting-list/:tenantId')
+  async getRentingList(
+    @Param('tenantId') tenantId: string,
+  ): Promise<RentingListItem[]> {
+    return this.bookingService.getRentingList(tenantId);
+  }
+
+  @Get('/landlord-invoices')
+  async getLandlordInvoices() {
+    return this.bookingService.getLandlordInvoices();
+  }
+
+  @Get('/tenant-invoices/:tenantId')
+  async getTenantInvoices(@Param('tenantId') tenantId: string) {
+    return this.bookingService.getTenantInvoices(tenantId);
   }
 }

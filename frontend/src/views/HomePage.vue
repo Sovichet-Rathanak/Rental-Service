@@ -13,7 +13,7 @@
                     khan: listing.region?.region_name ?? 'Unknown',
                     songkat: listing.songkat,
                     street: listing.street_address,
-                    image: getThumbnailByIndex(index),
+                    image: getThumbnailByIndex(index),  
                     rating: listing.rating,
                 }" />
             </div>
@@ -52,6 +52,14 @@ export default {
         }
 
         await this.fetchAllListingsWithImages();
+        const wishlistStore = useWishlistStore();
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(user?.id) {
+            console.log('Setting userId in wishlist store:', user.id)
+            wishlistStore.setUserId(user.id);
+            await wishlistStore.fetchWishlist();
+        }
     },
     computed: {
         ...mapState(useListingStore, ['listings', 'listingImages']),

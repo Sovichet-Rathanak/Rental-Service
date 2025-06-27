@@ -124,7 +124,7 @@ export default {
     max-width: 690px;
     padding-bottom: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    height: 105vh;
+    height: 85vh;
     transform: scale(0.90);
 }
 .header{

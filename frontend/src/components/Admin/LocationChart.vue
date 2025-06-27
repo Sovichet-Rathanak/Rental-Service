@@ -4,18 +4,56 @@
             <Icon icon="mdi:map-marker" class="chart-icon" />
             <span class="chart-title">Locations</span>
         </div>
-        <apexchart type="donut" height="240" :options="chartOptions" :series="series" />
+        <apexchart 
+            type="donut" 
+            height="240" 
+            :options="chartOptions" 
+            :series="series" 
+        />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useListingStore } from '@/stores/listing'
+import { onMounted, ref, computed } from 'vue'
 
-const series = [300, 250, 100, 80, 70]; // dummy data
+const listingStore = useListingStore()
 
-const chartOptions = {
-    labels: ['BKK', 'Toul Kork', 'Duan Penh', 'Sen Sok', 'Mean Chey'],
-    colors: ['#00c853', '#3f51b5', '#e91e63', '#ffca28', '#d500f9'],
+onMounted(async () => {
+    await listingStore.fetchAllListingsWithImages()
+})
+
+// Compute series and labels from the listings data
+const chartData = computed(() => {
+    if (!listingStore.listings.length) return { counts: [], regions: [] }
+    
+    // Group listings by region and count them
+    const regionCounts = listingStore.listings.reduce((acc, listing) => {
+        const regionName = listing.songkat || 'Unknown'
+        acc[regionName] = (acc[regionName] || 0) + 1
+        return acc
+    }, {})
+    
+    // Sort regions by count (descending) and take top 5
+    const sortedRegions = Object.entries(regionCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+    
+    return {
+        counts: sortedRegions.map(item => item[1]),
+        regions: sortedRegions.map(item => item[0])
+    }
+})
+
+const series = computed(() => chartData.value.counts)
+
+const chartOptions = computed(() => ({
+    labels: chartData.value.regions,
+    colors: ['#00c853', '#3f51b5', '#e91e63', '#ffca28', 
+        '#d500f9', '#4caf50', '#2196f3', '#ff5722',
+        '#9c27b0', '#009688', '#ff9800', '#795548',
+        '#607d8b', '#f44336'],
     legend: {
         position: 'right',
         fontSize: '13px',
@@ -43,7 +81,7 @@ const chartOptions = {
             formatter: val => `${val} properties`
         }
     }
-}
+}))
 </script>
 
 <style scoped>
