@@ -1,0 +1,25 @@
+meta {
+  name: create payment
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/payments
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "6c41ed7f-4877-4b3b-aaf0-a7ab71bcd921",
+    "listingId": "3251d625-bc63-40af-8332-97f15b290cd3",
+    "bookingId": "bd044a2a-5042-4a80-9d0d-e3de29679db1",
+    "paymentInfoId": "3dd15c2c-01fb-4c4b-bb46-a5fbfbbe2281",
+    "amount": 250,
+    "paymentMethod": "credit_card",
+    "status": "paid",
+    "transactionId": "txn_123456"
+  }
+  
+}

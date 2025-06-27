@@ -13,6 +13,8 @@ import { BookingModule } from './booking/booking.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { RentalDecisionModule } from './rental-decision/rental-decision.module';
 import { ConfigModule } from '@nestjs/config';
+import { PaymentInfoModule } from './paymentInfo/paymentInfo.module';
+import { PaymentModule } from './payment/payment.module';
 import { NotificationModule } from './notification/notification.module';
 
 @Module({
@@ -40,6 +42,8 @@ import { NotificationModule } from './notification/notification.module';
     BookingModule,
     WishlistModule,
     RentalDecisionModule,
+    PaymentInfoModule,
+    PaymentModule,
     NotificationModule
   ],
   controllers: [AppController],

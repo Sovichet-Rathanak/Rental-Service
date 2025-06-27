@@ -31,23 +31,31 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import axios from 'axios'
 
-const series = [
+const months = [
+    'January', 'February', 'March', 'April', 'May',
+    'June', 'July', 'August', 'September', 'October',
+    'November', 'December'
+]
+
+const series = ref([
     {
         name: 'Expected payment',
-        data: [300, 400, 350, 0, 0, 0, 0, 0, 0, 0, 0, 80],
+        data: Array(12).fill(0),
         color: '#8e24aa' // Purple
     },
     {
         name: 'Received payment',
-        data: [300, 400, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        data: Array(12).fill(0),
         color: '#00c853' // Green
     }
-];
+])
 
-const totalExpected = series[0].data.reduce((a, b) => a + b, 0);
-const totalReceived = series[1].data.reduce((a, b) => a + b, 0);
+const totalExpected = ref(0)
+const totalReceived = ref(0)
 
 const chartOptions = {
     chart: {
@@ -55,11 +63,7 @@ const chartOptions = {
         toolbar: { show: false }
     },
     xaxis: {
-        categories: [
-            'January', 'February', 'March', 'April', 'May',
-            'June', 'July', 'August', 'September', 'October',
-            'November', 'December'
-        ],
+        categories: months,
         labels: {
             style: {
                 fontSize: '12px',
@@ -75,19 +79,39 @@ const chartOptions = {
             formatter: val => `$${val}`
         }
     },
-    legend: {
-        show: false
-    },
-    title: {
-        text: '',
-        align: 'left'
-    },
+    legend: { show: false },
     tooltip: {
         y: {
             formatter: val => `$${val}`
         }
     }
-};
+}
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('http://localhost:3000/api/payments/summary/monthly')
+
+        const data = response.data
+
+        const expectedByMonth = Array(12).fill(0)
+        const receivedByMonth = Array(12).fill(0)
+
+        data.forEach(item => {
+            const [year, month] = item.month.split('-')
+            const index = parseInt(month) - 1
+            expectedByMonth[index] = parseFloat(item.expected)
+            receivedByMonth[index] = parseFloat(item.received)
+        })
+
+        series.value[0].data = expectedByMonth
+        series.value[1].data = receivedByMonth
+
+        totalExpected.value = expectedByMonth.reduce((a, b) => a + b, 0)
+        totalReceived.value = receivedByMonth.reduce((a, b) => a + b, 0)
+    } catch (error) {
+        console.error('Error loading payment summary:', error)
+    }
+})
 </script>
 
 <style scoped>

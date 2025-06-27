@@ -1,6 +1,7 @@
 <template>
   <div class="action-buttons">
     <button
+      v-if="showEdit"
       @click.stop="$emit('edit-item', index)"
       class="btn-edit"
     >
@@ -22,6 +23,10 @@ export default {
     index: {
       type: Number,
       required: true,
+    },
+    showEdit: {
+      type: Boolean,
+      default: true,
     },
   },
 };

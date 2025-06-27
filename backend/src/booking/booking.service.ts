@@ -26,7 +26,9 @@ export class BookingService {
   ) {}
 
   async getAll(): Promise<Booking[]> {
-    return this.bookingRepo.find({});
+    return this.bookingRepo.find({
+      relations: ['tenant'],
+    });
   }
 
   async createBooking(dto: CreateBookingDto) {
