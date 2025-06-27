@@ -65,4 +65,19 @@ export class RentalDecisionService {
 
     return decision;
   }
+   async markAsPaid(bookingId: string): Promise<RentalDecision> {
+    const decision = await this.rentalDecisionRepo.findOne({
+      where: { booking: { id: bookingId } },
+      relations: ['booking'],
+    });
+
+    if (!decision) {
+      throw new NotFoundException(`Rental decision for booking ${bookingId} not found`);
+    }
+
+    decision.tenantResponse = TenantResponse.PAY; // or TenantResponse.PAID if using enum
+    decision.tenantResponseAt = new Date();
+
+    return this.rentalDecisionRepo.save(decision);
+  }
 }

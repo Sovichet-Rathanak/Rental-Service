@@ -79,7 +79,11 @@ export class BookingService {
       moveOutDate: this.formatDateOnly(moveOutDate),
       rentalDuration: dto.rentalDuration,
     });
-    return this.bookingRepo.save(booking);
+    const savedBooking = await this.bookingRepo.save(booking);
+      return this.bookingRepo.findOne({
+    where: { id: savedBooking.id },
+    relations: ['listing', 'listing.owner', 'tenant'],
+  });
   }
 
   async cancelBooking(id: string) {
@@ -107,7 +111,7 @@ export class BookingService {
 
     if (!booking) throw new NotFoundException('Booking not found');
 
-    booking.status = BookingStatus.ACCEPT;
+    booking.status = BookingStatus.TOUR_ACCEPTED;
     booking.decisionAt = this.getCurrentCambodiaTime();
     return this.bookingRepo.save(booking);
   }
@@ -119,7 +123,7 @@ export class BookingService {
     });
     if (!booking) throw new NotFoundException('Booking not found');
 
-    booking.status = BookingStatus.REJECT;
+    booking.status = BookingStatus.TOUR_REJECTED;
     booking.decisionAt = this.getCurrentCambodiaTime();
     return this.bookingRepo.save(booking);
   }
@@ -288,4 +292,15 @@ export class BookingService {
     result.setFullYear(result.getFullYear() + years);
     return result;
   }
+  async updateStatus(id: string, status: BookingStatus): Promise<Booking> {
+    const booking = await this.bookingRepo.findOne({ where: { id } });
+
+    if (!booking) {
+      throw new NotFoundException(`Booking with ID ${id} not found`);
+    }
+
+    booking.status = status;
+    return this.bookingRepo.save(booking);
+  }
+
 }

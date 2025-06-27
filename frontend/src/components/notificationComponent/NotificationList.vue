@@ -11,23 +11,29 @@
     </div>
 
     <div class="notiList">
-      <NotificationItems
-        v-for="notif in filteredNotifications"
-        :key="notif.id"
-        :notification="notif"
-        :icon-name="getIcon(notif.status)"
-        :icon-color="getColor(notif.status)"
-        :icon-type="notif.type === 'tour' ? 'material-symbols:tour-rounded' : 'bi:house-up-fill'"
-        :role="userRole"
-        :status="notif.status"
-      />
+    <NotificationItems
+      v-for="notif in filteredNotifications"
+      :key="notif.id"
+      :notification="notif"
+      :icon-name="getIcon(notif.status)"
+      :icon-color="getColor(notif.status)"
+      :icon-type="notif.type === 'tour' ? 'material-symbols:tour-rounded' : 'bi:house-up-fill'"
+      :role="userRole"
+      :status="notif.status"
+    />
     </div>
+    <div class="debug">
+  <p v-for="notif in filteredNotifications" :key="notif.id">
+    DEBUG: {{ notif.message }} | Type: {{ notif.type }} | Create: {{ notif.createdAt }}
+  </p>
+</div>
 </template>
 <script>
 import NotificationItems from '@/components/notificationComponent/NotificationItems.vue';
-import { useNotificationStore } from '@/stores/notification';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
+import { onMounted } from 'vue';
+import { useNotificationStore } from '@/stores/notification';
 
 export default {
     name: 'notification',
@@ -46,17 +52,25 @@ export default {
     ];
 
     const getIcon = (status) => {
-      if (status === 'Approved') return 'teenyicons:tick-circle-solid';
-      if (status === 'Declined') return 'gridicons:cross-circle';
+      if (status === 'approved') return 'teenyicons:tick-circle-solid';
+      if (status === 'declined') return 'gridicons:cross-circle';
+      if (status === 'canceled') return 'mdi:cancel'; 
       return 'ion:hourglass-outline';
     };
-
+    
     const getColor = (status) => {
-      if (status === 'Approved') return 'green';
-      if (status === 'Declined') return 'red';
+      if (status === 'approved') return 'green';
+      if (status === 'declined') return 'red';
+      if (status === 'canceled') return 'red';
       return '#2D01CE';
     };
-
+    onMounted(() => {
+      if (userStore.user && userStore.user.id) {
+        notificationStore.fetchNotifications(userStore.user.id).then(() => {
+          console.log('Fetched Notifications:', notificationStore.notifications);
+        });
+      }
+    });
 
     return {
       notificationStore,

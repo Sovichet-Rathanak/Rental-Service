@@ -12,6 +12,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import { storeToRefs } from 'pinia';
 import { useNotificationStore } from '@/stores/notification';
 import NotificationList from '@/components/notificationComponent/NotificationList.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 
 export default {
   components: {
@@ -21,6 +23,7 @@ export default {
   setup() {
     const notificationStore = useNotificationStore();
     const { filteredNotifications, filterType } = storeToRefs(notificationStore);
+    const userStore = useUserStore()
 
     const filterButtons = [
       { label: 'All', value: 'all' },
@@ -39,6 +42,10 @@ export default {
       if (status === 'Declined') return 'red';
       return '#2D01CE';
     };
+    onMounted(() => {
+      notificationStore.fetchNotifications(userStore.user.id); 
+    });
+
 
     return {
       notificationStore,

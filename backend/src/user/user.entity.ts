@@ -4,6 +4,7 @@ import { AccomReview } from 'src/accom-review/accom-review.entity';
 import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Booking } from 'src/booking/booking.entity';
 import { Listing } from 'src/listing/listing.entity';
+import { Notification } from 'src/notification/notification.entity';
 
 @Entity()
 export class User {
@@ -42,4 +43,8 @@ export class User {
   
   @OneToMany(() => Listing, (listing) => listing.owner)
   listings: Listing[];
+
+  @OneToMany(() => Notification, (notification) => notification.user)
+  notifications: Notification[];
+
 }

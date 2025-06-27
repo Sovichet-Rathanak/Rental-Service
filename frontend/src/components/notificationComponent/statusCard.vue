@@ -22,22 +22,25 @@
         </div>
       </div>
 
-      <div v-if="notification.status === 'Pending'" class="button-group">
-        <!-- ================= Tenant ================= -->
-        <div class="rent-container" v-if="role === 'tenant'">
-          <button class="cancel" @click.stop="$emit('close')">
+      <div v-if="notification.status === 'pending'" class="button-group">
+        <!-- ================= Tour Tenant ================= -->
+        <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'tour'">
+          <button class="cancel" @click="cancelRequest">
             <Icon class="icon" icon="iconoir:cancel" />
-            <span>Cancel {{ notification.type === 'tour' ? 'Tour' : 'Request' }}</span>
+            <span>Cancel {{ notification.type === 'tour' ? 'tour' : 'request' }}</span>
           </button>
+        </div>
 
+        <!-- ================= Rent Tenant ================= -->
+        <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'rent'">
           <button v-if="notification.type === 'rent'" class="pay" @click="payNow">
-            <Icon class="icon" icon="uiw:pay" />
+            <Icon class="icon" icon="uiw:pay" @click="payNow"/>
             <span>Pay now</span>
           </button>
         </div>
 
         <!-- ============ Tour Request for Landlord ============ -->
-        <div class="rent-container" v-if="role === 'landlord' && type === 'tour'">
+        <div class="rent-container" v-if="notification.role === 'landlord' && notification.type === 'tour'">
           <button class="cancel" @click="declineRequest">
             <Icon class="icon" icon="iconoir:cancel" />
             <span>Decline Tour</span>
@@ -49,7 +52,7 @@
         </div>
 
         <!-- ============ Rent Request for Landlord ============ -->
-        <div class="rent-container" v-else-if="role === 'landlord' && type === 'rent'">
+        <div class="rent-container" v-else-if="notification.role === 'landlord' && notification.type === 'rent'">
           <button class="cancel" @click="declineRequest">
             <Icon class="icon" icon="iconoir:cancel" />
             <span>Decline Tenant</span>
@@ -59,7 +62,6 @@
             <span>Approve Tenant</span>
           </button>
         </div>
-
       </div>
     </div>
   </div>
@@ -67,8 +69,9 @@
 
 <script>
 import { Icon } from '@iconify/vue';
+import axios from 'axios';
+import { useUserStore } from '@/stores/user';
 import { useNotificationStore } from '@/stores/notification';
-
 export default {
   components: {
     Icon
@@ -82,50 +85,63 @@ export default {
     status: String
   },
   methods: {
-    payNow() {
-      console.log('Proceed to payment');
-      this.$emit('close');
+    async approveRequest() {
+      const store = useNotificationStore();
+      try {
+        await store.performAction(this.notification.id, 'approve');
+        alert('Request approved.');
+        this.$emit('close');
+      } catch (error) {
+        console.error(error);
+        alert('Failed to approve request.');
+      }
     },
-    approveRequest() {
-      const notificationStore = useNotificationStore();
-      const newNotif = {
-        id: Date.now(),
-        name: this.notification.name,
-        description: `Your ${this.notification.type} request has been approved by the landlord.`,
-        type: this.notification.type,
-        status: 'Approved',
-        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
-        imgUrl: this.notification.imgUrl
-      };
-      notificationStore.addNotification(newNotif);
-      this.$emit('close');
+    async declineRequest() {
+      const store = useNotificationStore();
+      try {
+        await store.performAction(this.notification.id, 'decline');
+        alert('Request declined.');
+        this.$emit('close');
+      } catch (error) {
+        console.error(error);
+        alert('Failed to decline request.');
+      }
     },
-    declineRequest() {
-      const notificationStore = useNotificationStore();
-      const newNotif = {
-        id: Date.now(),
-        name: this.notification.name,
-        description: `Your ${this.notification.type} request has been declined by the landlord.`,
-        type: this.notification.type,
-        status: 'Declined',
-        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
-        imgUrl: this.notification.imgUrl
-      };
-      notificationStore.addNotification(newNotif);
-      this.$emit('close');
+    async payNow() {
+      const store = useNotificationStore();
+      try {
+        await store.performAction(this.notification.id, 'pay');
+        alert('Payment successful.');
+        this.$emit('close');
+      } catch (error) {
+        console.error(error);
+        alert('Failed to process payment.');
+      }
+    },
+    async cancelRequest() {
+      const store = useNotificationStore();
+      try {
+        await store.performAction(this.notification.id, 'cancel');
+        alert('Request cancelled.');
+        this.$emit('close');
+      } catch (error) {
+        console.error(error);
+        alert('Failed to cancel request.');
+      }
     }
   },
   computed: {
     isTenant() {
-      return this.role === 'tenant';
+      return this.notification.role === 'tenant';
     },
     isLandlord() {
-      return this.role === 'landlord';
+      return this.notification.role === 'landlord';
     }
   },
   mounted() {
-    console.log('Role:', this.role)
-    console.log('Status:', this.status)
+    console.log('Role:', this.notification.role)
+    console.log('Status:', this.notification.status)
+    console.log('Type:', this.notification.type)
   }
 };
 </script>

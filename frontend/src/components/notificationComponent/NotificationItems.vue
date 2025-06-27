@@ -2,7 +2,8 @@
     <div class="container" @click="toggleStatusCard">
         <div class="imgText">
             <div class="imgIcon">
-                <img :src="notification.imgUrl" alt="pfp" />
+                <Icon v-if="!user.pfp_original_url"  icon="ion:person" width="120" height="120"  style="color: black" />
+                <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`" alt="Profile Picture" class="pfp-img" @error="onImageError" />
                 <Icon
                     class="notiType"
                     :icon="iconType"
@@ -11,15 +12,15 @@
             </div>
 
             <div class="textGr">
-                <h2 class="name">{{ notification.name }}</h2>
+                <h2 class="name">{{ notification.userId }}</h2>
                 <span class="description">
-                {{ notification.description }}
+                {{ notification.message }}
                 </span>
             </div>
         </div>
 
         <div class="iconGr">
-            <h2 class="date">{{ notification.requestedDate }}</h2>
+            <h2 class="date">{{ notification.createdAt }}</h2>
             <Icon class="icon" :icon="iconName" :color="iconColor" />
         </div>
 
@@ -39,6 +40,9 @@
 <script>
 import { Icon } from '@iconify/vue';
 import StatusCard from './statusCard.vue';
+import { useNotificationStore } from '@/stores/notification';
+import { useUserStore } from '@/stores/user';
+import { mapState } from 'pinia';
 
 export default {
   name: 'notiComponent',
@@ -62,11 +66,17 @@ export default {
     };
   },
   methods: {
-    toggleStatusCard() {
-        this.showCard = true; 
+    async toggleStatusCard() {
+      if (!this.showCard) {
+        // Mark read on open
+        const notificationStore = useNotificationStore();
+        await notificationStore.markAsRead(this.notification.id);
+      }
+      this.showCard = !this.showCard;
     }
   },
   computed: {
+    ...mapState(useUserStore, ['user']),
     iconBgColor() {
         return this.notification.type === 'tour' ? 'rgb(236, 154, 0)' : 'rgb(52, 130, 248)';
     }
