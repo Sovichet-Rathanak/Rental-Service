@@ -1,34 +1,59 @@
 <template>
   <!-- Total Rating Summary -->
   <div class="totalRating">
+    <!-- Star Icon -->
     <Icon icon="material-symbols:star-rounded" width="40" height="40" />
-    <h1>{{ ratings.length === 0 ? '0.0' : overallRating.toFixed(1) }}</h1>
+    <!-- overall average rating -->
+    <h1>
+      {{
+        reviewStore.overall && typeof reviewStore.overall.overallAvg === 'number'
+          ? reviewStore.overall.overallAvg.toFixed(1)
+          : '0.0'
+      }}
+    </h1>
+    <!-- Dot Icon -->
     <Icon icon="mdi:dot" width="35" height="35" />
-    <h1>{{ ratings.length === 0
-      ? 'No rating yet'
-      : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '') }}</h1>
+    <h1>
+      {{
+        ratings.length === 0
+          ? 'No rating yet'
+          : ratings.length + ' rating' + (ratings.length > 1 ? 's' : '')
+      }}
+    </h1>
   </div>
 
   <!-- Rating Section -->
   <div class="ratingSection">
-    <!-- Overall Rating Bar -->
+    <!-- Overall Rating Bar (from backend summary) -->
     <div class="overallRating">
       <span>Overall Rating</span>
-      <div class="ratingBar-wrapper" v-for="(count, index) in ratingBar" :key="index">
-        <span class="countRating">{{ 5 - index }}</span>
+      <div class="ratingBar-wrapper" v-for="star in [5, 4, 3, 2, 1]" :key="star">
+        <span class="countRating">{{ star }}</span>
         <div class="ratingBar">
-          <div class="ratingBar-fill" :style="{ width: getBarWidth(count) }"></div>
+          <div class="ratingBar-fill"
+            :style="{ width: reviewStore.overall && reviewStore.overall.ratingBar ? ((reviewStore.overall.ratingBar[star] || 0) / (Object.values(reviewStore.overall.ratingBar).reduce((a, b) => a + b, 0) || 1) * 100).toFixed(1) + '%' : '0%' }">
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Per-Category Ratings -->
+    <!-- Per-Category Ratings (from backend perCategory) -->
     <div class="column_rating" v-for="(item, index) in ratingBox" :key="index">
       <hr class="customHr1" />
       <div class="box">
         <div class="text">
           <span>{{ item.title }}</span>
-          <span>{{ item.rating.toFixed(1) }}</span>
+          <span>
+            {{
+              reviewStore.overall &&
+                reviewStore.overall.perCategory &&
+                Object.prototype.hasOwnProperty.call(
+                  reviewStore.overall.perCategory,
+                  item.title.toLowerCase()
+                )
+                ? Number(reviewStore.overall.perCategory[item.title.toLowerCase()]).toFixed(1)
+                : '0.0'
+            }}
+          </span>
         </div>
         <Icon :icon="item.icon" width="30" height="30" />
       </div>
@@ -47,21 +72,38 @@
   <div class="comment_wrap">
     <div class="totalReview">
       <Icon icon="ant-design:comment-outlined" width="40" height="40" />
-      <span>{{ comments.length === 0 ? 'No review yet' : 'Total Review' + (comments.length > 1 ? 's ' : ' ') +
-        comments.length }}</span>
+      <span>
+        {{
+          filteredReviews.length === 0
+            ? 'No review yet'
+            : 'Total Review' + (filteredReviews.length > 1 ? 's ' : ' ') + filteredReviews.length
+        }}
+      </span>
     </div>
     <div class="container">
-      <div class="commentSection" v-for="(item, index) in comments" :key="index">
+      <!-- Only show reviews with non-empty comment -->
+      <div class="commentSection" v-for="(item, index) in filteredReviews" :key="item.id || index">
         <div class="profileWrap">
-          <img :src="item.Img" alt="" />
+          <!-- User profile image -->
+          <img
+            :src="`http://localhost:9000/romdoul/${item.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'"
+            alt="" />
           <div class="name">
-            <h2>{{ item.profileName }}</h2>
-            <span>{{ item.duration }}</span>
+            <!-- Full user name (firstname + lastname) -->
+            <h2>
+              {{
+                item.user
+                  ? (item.user.firstname || '') + ' ' + (item.user.lastname || '')
+                  : 'Anonymous'
+              }}
+            </h2>
           </div>
         </div>
         <div class="textReview">
-          <h3>{{ item.date }}</h3>
-          <span>{{ item.reviews }}</span>
+          <!-- Review date -->
+          <h3>{{ new Date(item.createdAt).toLocaleDateString('en-GB') }}</h3>
+          <!-- Review comment -->
+          <span>{{ item.comment }}</span>
         </div>
       </div>
     </div>
@@ -72,24 +114,23 @@
     <div class="popup-container">
       <div class="header">
         <div class="heading-row">
-          <h3>BKK1, Chamkarmon, Phnom Penh</h3>
+          <!-- Use computed listingTitle -->
+          <h3>{{ listingDescription }}</h3>
           <Icon icon="mdi:close" class="close-icon" @click="closePopup" />
         </div>
-
         <div class="user-info">
-          <img src="/src/assets/images/comment/_.jpeg" alt="User" class="user-img" />
+          <img
+            :src="`http://localhost:9000/romdoul/${userStore.user?.pfp_thumbnail_url}` || '/src/assets/images/comment/_.jpeg'"
+            alt="User" class="user-img" />
           <div class="user-details">
-            <p class="username">Romdoul</p>
+            <p class="username">{{ (userStore.user?.firstname) + ' ' + (userStore.user?.lastname) || 'Anonymous' }}</p>
             <p class="post-info">Posting publicly across Romdoul Joul Pteas</p>
           </div>
         </div>
-
         <p class="subheading">We value your feedback</p>
         <p class="instruction">It helps us improve. Please fill out these following questions.</p>
       </div>
-
       <hr class="customHr" />
-
       <!-- Rating Questions -->
       <div class="questions">
         <div class="question" v-for="(question, index) in questions" :key="index">
@@ -100,8 +141,7 @@
           </div>
         </div>
       </div>
-
-      <!-- Final overrall rating -->
+      <!-- Overall Rating -->
       <div class="final-rating">
         <p>What's your overall rating for this place?</p>
         <div class="stars">
@@ -109,12 +149,9 @@
             @click="finalRating = i" />
         </div>
       </div>
-
-      <!-- Review Text -->
+      <!-- Review Textarea -->
       <textarea v-model="newReview.reviews" @keydown.enter.prevent="submitFeedback"
         placeholder="Share details of your own experience at this place" class="feedback-input" rows="3"></textarea>
-
-      <!-- Submit Buttons -->
       <div class="buttons">
         <button class="submit-button" @click="submitFeedback">Submit</button>
         <button class="later-button" @click="closePopup">Maybe later</button>
@@ -124,23 +161,22 @@
 </template>
 
 <script>
+import { useReviewStore } from '@/stores/review';
+import { useUserStore } from '@/stores/user';
+import { useListingStore } from '@/stores/listing';
+import { mapStores } from 'pinia';
+
+
 export default {
+  name: 'RatingComment',
   data() {
     return {
-      ratingData: {
-        Cleanliness: [],
-        Communication: [],
-        Comfort: [],
-        Location: [],
-        Value: [],
+      showPopup: false,
+      finalRating: 4, 
+      newReview: {
+        reviews: '',
+        rating: 0,
       },
-      ratingBox: [
-        { title: 'Location', rating: 0, icon: 'mdi:map-marker-outline' },
-        { title: 'Value', rating: 0, icon: 'mdi:currency-usd' },
-        { title: 'Comfort', rating: 0, icon: 'mdi:sofa-outline' },
-        { title: 'Cleanliness', rating: 0, icon: 'carbon:clean' },
-        { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' },
-      ],
       questions: [
         { text: 'Was the place clean and well-maintained?', category: 'Cleanliness', rating: 4 },
         { text: 'Was the landlord responsive and helpful?', category: 'Communication', rating: 4 },
@@ -148,81 +184,110 @@ export default {
         { text: 'Was the area safe and convenient?', category: 'Location', rating: 4 },
         { text: 'Was the place worth the rent?', category: 'Value', rating: 4 }
       ],
-      comments: [],
-      ratings: [],
-      reviews: [],
-      showPopup: false,
-      finalRating: 4,
-      newReview: {
-        reviews: '',
-      },
+      ratingBox: [
+        { title: 'Location', rating: 0, icon: 'mdi:map-marker-outline' },
+        { title: 'Value', rating: 0, icon: 'mdi:currency-usd' },
+        { title: 'Comfort', rating: 0, icon: 'mdi:sofa-outline' },
+        { title: 'Cleanliness', rating: 0, icon: 'carbon:clean' },
+        { title: 'Communication', rating: 0, icon: 'mdi:message-text-outline' }
+      ],
+      listingTitle: '', // Add this for dynamic title
     };
   },
   computed: {
-    overallRating() {
-      if (this.ratings.length === 0) return 0;
-      const total = this.ratings.reduce((a, b) => a + b, 0);
-      return total / this.ratings.length;
+    ...mapStores(useReviewStore, useUserStore, useListingStore),
+
+    ratings() {
+      const ratingBar = this.reviewStore.overall?.ratingBar;
+      return ratingBar
+        ? Object.entries(ratingBar).flatMap(([star, count]) => Array(count).fill(Number(star)))
+        : [];
     },
-    ratingBar() {
-      const counts = [0, 0, 0, 0, 0];
-      this.ratings.forEach(r => {
-        const index = 5 - r;
-        if (index >= 0 && index <= 4) counts[index]++;
-      });
-      return counts;
-    }
+
+    filteredReviews() {
+      return (this.reviewStore.reviews || []).filter(r => r.comment && r.comment.trim() !== '');
+    },
+
+    listingId() {
+      return this.$route.params.id || this.$route.params.listingId;
+    },
+
+    listingDescription() {
+      // Defensive: get the description for the current listingId from listings array if currentListing is not set
+      if (this.listingStore.currentListing && this.listingStore.currentListing.description) {
+        return this.listingStore.currentListing.description;
+      }
+      // Fallback: try to find the listing in the listings array
+      const found = this.listingStore.listings.find(
+        l => l.id === this.listingId
+      );
+      return found && found.description ? found.description : '';
+    },
   },
   methods: {
-    getBarWidth(count) {
-      const totalVotes = this.ratings.length;
-      if (totalVotes === 0) return '0%';
-      return `${((count / totalVotes) * 100).toFixed(1)}%`;
-    },
     closePopup() {
       this.showPopup = false;
       this.newReview.reviews = '';
       this.finalRating = 4;
-      this.questions.forEach(q => q.rating = 4);
+      this.questions.forEach(q => (q.rating = 4));
     },
 
-    submitFeedback() {
+    async submitFeedback() {
       if (this.questions.some(q => q.rating === 0)) {
-        alert("Please rate all questions.");
+        alert('Please rate all questions.');
         return;
       }
 
-      // Update category averages
-      this.questions.forEach(question => {
-        const cat = question.category;
-        this.ratingData[cat].push(question.rating);
-        const avg = this.ratingData[cat].reduce((a, b) => a + b, 0) / this.ratingData[cat].length;
-        const box = this.ratingBox.find(item => item.title === cat);
-        if (box) box.rating = parseFloat(avg.toFixed(2));
-      });
-
-      // Save final rating 
-      this.ratings.push(this.finalRating);
-
-      // Save the comment 
       const trimmedReview = this.newReview.reviews.trim();
-      if (trimmedReview !== '') {
-        this.reviews.push(trimmedReview);
-        this.comments.push({
-          Img: '/src/assets/images/comment/_.jpeg',
-          profileName: 'Bai Jingting',
-          duration: ' 3 years on Romduol Rental Service',
-          date: new Date().toLocaleDateString('en-GB'),
-          reviews: trimmedReview,
-        });
+      const userId = this.userStore.user?.id;
+
+      if (!userId) {
+        alert('You must be logged in to submit a review.');
+        return;
+      }
+      if (!this.listingId) {
+        alert('Listing ID is missing.');
+        return;
       }
 
-      this.closePopup();
-    },
-  },
-};
-</script>
+      const payload = {
+        user: String(userId),
+        listing: String(this.listingId),
+        comment: trimmedReview,
+        priceRating: Number(this.questions.find(q => q.category === 'Value')?.rating),
+        comfortRating: Number(this.questions.find(q => q.category === 'Comfort')?.rating),
+        locationRating: Number(this.questions.find(q => q.category === 'Location')?.rating),
+        cleanlinessRating: Number(this.questions.find(q => q.category === 'Cleanliness')?.rating),
+        communicationRating: Number(this.questions.find(q => q.category === 'Communication')?.rating),
+        overallRating: Number(this.finalRating)
+      };
 
+      try {
+        await this.reviewStore.createReview(payload);
+        await Promise.all([
+          this.reviewStore.fetchReviewsByListingId(this.listingId),
+          this.reviewStore.fetchOverallRating(this.listingId)
+        ]);
+        this.closePopup();
+      } catch (error) {
+        alert('Failed to submit review, please try again.');
+      }
+    },
+
+
+  },
+  mounted() {
+    if (this.listingId) {
+      this.reviewStore.fetchReviewsByListingId(this.listingId);
+      this.reviewStore.fetchOverallRating(this.listingId);
+      // Always fetch the listing by ID to ensure currentListing is set
+      if (typeof this.listingStore.fetchListingById === 'function') {
+        this.listingStore.fetchListingById(this.listingId);
+      }
+    }
+  }
+}
+</script>
 
 <style scoped>
 .totalRating {
@@ -394,9 +459,10 @@ export default {
 }
 
 .profileWrap>img {
-  width: 95px;
-  height: 95px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .name {
@@ -506,12 +572,14 @@ export default {
   align-items: center;
   gap: 20px;
   margin: 15px 0 40px 0;
+  object-fit: cover;
 }
 
 .user-img {
   border-radius: 50%;
   width: 60px;
   height: 60px;
+  object-fit: cover;
 }
 
 .username {

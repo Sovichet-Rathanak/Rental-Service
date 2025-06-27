@@ -29,6 +29,9 @@ export class AccomReview {
     @Column('int')
     communicationRating: number;
 
+    @Column('int', { default: 0 }) 
+    overallRating: number;
+
     @Column({ type: 'text' })
     comment: string;
 

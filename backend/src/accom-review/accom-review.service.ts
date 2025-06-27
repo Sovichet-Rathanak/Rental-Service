@@ -40,7 +40,14 @@ export class AccomReviewService {
         });
     }
 
-    
+    async findByListing(listingId: string): Promise<AccomReview[]> {
+        return this.reviewRepo.find({
+            where: { listing: { id: listingId } },
+            relations: ['user'],
+            order: { createdAt: 'DESC' },
+        });
+    }
+
     async getOverall(listing: string) {
         const reviews = await this.reviewRepo.find({
             where: { listing: { id: listing } },
@@ -56,23 +63,36 @@ export class AccomReviewService {
             return acc;
         }, {} as Record<ReviewCategory, number>);
 
-        // Calculate totals
+        // Calculate totals and overall sum for average
+        let overallSum = 0;
+        let overallCount = 0;
         for (const review of reviews) {
-            const ratings = categories.map((cat) => review[cat]);
-            const avg = Math.round(ratings.reduce((sum, val) => sum + val, 0) / categories.length);
-            ratingBar[avg]++;
             categories.forEach((cat) => {
-                sums[cat] += review[cat];
+                if (typeof review[cat] !== 'number') {
+                    console.warn(`Review ${review.id} missing value for ${cat}:`, review[cat]);
+                }
+                sums[cat] += typeof review[cat] === 'number' ? review[cat] : 0;
             });
+
+            // Use overallRating for overall average and rating bar
+            if (typeof review.overallRating === 'number' && review.overallRating >= 1 && review.overallRating <= 5) {
+                ratingBar[review.overallRating] = (ratingBar[review.overallRating] || 0) + 1;
+                overallSum += review.overallRating;
+                overallCount++;
+            }
         }
 
         // Calculate average per category
         const perCategory: Record<string, number> = {};
         categories.forEach((cat) => {
-            const label = cat.replace('Rating', '').toLowerCase(); //calculate each category
+            let label = cat.replace('Rating', '').toLowerCase();
+            if (cat === 'priceRating') label = 'value';
             perCategory[label] = count > 0 ? +(sums[cat] / count).toFixed(1) : 0;
         });
 
-        return { ratingBar, perCategory };
+        // Calculate overall average from user input
+        const overallAvg = overallCount > 0 ? +(overallSum / overallCount).toFixed(1) : 0;
+
+        return { ratingBar, perCategory, overallAvg };
     }
 }
