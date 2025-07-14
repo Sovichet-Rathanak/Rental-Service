@@ -25,23 +25,28 @@
       </router-link>
     </div>
     <div class="item-end">
-      <div class="profile">
-        <img src="/src/assets/images/comment/_.jpeg" alt="Profile">
-        <div class="verified">
-          <Icon icon="si:verified-fill" width="12" height="12" style="color:white"></Icon>
-        </div>
+      <div class="imgIcon">
+          <Icon v-if="!user.pfp_original_url" icon="ion:person" width="50" height="50" style="color: black" />
+          <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`" alt="Profile Picture"
+            class="pfp-img" @error="onImageError" />
+          <Icon class="notiType" :icon="iconType" :style="{ backgroundColor: iconBgColor }" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useUserStore } from '@/stores/user';
+import { mapState } from 'pinia';
 export default {
   name: 'HeaderNav3',
     methods: {
     goToHomePage() {
       this.$router.push({ name: 'Home' });
     }
+  },
+  computed:{
+    ...mapState(useUserStore, ['user']),
   }
 }
 </script>
@@ -141,6 +146,29 @@ export default {
   bottom: 0;
   border-radius: 8px;
   z-index: 0;
+}
+img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.imgText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.imgIcon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.imgIcon img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
 }
 
 .item-end {

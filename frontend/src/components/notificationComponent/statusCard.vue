@@ -24,7 +24,7 @@
 
       <div v-if="notification.status === 'pending'" class="button-group">
         <!-- ========== Tour Tenant ========== -->
-        <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'tour'">
+        <div class="rent-container" v-if="user.role === 'tenant' && notification.type === 'tour'">
           <button class="cancel" @click="cancelRequest">
             <Icon class="icon" icon="iconoir:cancel" />
             <span>Cancel {{ notification.type === 'tour' ? 'tour' : 'request' }}</span>
@@ -32,7 +32,7 @@
         </div>
 
         <!-- ========== Rent Tenant ========== -->
-        <div class="rent-container" v-if="notification.role === 'tenant' && notification.type === 'rent'">
+        <div class="rent-container" v-if="user.role === 'tenant' && notification.type === 'rent'">
           <button class="pay" @click="payNow">
             <Icon class="icon" icon="uiw:pay" />
             <span>Pay now</span>
@@ -40,7 +40,7 @@
         </div>
 
         <!-- ========== Tour Request for Landlord ========== -->
-        <div class="rent-container" v-if="notification.role === 'landlord' && notification.type === 'tour'">
+        <div class="rent-container" v-if="user.role === 'landlord' && notification.type === 'tour'">
           <button class="cancel" @click="declineRequest">
             <Icon class="icon" icon="gridicons:cross-circle" />
             <span>Decline Tour</span>
@@ -52,7 +52,7 @@
         </div>
 
         <!-- ========== Rent Request for Landlord ========== -->
-        <div class="rent-container" v-else-if="notification.role === 'landlord' && notification.type === 'rent'">
+        <div class="rent-container" v-else-if="user.role === 'landlord' && notification.type === 'rent'">
           <button class="cancel" @click="declineRequest">
             <Icon class="icon" icon="gridicons:cross-circle" />
             <span>Decline Tenant</span>
@@ -70,7 +70,8 @@
 <script>
 import { Icon } from '@iconify/vue';
 import { useNotificationStore } from '@/stores/notification';
-
+import { useUserStore } from '@/stores/user';
+import { mapState } from 'pinia';
 export default {
   components: { Icon },
   props: {
@@ -127,6 +128,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(useUserStore, ['user']),
     iconName() {
       switch (this.notification.status) {
         case 'approved':
@@ -145,13 +147,13 @@ export default {
     },
     iconColor() {
       switch (this.notification.status) {
-        case 'approve':
+        case 'approved':
           return 'green';
-        case 'decline':
+        case 'declined':
           return 'red';
-        case 'cancel':
+        case 'cancelled':
           return 'red';
-        case 'pay':
+        case 'paid':
           return 'blue';
         case 'pending':
           return '#2D01CE';
@@ -161,7 +163,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Role:', this.notification.role);
+    console.log('Role:', this.user.role);
     console.log('Status:', this.notification.status);
     console.log('Type:', this.notification.type);
   }

@@ -35,6 +35,7 @@ export default {
     const { filteredNotifications, filterType } = storeToRefs(notificationStore);
     const userStore = useUserStore()
     const userRole = userStore.role
+    const status = useNotificationStore.status
     const filterButtons = [
       { label: 'All', value: 'all' },
       { label: 'Tour Request', value: 'tour' },
@@ -42,16 +43,16 @@ export default {
     ];
 
     const getIcon = (status) => {
-      if (status === 'approve') return 'teenyicons:tick-circle-solid';
-      if (status === 'decline') return 'gridicons:cross-circle';
-      if (status === 'cancel') return 'mdi:cancel';
+      if (status === 'approved') return 'teenyicons:tick-circle-solid';
+      if (status === 'declined') return 'gridicons:cross-circle';
+      if (status === 'cancelled') return 'mdi:cancel';
       return 'ion:hourglass-outline';
     };
 
     const getColor = (status) => {
-      if (status === 'approve') return 'green';
-      if (status === 'decline') return 'red';
-      if (status === 'cancel') return 'red';
+      if (status === 'approved') return 'green';
+      if (status === 'declined') return 'red';
+      if (status === 'cancelled') return 'red';
       return '#2D01CE';
     };
     onMounted(() => {

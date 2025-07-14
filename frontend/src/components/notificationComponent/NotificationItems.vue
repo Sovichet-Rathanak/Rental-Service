@@ -2,7 +2,7 @@
   <div class="container" @click="toggleStatusCard">
     <div class="imgText">
       <div class="imgIcon">
-        <Icon v-if="!user.pfp_original_url" icon="ion:person" width="120" height="120" style="color: black" />
+        <Icon v-if="!user.pfp_original_url" icon="ion:person" width="80" height="80" style="color: black" />
         <img v-else :src="`http://localhost:9000/romdoul/${user.pfp_original_url}`" alt="Profile Picture"
           class="pfp-img" @error="onImageError" />
         <Icon class="notiType" :icon="iconType" :style="{ backgroundColor: iconBgColor }" />
@@ -29,7 +29,7 @@
 <script>
 import { Icon } from '@iconify/vue';
 import StatusCard from './statusCard.vue';
-import { useNotificationStore } from '@/stores/notification';
+// import { useNotificationStore } from '@/stores/notification';
 import { useUserStore } from '@/stores/user';
 import { mapState } from 'pinia';
 
