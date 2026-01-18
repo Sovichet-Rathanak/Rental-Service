@@ -1,20 +1,11 @@
-import { DataSource } from "typeorm";
+import { AppDataSource } from "../data-source"; // Adjust path as needed
 import { Region } from "./region.entity";
 
 async function seedRegion() {
-    const dataSource = new DataSource({
-        type: 'postgres',
-        host: 'localhost',
-        port: 2707,
-        username: 'admin',
-        password: 'admin',
-        database: 'romdoul_database',
-        entities: [Region],
-        synchronize: false
-    });
+    await AppDataSource.initialize();
+    console.log('✓ Database connected');
 
-    await dataSource.initialize();
-    const regionRepo = dataSource.getRepository(Region);
+    const regionRepo = AppDataSource.getRepository(Region);
 
     const regions = [
         "Boeng Keng Kang",
@@ -38,10 +29,14 @@ async function seedRegion() {
         if (!exists) {
             const region = regionRepo.create({ region_name: name });
             await regionRepo.save(region);
+            console.log(`✓ Created: ${name}`);
+        } else {
+            console.log(`- Skipped: ${name} (already exists)`);
         }
     }
 
-    await dataSource.destroy();
+    console.log('\n✓ Region seeding completed!');
+    await AppDataSource.destroy();
 }
 
 seedRegion().catch(console.error);

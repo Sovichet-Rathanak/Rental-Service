@@ -1,21 +1,13 @@
-import { DataSource } from "typeorm";
+import { AppDataSource } from "../data-source"; // Adjust path based on where data-source.ts is
 import { Amenity } from "./amenity.entity";
 import { AmenityType } from "./amenity_type.enum";
 
 async function seedAmenity() {
-    const dataSource = new DataSource({
-        type: 'postgres',
-        host: 'localhost',
-        port: 2707,
-        username: 'admin',
-        password: 'admin',
-        database: 'romdoul_database',
-        entities: [Amenity],
-        synchronize: false
-    });
+    await AppDataSource.initialize();
+    console.log('✓ Database connected');
 
-    await dataSource.initialize(); //connect with database
-    const amenityRepo = dataSource.getRepository(Amenity);
+    const amenityRepo = AppDataSource.getRepository(Amenity);
+
     const amenities = [
         { name: 'Wifi', icon_name: 'material-symbols:wifi', type: AmenityType.GUEST_FAVORITE },
         { name: 'TV', icon_name: 'material-symbols-light:tv-outline-rounded', type: AmenityType.GUEST_FAVORITE },
@@ -36,15 +28,19 @@ async function seedAmenity() {
         { name: 'Fire extinguisher', icon_name: 'streamline:fire-extinguisher-sign', type: AmenityType.SAFETY_ITEM },
     ];
 
-    for(const amenityData of amenities){
-        const exists = await amenityRepo.findOne({where: {name:amenityData.name}});
-        if(!exists){
+    for (const amenityData of amenities) {
+        const exists = await amenityRepo.findOne({ where: { name: amenityData.name } });
+        if (!exists) {
             const amenity = amenityRepo.create(amenityData);
             await amenityRepo.save(amenity);
+            console.log(`✓ Created: ${amenityData.name}`);
+        } else {
+            console.log(`- Skipped: ${amenityData.name} (already exists)`);
         }
     }
 
-    await dataSource.destroy();
+    console.log('\n✓ Amenity seeding completed!');
+    await AppDataSource.destroy();
 }
 
 seedAmenity().catch(console.error);
